@@ -1,219 +1,237 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="theme-color" content="#12221f">
-  <title>ریسک‌بان | ریسک زنجیره تأمین</title>
+  <title>ریسک‌بان | مدیریت هوشمند ریسک</title>
+
   <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css" integrity="sha384-CfCrinSRH2IR6a4e6fy2q6ioOX7O6Mtm1L9vRvFZ1trBncWmMePhzvafv7oIcWiW" crossorigin="anonymous">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.rtl.min.css"
+    integrity="sha384-CfCrinSRH2IR6a4e6fy2q6ioOX7O6Mtm1L9vRvFZ1trBncWmMePhzvafv7oIcWiW" crossorigin="anonymous">
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
-<div class="container-fluid p-0">
-  <div class="row g-0 min-vh-100">
-    <aside class="col-12 col-lg-3 col-xl-2 sidebar">
-      <a class="brand" href="#" onclick="showPage('dashboard');return false" aria-label="ریسک‌بان، داشبورد">
-        <span class="logo">ر</span><span>ریسک‌بان<small>دید روشن از زنجیره تأمین</small></span>
-      </a>
-      <nav class="nav nav-pills flex-row flex-lg-column flex-nowrap gap-1 app-nav" aria-label="بخش‌های برنامه">
-        <button class="nav-link active" aria-current="page" data-page="dashboard"><span>▦</span> نمای مدیریتی</button>
-        <button class="nav-link" data-page="suppliers"><span>◈</span> تأمین‌کنندگان</button>
-        <button class="nav-link" data-page="business"><span>▤</span> مشخصات کسب‌وکار</button>
-        <button class="nav-link" data-page="assessment"><span>◉</span> ارزیابی زنجیره</button>
-        <button class="nav-link" data-page="risks"><span>⚑</span> دفتر ریسک</button>
-        <button class="nav-link" data-page="actions"><span>✓</span> برنامه اقدام</button>
-        <button class="nav-link" data-page="report"><span>▧</span> گزارش مدیریتی</button>
-        <button class="nav-link" data-page="settings"><span>⚙</span> داده و پشتیبان</button>
-      </nav>
-      <div class="sidebar-note"><span class="status-dot"></span> نسخه محلی MVP<br>اطلاعات این نمونه در مرورگر ذخیره می‌شود.</div>
-    </aside>
-
-    <main class="col-12 col-lg-9 col-xl-10 main-content">
-      <header class="topbar">
-        <div><p class="eyebrow" id="pageEyebrow">نمای روز</p><h1 id="pageTitle">نمای مدیریتی</h1><p class="muted" id="pageSubtitle">وضعیت تأمین‌کنندگان، ریسک‌ها و اقدام‌های باز</p></div>
-        <div class="topbar-actions">
-          <span id="dataModeBadge" class="mode-badge">داده نمونه</span>
-          <button class="btn btn-outline-secondary" onclick="exportJSON()">دریافت پشتیبان</button>
+  <div class="container-fluid p-0">
+    <div class="row g-0 min-vh-100">
+      <aside class="col-12 col-lg-3 col-xl-2 sidebar">
+        <div class="brand"><span class="logo">ر</span>
+          <div>ریسک‌بان<small>سامانه ارزیابی و کاهش ریسک</small></div>
         </div>
-      </header>
+        <nav class="nav nav-pills flex-row flex-lg-column flex-nowrap gap-2 app-nav" aria-label="بخش‌های برنامه">
+          <button class="nav-link active" aria-current="page" data-page="dashboard">▦　داشبورد مدیریتی</button>
+          <button class="nav-link" data-page="business">▤　مشخصات کسب‌وکار</button>
+          <button class="nav-link" data-page="assessment">◉　ارزیابی ریسک‌ها</button>
+          <button class="nav-link" data-page="risks">⚑　فهرست ریسک‌ها</button>
+          <button class="nav-link" data-page="actions">✓　برنامه اقدامات</button>
+          <button class="nav-link" data-page="report">▧　گزارش نهایی</button>
+        </nav>
+        <div class="sidebar-note">نسخه MVP آزمایشی<br>اطلاعات در همین مرورگر ذخیره می‌شود.</div>
+      </aside>
 
-      <div id="storageWarning" class="notice alert alert-warning hidden" role="alert">ذخیره‌سازی مرورگر در دسترس نیست. تغییرات ممکن است پس از بستن صفحه باقی نمانند.</div>
-      <div id="recalcBanner" class="notice alert alert-warning hidden" role="status">
-        پاسخ‌ها بعد از آخرین محاسبه تغییر کرده‌اند؛ اعداد این داشبورد بر پایه نتیجه قبلی هستند.
-        <button class="btn btn-sm btn-warning ms-2" onclick="showPage('assessment')">بازبینی و محاسبه</button>
-      </div>
-      <div id="sampleBanner" class="sample-banner hidden" role="note">
-        <span class="sample-icon">i</span>
-        <div><b>نمایش داده نمونه</b><span>نام تأمین‌کنندگان و اعداد نمایشی ساختگی‌اند. برای ثبت اطلاعات خود، از «داده و پشتیبان» شروع کنید.</span></div>
-        <button class="btn btn-sm btn-light" onclick="showPage('settings')">شروع با داده واقعی</button>
-      </div>
+      <main class="col-12 col-lg-9 col-xl-10 main-content">
+        <div class="topbar d-flex justify-content-between align-items-center gap-3">
+          <div>
+            <h1 id="pageTitle">داشبورد مدیریتی</h1>
+            <p class="muted" id="pageSubtitle">تصویر کلی ریسک‌ها و اقدامات کسب‌وکار شما</p>
+          </div>
+          <button class="btn btn-outline-secondary" onclick="exportJSON()">خروجی اطلاعات ↓</button>
+        </div>
 
-      <section id="page-dashboard">
-        <div class="hero-card">
-          <div class="hero-copy"><span class="hero-label">زنجیره تأمین · <span id="heroBusiness">کسب‌وکار</span></span>
-            <h2 id="welcome">تصویر امروز زنجیره تأمین</h2>
-            <p id="dashboardSummary">ریسک‌ها را زودتر ببینید و پیگیری را به اقدام مشخص تبدیل کنید.</p>
-            <div class="hero-actions">
-              <button class="btn btn-primary" onclick="showPage('assessment')"><span id="assessmentCta">ادامه ارزیابی</span><span aria-hidden="true"> ←</span></button>
-              <button class="btn btn-hero-light" onclick="showPage('suppliers')">مدیریت تأمین‌کنندگان</button>
+        <section id="page-dashboard">
+          <div class="card shadow-sm hero-card">
+            <div class="section-title">
+              <div>
+                <h2 id="welcome">سلام، مدیر کسب‌وکار 👋</h2>
+                <p class="muted">وضعیت ریسک‌های ثبت‌شده در ارزیابی فعلی</p>
+              </div>
+              <span class="badge rounded-pill text-bg-primary">نسخه آزمایشی</span>
+            </div>
+            <div class="progress" role="progressbar" aria-label="Assessment progress" aria-valuemin="0" aria-valuemax="100">
+              <div id="assessmentProgress" class="progress-bar" style="width:0%"></div>
+            </div>
+            <p class="muted" id="progressText">هنوز ارزیابی انجام نشده است.</p>
+            <div class="actions d-flex flex-wrap gap-2 mt-3">
+              <button class="btn btn-primary" onclick="showPage('assessment')">شروع / ادامه ارزیابی ←</button>
+              <button class="btn btn-outline-secondary" onclick="showPage('business')">ویرایش کسب‌وکار</button>
             </div>
           </div>
-          <div class="hero-progress">
-            <div class="progress-ring" id="progressRing"><span><b id="progressPercent">۰٪</b><small>پوشش ارزیابی</small></span></div>
-            <p id="progressText">۰ از ۹ پاسخ ثبت شده</p>
-          </div>
-        </div>
 
-        <div class="row g-3 metric-grid">
-          <div class="col-6 col-xl-3"><article class="metric-card"><div class="metric-top"><span>ریسک فعال</span><span class="metric-icon icon-blue">⚑</span></div><strong class="metric" id="mRisks">۰</strong><span class="metric-foot" id="mRiskFoot">در دفتر ریسک</span></article></div>
-          <div class="col-6 col-xl-3"><article class="metric-card"><div class="metric-top"><span>اولویت بالا</span><span class="metric-icon icon-red">↑</span></div><strong class="metric" id="mHigh">۰</strong><span class="metric-foot">نیازمند توجه مدیریتی</span></article></div>
-          <div class="col-6 col-xl-3"><article class="metric-card"><div class="metric-top"><span>تأمین‌کننده فعال</span><span class="metric-icon icon-green">◈</span></div><strong class="metric" id="mSuppliers">۰</strong><span class="metric-foot" id="mSupplierFoot">در فهرست تأمین</span></article></div>
-          <div class="col-6 col-xl-3"><article class="metric-card"><div class="metric-top"><span>اقدام عقب‌افتاده</span><span class="metric-icon icon-amber">◷</span></div><strong class="metric" id="mOverdue">۰</strong><span class="metric-foot">موعد گذشته و تکمیل‌نشده</span></article></div>
-        </div>
-
-        <div class="dashboard-grid">
-          <article class="panel">
-            <div class="section-title"><div><h2>نمای ریسک زنجیره تأمین</h2><p class="muted">توزیع ریسک‌های ارزیابی‌شده بر اساس سطح</p></div><button class="text-button" onclick="showPage('risks')">دفتر ریسک <span>←</span></button></div>
-            <div id="riskDistribution"></div>
-          </article>
-          <article class="panel">
-            <div class="section-title"><div><h2>تأمین‌کنندگان نیازمند توجه</h2><p class="muted">وضعیت ثبت‌شده در فهرست تأمین</p></div><button class="text-button" onclick="showPage('suppliers')">مشاهده همه <span>←</span></button></div>
-            <div id="supplierWatch"></div>
-          </article>
-        </div>
-        <div class="dashboard-grid dashboard-grid-lower">
-          <article class="panel"><div class="section-title"><div><h2>ریسک‌های اولویت‌دار</h2><p class="muted">امتیاز بالا به پایین</p></div><button class="text-button" onclick="showPage('risks')">دفتر ریسک <span>←</span></button></div><div id="topRisks"></div></article>
-          <article class="panel"><div class="section-title"><div><h2>پیگیری‌های نزدیک</h2><p class="muted">اقدام‌های باز و موعدهای مهم</p></div><button class="text-button" onclick="showPage('actions')">برنامه اقدام <span>←</span></button></div><div id="upcomingActions"></div></article>
-        </div>
-        <p class="dashboard-disclaimer">این نمای اولیه بر اساس پاسخ‌ها و اطلاعات ثبت‌شده در همین مرورگر است؛ پوشش ناقص، ریسک ثبت‌نشده را نشان نمی‌دهد.</p>
-      </section>
-
-      <section id="page-suppliers" class="hidden">
-        <div class="page-intro"><div><h2>فهرست تأمین‌کنندگان</h2><p class="muted">وابستگی‌ها، زمان تأمین و نشانه‌های اختلال را در یک جا پیگیری کنید.</p></div><button class="btn btn-primary" onclick="openSupplier()">＋ ثبت تأمین‌کننده</button></div>
-        <div class="supplier-summary" id="supplierSummary"></div>
-        <article class="panel">
-          <div class="table-tools"><div class="search-wrap"><span>⌕</span><input id="supplierSearch" class="form-control" type="search" placeholder="جست‌وجوی نام یا قلم تأمین‌شده" oninput="renderSuppliers()"></div>
-            <select id="supplierFilter" class="form-select" aria-label="فیلتر وضعیت تأمین‌کننده" onchange="renderSuppliers()"><option value="all">همه وضعیت‌ها</option><option value="stable">باثبات</option><option value="watch">نیازمند پایش</option><option value="disrupted">مختل</option></select>
-          </div>
-          <div id="supplierList"></div>
-        </article>
-        <p class="muted data-limit-note">اطلاعات تأمین‌کننده‌ها دستی ثبت می‌شود؛ اتصال به ERP، استعلام خودکار و راستی‌آزمایی بیرونی در این نسخه وجود ندارد.</p>
-      </section>
-
-      <section id="page-business" class="hidden">
-        <article class="panel">
-          <h2>مشخصات کسب‌وکار</h2><p class="muted">اطلاعات پایه برای گزارش و درک میزان مواجهه زنجیره تأمین.</p>
-          <form id="businessForm">
-            <div class="form-grid">
-              <div><label class="form-label" for="bName">نام کسب‌وکار <span class="required">*</span></label><input class="form-control" id="bName" maxlength="100" required placeholder="مثلاً تولیدی شیرینی بهار"></div>
-              <div><label class="form-label" for="bType">حوزه فعالیت</label><select class="form-select" id="bType"><option>تولید کیک و شیرینی</option><option>تولید مواد غذایی</option><option>قنادی و فروش حضوری</option><option>رستوران و کافه</option><option>سایر</option></select></div>
-              <div><label class="form-label" for="bSize">تعداد کارکنان</label><select class="form-select" id="bSize"><option>۱ تا ۵ نفر</option><option>۶ تا ۲۰ نفر</option><option>۲۱ تا ۵۰ نفر</option><option>بیش از ۵۰ نفر</option></select></div>
-              <div><label class="form-label" for="bCity">شهر / محل فعالیت</label><input class="form-control" id="bCity" maxlength="80" placeholder="اختیاری"></div>
-              <div><label class="form-label" for="bProcesses">فرایندهای اصلی</label><input class="form-control" id="bProcesses" maxlength="160" placeholder="خرید، دریافت، انبار، تولید، ارسال"></div>
-              <div><label class="form-label" for="bCriticalInputs">اقلام حیاتی</label><input class="form-control" id="bCriticalInputs" maxlength="160" placeholder="آرد، روغن، تخم‌مرغ، بسته‌بندی"></div>
-              <div><label class="form-label" for="bCoverageDays">پوشش موجودی اقلام حیاتی (روز)</label><input class="form-control" id="bCoverageDays" type="number" min="0" max="365" inputmode="numeric"></div>
-              <div><label class="form-label" for="bImportShare">وابستگی به واردات (درصد تقریبی)</label><input class="form-control" id="bImportShare" type="number" min="0" max="100" inputmode="numeric"></div>
+          <div class="row g-3 mb-3 metric-grid">
+            <div class="col-6 col-xl-3">
+              <div class="card shadow-sm metric-card"><span class="metric-icon">⚑</span>
+                <div class="metric" id="mTotal">0</div>
+                <div class="metric-label">ریسک‌های شناسایی‌شده</div>
+              </div>
             </div>
-            <div class="form-actions"><button class="btn btn-primary" type="submit">ذخیره مشخصات</button></div>
+            <div class="col-6 col-xl-3">
+              <div class="card shadow-sm metric-card"><span class="metric-icon">🔴</span>
+                <div class="metric" id="mHigh">0</div>
+                <div class="metric-label">ریسک‌های با اولویت بالا</div>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card shadow-sm metric-card"><span class="metric-icon">✓</span>
+                <div class="metric" id="mDone">0</div>
+                <div class="metric-label">اقدامات تکمیل‌شده</div>
+              </div>
+            </div>
+            <div class="col-6 col-xl-3">
+              <div class="card shadow-sm metric-card"><span class="metric-icon">◷</span>
+                <div class="metric" id="mOpen">0</div>
+                <div class="metric-label">اقدامات باز</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="two">
+            <div class="card shadow-sm chart-card">
+              <div class="chart-heading">
+                <h2>توزیع سطح ریسک</h2>
+                <p class="muted" id="riskDistributionSummary">ریسک‌های ثبت‌شده بر اساس اولویت</p>
+              </div>
+              <div id="riskDistribution"></div>
+            </div>
+            <div class="card shadow-sm">
+              <h2>اولویت‌های فوری</h2>
+              <div id="topRisks"></div>
+            </div>
+          </div>
+          <div class="card shadow-sm">
+            <div class="section-title">
+              <h2>آخرین اقدامات ثبت‌شده</h2><button class="btn btn-outline-secondary btn-sm" onclick="showPage('actions')">مشاهده همه</button>
+            </div>
+            <div id="recentActions"></div>
+          </div>
+        </section>
+
+        <section id="page-business" class="hidden">
+          <div class="card shadow-sm">
+            <h2>مشخصات کسب‌وکار</h2>
+            <p class="muted">این اطلاعات برای تنظیم ارزیابی و گزارش استفاده می‌شود.</p>
+            <form id="businessForm">
+              <div class="row g-3">
+                <div class="field col-md-6"><label class="form-label" for="bName">نام کسب‌وکار</label><input class="form-control" id="bName" placeholder="مثلاً شیرینی‌سرای بهار"
+                    required></div>
+                <div class="field col-md-6"><label class="form-label" for="bType">نوع کسب‌وکار</label><select class="form-select" id="bType">
+                    <option>تولید کیک و شیرینی</option>
+                    <option>قنادی و فروش حضوری</option>
+                    <option>تولید صنعتی مواد غذایی</option>
+                    <option>رستوران و کافه</option>
+                    <option>سایر</option>
+                  </select></div>
+                <div class="field col-md-6"><label class="form-label" for="bSize">تعداد کارکنان</label><select class="form-select" id="bSize">
+                    <option>۱ تا ۵ نفر</option>
+                    <option>۶ تا ۲۰ نفر</option>
+                    <option>۲۱ تا ۵۰ نفر</option>
+                    <option>بیش از ۵۰ نفر</option>
+                  </select></div>
+                <div class="field col-md-6"><label class="form-label" for="bCity">شهر / محل فعالیت (اختیاری)</label><input class="form-control" id="bCity" placeholder="نام شهر">
+                </div>
+                <div class="field col-md-6"><label class="form-label" for="bSales">کانال فروش</label><select class="form-select" id="bSales">
+                    <option>فروش حضوری</option>
+                    <option>آنلاین و ارسال</option>
+                    <option>عمده‌فروشی</option>
+                    <option>ترکیبی</option>
+                  </select></div>
+                <div class="field col-md-6"><label class="form-label" for="bProcesses">فرایندهای اصلی</label><input class="form-control" id="bProcesses"
+                    placeholder="خرید، تولید، بسته‌بندی، ارسال"></div>
+              </div>
+              <button class="btn btn-primary" type="submit">ذخیره مشخصات</button>
+            </form>
+          </div>
+          <div class="notice alert alert-primary" role="note">برای نسخه واقعی، اطلاعاتی مثل نوع محصول، ماندگاری، شرایط نگهداری، وابستگی به تأمین‌کنندگان و سوابق حوادث نیز باید
+            جمع‌آوری شود.</div>
+        </section>
+
+        <section id="page-assessment" class="hidden">
+          <div class="card shadow-sm">
+            <div class="section-title">
+              <h2>ارزیابی ریسک کسب‌وکار</h2><span class="badge rounded-pill text-bg-primary" id="questionCount">۰ از ۰</span>
+            </div>
+            <p class="muted">برای هر مورد، وضعیت فعلی کسب‌وکار را انتخاب کن. پاسخ‌ها باید بر اساس شواهد واقعی باشند، نه حدس.</p>
+            <div class="notice alert alert-primary" role="note">این پرسش‌ها غربالگری اولیه‌اند و جایگزین ممیزی تخصصی، الزامات قانونی یا ارزیابی ایمنی مواد غذایی نیستند.</div>
+            <div id="questionnaire"></div>
+            <div class="actions d-flex flex-wrap gap-2 mt-3">
+              <button class="btn btn-primary" onclick="calculateRisks()">محاسبه و به‌روزرسانی ریسک‌ها</button>
+              <button class="btn btn-outline-secondary" onclick="showPage('risks')">مشاهده فهرست ریسک‌ها</button>
+            </div>
+          </div>
+        </section>
+
+        <section id="page-risks" class="hidden">
+          <div class="card shadow-sm">
+            <div class="section-title">
+              <h2>فهرست ریسک‌ها</h2>
+              <select class="form-select form-select-sm" id="riskFilter" aria-label="فیلتر سطح ریسک" style="width:auto" onchange="renderRisks()">
+                <option value="all">همه سطوح</option>
+                <option value="high">اولویت بالا</option>
+                <option value="medium">اولویت متوسط</option>
+                <option value="low">اولویت پایین</option>
+              </select>
+            </div>
+            <p class="muted">برای مشاهده پیشنهاد کنترل و ثبت برنامه اقدام، روی جزئیات هر ریسک بزن.</p>
+            <div id="riskList"></div>
+          </div>
+        </section>
+
+        <section id="page-actions" class="hidden">
+          <div class="card shadow-sm">
+            <div class="section-title">
+              <h2>برنامه اقدامات اصلاحی و کنترلی</h2>
+              <button class="btn btn-outline-secondary" onclick="exportCSV()">خروجی CSV ↓</button>
+            </div>
+            <p class="muted">برای هر اقدام، مسئول، موعد و وضعیت را تعیین کن تا اجرای آن قابل پیگیری باشد.</p>
+            <div id="actionList"></div>
+          </div>
+        </section>
+
+        <section id="page-report" class="hidden">
+          <div class="card shadow-sm">
+            <h2>گزارش ارزیابی ریسک</h2>
+            <p class="muted">خلاصه قابل چاپ برای بررسی مدیریتی</p>
+            <div id="reportContent"></div>
+            <div class="actions d-flex flex-wrap gap-2 mt-3 no-print">
+              <button class="btn btn-primary" onclick="window.print()">چاپ / ذخیره PDF</button>
+              <button class="btn btn-outline-secondary" onclick="exportJSON()">دریافت فایل JSON</button>
+              <button class="btn btn-outline-secondary" onclick="exportCSV()">دریافت اقدامات CSV</button>
+            </div>
+          </div>
+          <div class="notice alert alert-primary" role="note">امتیازها حاصل یک مدل ساده احتمال × شدت هستند. قبل از تصمیم‌گیری درباره ریسک‌های بحرانی، یافته‌ها باید با شواهد و نظر
+            متخصص مربوطه تأیید شوند.</div>
+        </section>
+
+        <dialog id="actionDialog" class="action-dialog" aria-labelledby="actionDialogTitle">
+          <form id="actionForm" class="p-4">
+            <div class="dialog-heading">
+              <div>
+                <p class="dialog-kicker">پیگیری ریسک</p>
+                <h2 id="actionDialogTitle">برنامه اقدام</h2>
+                <p id="actionDialogRisk" class="muted"></p>
+              </div>
+              <button type="button" class="dialog-close" aria-label="بستن" onclick="document.getElementById('actionDialog').close()">×</button>
+            </div>
+            <div class="mb-3"><label class="form-label" for="actionOwner">مسئول اجرا</label><input class="form-control" id="actionOwner" autocomplete="name"
+                placeholder="نام مسئول اقدام"></div>
+            <div class="mb-3"><label class="form-label" for="actionDue">موعد انجام</label><input class="form-control" id="actionDue" type="date"></div>
+            <div class="mb-4"><label class="form-label" for="actionNotes">یادداشت و شواهد</label><textarea class="form-control" id="actionNotes"
+                placeholder="شواهد، هزینه یا توضیحات تکمیلی"></textarea></div>
+            <div class="d-flex justify-content-end gap-2">
+              <button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('actionDialog').close()">انصراف</button>
+              <button type="submit" class="btn btn-primary">ذخیره اقدام</button>
+            </div>
           </form>
-        </article>
-        <div class="notice alert alert-info" role="note">در نسخه MVP این شاخص‌ها دستی و خوداظهاری‌اند و به داده خرید، انبار یا تأمین‌کننده متصل نیستند.</div>
-      </section>
+        </dialog>
+        <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
 
-      <section id="page-assessment" class="hidden">
-        <article class="panel">
-          <div class="section-title"><div><h2>ارزیابی ریسک زنجیره تأمین</h2><p class="muted">پاسخ را بر پایه شواهد فعلی انتخاب کنید؛ «نامشخص» را از «خیر» جدا نگه دارید.</p></div><span class="count-badge" id="questionCount">۰ از ۹</span></div>
-          <div class="notice alert alert-info" role="note">این ارزیابی غربالگری اولیه برای کسب‌وکارهای غذایی است. امتیازها تخمینی‌اند و جایگزین بررسی تخصصی، سوابق واقعی یا الزام قانونی نیستند.</div>
-          <div class="assessment-progress"><div class="progress"><div id="assessmentProgress" class="progress-bar"></div></div><span id="assessmentPercent">۰٪</span></div>
-          <div id="questionnaire"></div>
-          <div class="form-actions"><button class="btn btn-primary" onclick="calculateRisks()">محاسبه و به‌روزرسانی ریسک‌ها</button><span class="muted" id="assessmentStatusText">پاسخ‌ها به‌صورت خودکار ذخیره می‌شوند.</span></div>
-        </article>
-      </section>
-
-      <section id="page-risks" class="hidden">
-        <div class="page-intro"><div><h2>دفتر ریسک زنجیره تأمین</h2><p class="muted">ریسک‌های شناسایی‌شده، دلیل امتیاز و اقدام پیشنهادی را بررسی کنید.</p></div><button class="btn btn-outline-secondary" onclick="showPage('assessment')">بازبینی ارزیابی</button></div>
-        <article class="panel">
-          <div class="table-tools"><div class="search-wrap"><span>⌕</span><input id="riskSearch" class="form-control" type="search" placeholder="جست‌وجوی ریسک یا دسته" oninput="renderRisks()"></div>
-            <select id="riskFilter" class="form-select" aria-label="فیلتر سطح ریسک" onchange="renderRisks()"><option value="all">همه سطوح</option><option value="high">بالا</option><option value="medium">متوسط</option><option value="low">پایین</option></select>
-            <select id="riskCategoryFilter" class="form-select" aria-label="فیلتر دسته ریسک" onchange="renderRisks()"><option value="all">همه دسته‌ها</option></select>
-          </div>
-          <div id="riskList"></div>
-        </article>
-      </section>
-
-      <section id="page-actions" class="hidden">
-        <div class="page-intro"><div><h2>برنامه اقدام</h2><p class="muted">برای ریسک‌های اولویت‌دار، مسئول، موعد و وضعیت اجرا را ثبت کنید.</p></div><button class="btn btn-outline-secondary" onclick="exportCSV()">دریافت CSV</button></div>
-        <article class="panel">
-          <div class="table-tools"><select id="actionFilter" class="form-select" aria-label="فیلتر وضعیت اقدام" onchange="renderActions()"><option value="all">همه اقدام‌ها</option><option value="باز">باز</option><option value="در حال انجام">در حال انجام</option><option value="تکمیل‌شده">تکمیل‌شده</option><option value="متوقف‌شده">متوقف‌شده</option></select>
-            <select id="actionViewFilter" class="form-select" aria-label="فیلتر ارتباط ریسک" onchange="renderActions()"><option value="all">فعال و سابقه</option><option value="current">ریسک‌های فعال</option><option value="historical">ریسک‌های بازنگری‌شده</option></select></div>
-          <div id="actionList"></div>
-        </article>
-        <p class="muted data-limit-note">تکمیل یک اقدام به‌تنهایی ریسک را کاهش‌یافته تلقی نمی‌کند؛ برای سنجش اثر، ارزیابی را دوباره اجرا کنید.</p>
-      </section>
-
-      <section id="page-report" class="hidden">
-        <article class="panel report-panel">
-          <div class="report-heading"><div><p class="eyebrow">ریسک‌بان · گزارش مدیریتی</p><h2>وضعیت ریسک زنجیره تأمین</h2><p class="muted" id="reportMeta"></p></div><span id="reportMode" class="mode-badge"></span></div>
-          <div id="reportContent"></div>
-          <div class="form-actions no-print"><button class="btn btn-primary" onclick="window.print()">چاپ / ذخیره PDF</button><button class="btn btn-outline-secondary" onclick="exportJSON()">پشتیبان JSON</button><button class="btn btn-outline-secondary" onclick="exportCSV()">اقدامات CSV</button></div>
-        </article>
-        <p class="muted data-limit-note">امتیازها ابزار اولویت‌بندی داخلی هستند، نه پیش‌بینی آماری یا تضمین نبود ریسک.</p>
-      </section>
-
-      <section id="page-settings" class="hidden">
-        <div class="settings-grid">
-          <article class="panel"><div class="setting-icon">▧</div><h2>وضعیت داده</h2><p class="muted">داده‌های این نمونه در فضای ذخیره‌سازی همین مرورگر می‌مانند و همگام‌سازی ابری ندارند. پاک‌کردن داده مرورگر ممکن است آن‌ها را حذف کند.</p>
-            <div class="setting-status"><span>حالت فعلی</span><b id="settingsMode">داده نمونه</b></div>
-            <div class="setting-status"><span>آخرین محاسبه</span><b id="settingsCalculatedAt">هنوز انجام نشده</b></div>
-            <div class="setting-buttons"><button class="btn btn-primary" onclick="startRealData()">شروع با داده واقعی</button><button class="btn btn-outline-danger" onclick="clearAllData()">پاک‌کردن همه اطلاعات…</button></div>
-          </article>
-          <article class="panel"><div class="setting-icon">↥</div><h2>پشتیبان‌گیری و انتقال</h2><p class="muted">JSON شامل مشخصات، تأمین‌کنندگان، پاسخ‌ها، ریسک‌ها و سوابق اقدام است. پیش از بازگردانی، نسخه فعلی را دریافت کنید.</p>
-            <div class="setting-buttons"><button class="btn btn-outline-secondary" onclick="exportJSON()">دریافت پشتیبان JSON</button><label class="btn btn-outline-secondary file-button" for="importFile">بازگردانی از JSON</label><input id="importFile" type="file" accept=".json,application/json" hidden></div>
-            <p class="muted small-note">بارگذاری پشتیبان، اطلاعات فعلی را جایگزین می‌کند.</p>
-          </article>
-          <article class="panel setting-wide"><div class="setting-icon">ⓘ</div><h2>دامنه و محدودیت‌های MVP</h2>
-            <ul class="limit-list"><li>مناسب یک کسب‌وکار و یک مرورگر؛ ورود، نقش‌های چندکاربره و همگام‌سازی ندارد.</li><li>اطلاعات تأمین‌کننده، پوشش موجودی و ارزیابی به‌صورت دستی ثبت می‌شوند.</li><li>امتیاز = احتمال × شدت × ضریب شکاف کنترل؛ قواعد نمونه‌اند و نیاز به بازبینی متخصص دارند.</li><li>هیچ داده‌ای از ERP، بازار، حمل‌کننده یا منابع بیرونی دریافت نمی‌شود.</li></ul>
-          </article>
-        </div>
-      </section>
-
-      <dialog id="supplierDialog" class="app-dialog" aria-labelledby="supplierDialogTitle">
-        <form id="supplierForm" class="dialog-form">
-          <div class="dialog-heading"><div><p class="dialog-kicker">پایگاه تأمین</p><h2 id="supplierDialogTitle">ثبت تأمین‌کننده</h2><p class="muted">وضعیت را بر اساس آخرین اطلاعات خود ثبت کنید.</p></div><button type="button" class="dialog-close" aria-label="بستن" onclick="document.getElementById('supplierDialog').close()">×</button></div>
-          <div class="form-grid">
-            <div><label class="form-label" for="sName">نام تأمین‌کننده <span class="required">*</span></label><input class="form-control" id="sName" maxlength="100" required></div>
-            <div><label class="form-label" for="sCategory">قلم / خدمت تأمین‌شده <span class="required">*</span></label><input class="form-control" id="sCategory" maxlength="100" required placeholder="مثلاً آرد یا حمل سرد"></div>
-            <div><label class="form-label" for="sCriticality">اهمیت برای عملیات</label><select class="form-select" id="sCriticality"><option value="critical">حیاتی</option><option value="high">بالا</option><option value="normal">معمولی</option></select></div>
-            <div><label class="form-label" for="sStatus">وضعیت فعلی</label><select class="form-select" id="sStatus"><option value="stable">باثبات</option><option value="watch">نیازمند پایش</option><option value="disrupted">مختل</option></select></div>
-            <div><label class="form-label" for="sLeadTime">زمان تأمین (روز)</label><input class="form-control" id="sLeadTime" type="number" min="0" max="999" inputmode="numeric"></div>
-            <div><label class="form-label" for="sRegion">شهر / کشور مبدأ</label><input class="form-control" id="sRegion" maxlength="80"></div>
-            <div class="form-check supplier-check"><input class="form-check-input" id="sSingleSource" type="checkbox"><label class="form-check-label" for="sSingleSource">برای این قلم، تنها منبع تأییدشده است</label></div>
-            <div class="form-grid-full"><label class="form-label" for="sNotes">یادداشت پایش</label><textarea class="form-control" id="sNotes" maxlength="500" placeholder="تأخیر، تغییر کیفیت، وابستگی یا اقدام پیگیری"></textarea></div>
-          </div>
-          <div class="dialog-actions"><button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('supplierDialog').close()">انصراف</button><button type="submit" class="btn btn-primary">ذخیره تأمین‌کننده</button></div>
-        </form>
-      </dialog>
-
-      <dialog id="actionDialog" class="app-dialog" aria-labelledby="actionDialogTitle">
-        <form id="actionForm" class="dialog-form">
-          <div class="dialog-heading"><div><p class="dialog-kicker">پیگیری ریسک</p><h2 id="actionDialogTitle">ویرایش برنامه اقدام</h2><p id="actionDialogRisk" class="muted"></p></div><button type="button" class="dialog-close" aria-label="بستن" onclick="document.getElementById('actionDialog').close()">×</button></div>
-          <div><label class="form-label" for="actionTitle">شرح اقدام</label><textarea class="form-control" id="actionTitle" maxlength="500" required></textarea></div>
-          <div class="form-grid action-dialog-grid">
-            <div><label class="form-label" for="actionOwner">مسئول</label><input class="form-control" id="actionOwner" maxlength="80" placeholder="نام مسئول"></div>
-            <div><label class="form-label" for="actionDue">موعد انجام</label><input class="form-control" id="actionDue" type="date"></div>
-            <div><label class="form-label" for="actionStatus">وضعیت</label><select class="form-select" id="actionStatus"><option>باز</option><option>در حال انجام</option><option>تکمیل‌شده</option><option>متوقف‌شده</option></select></div>
-            <div class="form-grid-full"><label class="form-label" for="actionNotes">یادداشت و شواهد متنی</label><textarea class="form-control" id="actionNotes" maxlength="1000" placeholder="شواهد انجام، هزینه یا توضیح پیگیری"></textarea></div>
-          </div>
-          <div class="dialog-actions"><button type="button" class="btn btn-outline-secondary" onclick="document.getElementById('actionDialog').close()">انصراف</button><button type="submit" class="btn btn-primary">ذخیره اقدام</button></div>
-        </form>
-      </dialog>
-      <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
-      <footer>ریسک‌بان · MVP مدیریت ریسک زنجیره تأمین · داده‌ها در فضای همین مرورگر ذخیره می‌شوند.</footer>
-    </main>
+        <footer>ریسک‌بان MVP · نمونه اولیه برای ارزیابی و پیگیری ریسک · داده‌ها فقط در فضای ذخیره‌سازی همین مرورگر نگهداری می‌شوند.</footer>
+      </main>
+    </div>
   </div>
-</div>
-<script src="app.js" defer></script>
+
+  <script src="app.js" defer></script>
 </body>
+
 </html>
