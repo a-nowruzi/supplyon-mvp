@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f5f0">
+  <title>ریسک‌بان | ریسک زنجیره تأمین شیرینی</title>
+  <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-Variable-font-face.css">
+  <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+  <div class="app-shell">
+    <aside class="sidebar">
+      <a class="brand" href="#dashboard" aria-label="ریسک‌بان، داشبورد">
+        <span class="brand-mark" aria-hidden="true">ر</span>
+        <span><strong>ریسک‌بان</strong><small>زنجیره تأمین شیرینی</small></span>
+      </a>
+
+      <nav class="app-nav" aria-label="بخش‌های برنامه">
+        <button class="nav-link active" data-page="dashboard" aria-current="page"><span class="nav-icon">⌂</span>نمای کلی</button>
+        <button class="nav-link" data-page="business"><span class="nav-icon">▤</span>کسب‌وکار</button>
+        <button class="nav-link" data-page="supply"><span class="nav-icon">▦</span>تأمین‌کننده و مواد</button>
+        <button class="nav-link" data-page="assessment"><span class="nav-icon">◉</span>ارزیابی ریسک</button>
+        <button class="nav-link" data-page="risks"><span class="nav-icon">⚑</span>فهرست ریسک‌ها</button>
+        <button class="nav-link" data-page="actions"><span class="nav-icon">✓</span>برنامه اقدام</button>
+        <button class="nav-link" data-page="report"><span class="nav-icon">▧</span>گزارش مدیریتی</button>
+      </nav>
+
+      <div class="sidebar-bottom">
+        <div class="local-badge"><span class="local-dot"></span><span>ذخیره روی همین دستگاه</span></div>
+        <button class="nav-link" data-page="settings"><span class="nav-icon">⚙</span>تنظیمات و داده‌ها</button>
+        <p>نسخهٔ نمایشی MVP<br>برای تصمیم‌گیری واقعی، داده‌ها را با شواهد و نظر متخصص بررسی کنید.</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="topbar">
+        <div>
+          <p class="eyebrow">مدیریت ریسک زنجیره تأمین</p>
+          <h1 id="pageTitle">نمای کلی</h1>
+          <p class="page-subtitle" id="pageSubtitle">ریسک مواد اولیه، تأمین‌کننده‌ها و تداوم تولید را یک‌جا ببینید.</p>
+        </div>
+        <div class="topbar-actions">
+          <span class="mode-pill" id="modePill">بدون داده</span>
+          <button class="button button-secondary" id="exportHeader" type="button">خروجی اطلاعات <span aria-hidden="true">↓</span></button>
+        </div>
+      </header>
+
+      <div id="stateBanner" class="state-banner hidden" role="status"></div>
+
+      <section id="page-dashboard" class="page-section">
+        <div id="onboardingPanel" class="onboarding-panel">
+          <div class="onboarding-copy">
+            <span class="eyebrow">شروع سریع</span>
+            <h2>ریسک‌های تأمین را پیش از توقف تولید ببینید.</h2>
+            <p>مواد اولیهٔ حیاتی و تأمین‌کننده‌ها را ثبت کنید، نقاط وابستگی را پیدا کنید و برای کاهش ریسک مسئول و موعد تعیین کنید.</p>
+            <div class="button-row">
+              <button class="button button-primary" id="startReal" type="button">شروع با اطلاعات کسب‌وکار من</button>
+              <button class="button button-secondary" id="loadSample" type="button">مشاهدهٔ نمونهٔ آماده</button>
+            </div>
+          </div>
+          <div class="onboarding-art" aria-hidden="true">
+            <div class="art-card art-card-back"><span>مواد اولیه</span><b>آرد · لبنیات · تخم‌مرغ</b></div>
+            <div class="art-card art-card-front"><span class="art-symbol">↗</span><b>تاب‌آوری بیشتر</b><small>وابستگی کمتر به یک منبع</small></div>
+            <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">✳</span>
+          </div>
+        </div>
+
+        <div class="dashboard-heading">
+          <div><h2>وضعیت زنجیره تأمین</h2><p class="muted">نمای کوتاه از پوشش اقلام حیاتی و ریسک‌های باز</p></div>
+          <button class="button button-primary button-small" data-go="supply" type="button">مدیریت اقلام و تأمین‌کننده‌ها <span aria-hidden="true">←</span></button>
+        </div>
+
+        <div class="metric-grid">
+          <article class="metric-card metric-lilac"><div class="metric-top"><span>ریسک‌های فعال</span><span class="metric-icon">⚑</span></div><strong id="metricRisks">۰</strong><small>براساس آخرین ارزیابی</small></article>
+          <article class="metric-card metric-rose"><div class="metric-top"><span>ریسک‌های بالا</span><span class="metric-icon">!</span></div><strong id="metricHigh">۰</strong><small>نیازمند توجه زودتر</small></article>
+          <article class="metric-card metric-amber"><div class="metric-top"><span>مواد حیاتی</span><span class="metric-icon">▦</span></div><strong id="metricMaterials">۰</strong><small>ثبت‌شده در فهرست تأمین</small></article>
+          <article class="metric-card metric-mint"><div class="metric-top"><span>اقدام عقب‌افتاده</span><span class="metric-icon">◷</span></div><strong id="metricOverdue">۰</strong><small>موعد گذشته و هنوز باز</small></article>
+        </div>
+
+        <div class="dashboard-grid">
+          <article class="panel">
+            <div class="panel-heading"><div><h2>اولویت‌های فعلی</h2><p class="muted">ریسک‌ها بر اساس امتیاز غربالگری</p></div><button class="text-button" data-go="risks" type="button">همهٔ ریسک‌ها ←</button></div>
+            <div id="dashboardRisks" class="priority-list"></div>
+          </article>
+          <article class="panel supply-health-panel">
+            <div class="panel-heading"><div><h2>پوشش اقلام حیاتی</h2><p class="muted">جایگزین و موجودی در برابر زمان تأمین</p></div></div>
+            <div id="supplyCoverage"></div>
+            <div class="panel-divider"></div>
+            <div class="panel-heading compact-heading"><h3>اقدام‌های نزدیک</h3><button class="text-button" data-go="actions" type="button">مشاهدهٔ برنامه ←</button></div>
+            <div id="dashboardActions" class="mini-action-list"></div>
+          </article>
+        </div>
+
+        <div class="dashboard-footer-note"><span class="info-icon">i</span><span>این نسخه برای غربالگری اولیه است. خروجی خالی به معنی نبود ریسک واقعی نیست؛ امتیازها پیش‌بینی آماری یا تأیید ایمنی محصول نیستند.</span></div>
+      </section>
+
+      <section id="page-business" class="page-section hidden">
+        <div class="page-intro"><div><span class="eyebrow">پیکربندی</span><h2>مشخصات کسب‌وکار</h2><p>اطلاعات پایه کمک می‌کند گزارش و ارزیابی زمینهٔ مشخص‌تری داشته باشند.</p></div></div>
+        <article class="panel form-panel">
+          <form id="businessForm">
+            <div class="form-grid">
+              <div class="field"><label for="businessName">نام کسب‌وکار <span class="required">*</span></label><input id="businessName" name="name" required maxlength="100" placeholder="مثلاً شیرینی‌سازی بهار"></div>
+              <div class="field"><label for="businessType">نوع فعالیت</label><select id="businessType" name="type"><option>قنادی با تولید روزانه</option><option>تولید شیرینی و کیک</option><option>تولید صنعتی شیرینی</option><option>کارگاه نان و شیرینی</option></select></div>
+              <div class="field"><label for="businessSize">اندازهٔ کسب‌وکار</label><select id="businessSize" name="size"><option>۱ تا ۵ نفر</option><option>۶ تا ۲۰ نفر</option><option>۲۱ تا ۵۰ نفر</option><option>بیش از ۵۰ نفر</option></select></div>
+              <div class="field"><label for="businessCity">شهر / محل فعالیت</label><input id="businessCity" name="city" maxlength="80" placeholder="اختیاری"></div>
+              <div class="field field-full"><label for="businessProducts">محصولات اصلی</label><input id="businessProducts" name="products" maxlength="180" placeholder="مثلاً شیرینی خامه‌ای، کیک، شکلات"></div>
+              <div class="field field-full"><label for="businessProcesses">مراحل اصلی زنجیره</label><input id="businessProcesses" name="processes" maxlength="180" placeholder="خرید، دریافت، نگهداری، تولید، بسته‌بندی، ارسال"></div>
+            </div>
+            <div class="form-footer"><span class="muted">در این MVP اطلاعات فقط در فضای ذخیره‌سازی همین مرورگر نگهداری می‌شود.</span><button class="button button-primary" type="submit">ذخیرهٔ مشخصات</button></div>
+          </form>
+        </article>
+      </section>
+
+      <section id="page-supply" class="page-section hidden">
+        <div class="page-intro page-intro-row"><div><span class="eyebrow">نقشهٔ سادهٔ تأمین</span><h2>مواد اولیه و تأمین‌کننده‌ها</h2><p>اقلامی را ثبت کنید که کمبود یا افت کیفیت آن‌ها تولید یا ایمنی محصول را مختل می‌کند.</p></div><div class="button-row"><button class="button button-secondary" id="addSupplier" type="button">＋ تأمین‌کننده</button><button class="button button-primary" id="addMaterial" type="button">＋ مادهٔ اولیه</button></div></div>
+        <div class="supply-summary" id="supplySummary"></div>
+        <article class="panel table-panel">
+          <div class="panel-heading"><div><h2>مواد اولیهٔ حیاتی</h2><p class="muted">موجودی پوششی را با زمان تأمین مقایسه کنید.</p></div></div>
+          <div id="materialsTable" class="table-wrap"></div>
+        </article>
+        <article class="panel table-panel">
+          <div class="panel-heading"><div><h2>تأمین‌کننده‌ها</h2><p class="muted">وضعیت نیازمند پیگیری را در ارزیابی وارد کنید.</p></div></div>
+          <div id="suppliersTable" class="table-wrap"></div>
+        </article>
+        <article class="panel table-panel">
+          <div class="panel-heading"><div><h2>رخدادهای زنجیرهٔ تأمین</h2><p class="muted">تأخیر، محمولهٔ مردود یا انحراف دما را ثبت کنید تا در ارزیابی بعدی دیده شود.</p></div><button class="button button-secondary button-small" id="addEvent" type="button">＋ ثبت رخداد</button></div>
+          <div id="eventsTable" class="table-wrap"></div>
+        </article>
+      </section>
+
+      <section id="page-assessment" class="page-section hidden">
+        <div class="page-intro"><div><span class="eyebrow">ارزیابی هدایت‌شده</span><h2>چطور زنجیرهٔ تأمین را کنترل می‌کنید؟</h2><p>بر اساس شواهد پاسخ دهید. پاسخ «نامشخص» به‌عنوان نیاز به بررسی جداگانه ثبت می‌شود.</p></div></div>
+        <div class="assessment-summary panel">
+          <div><strong id="assessmentProgressText">۰ از ۰ پاسخ</strong><span class="muted">پیشرفت ارزیابی</span></div>
+          <div class="progress-track"><div id="assessmentProgressBar" class="progress-fill"></div></div>
+        </div>
+        <div class="assessment-tip"><span class="info-icon">i</span><span>ثبت مواد و تأمین‌کننده‌ها باعث می‌شود علاوه بر پاسخ‌ها، وابستگی تک‌منبعی و کمبود پوشش موجودی هم بررسی شود.</span><button class="text-button" data-go="supply" type="button">ثبت اقلام ←</button></div>
+        <div id="questionnaire" class="question-list"></div>
+        <div class="sticky-action-bar"><span class="muted">می‌توانید پاسخ‌های ناقص را ذخیره کنید و بعداً ادامه دهید.</span><button class="button button-primary" id="calculateRisks" type="button">محاسبهٔ ریسک‌ها <span aria-hidden="true">←</span></button></div>
+      </section>
+
+      <section id="page-risks" class="page-section hidden">
+        <div class="page-intro page-intro-row"><div><span class="eyebrow">ریسک‌نامه</span><h2>ریسک‌های شناسایی‌شده</h2><p>برای هر مورد، دلیل شناسایی و اقدام پیشنهادی را ببینید.</p></div><div class="filter-row"><label class="sr-only" for="riskSearch">جست‌وجوی ریسک</label><input id="riskSearch" class="search-input" type="search" placeholder="جست‌وجو در ریسک‌ها"><label class="sr-only" for="riskLevelFilter">فیلتر سطح ریسک</label><select id="riskLevelFilter" class="select-input"><option value="all">همهٔ سطح‌ها</option><option value="high">بالا</option><option value="medium">متوسط</option><option value="low">پایین</option></select></div></div>
+        <div id="riskListStatus"></div><div id="riskList" class="risk-list"></div>
+      </section>
+
+      <section id="page-actions" class="page-section hidden">
+        <div class="page-intro"><div><span class="eyebrow">اجرا و پیگیری</span><h2>برنامهٔ اقدام</h2><p>برای هر اقدام مسئول و موعد بگذارید؛ تکمیل اقدام به‌تنهایی امتیاز ریسک را کم نمی‌کند.</p></div></div>
+        <div id="actionSummary" class="action-summary"></div>
+        <article class="panel table-panel"><div id="actionList" class="table-wrap"></div></article>
+      </section>
+
+      <section id="page-report" class="page-section hidden">
+        <div class="page-intro page-intro-row"><div><span class="eyebrow">خروجی برای تصمیم‌گیری</span><h2>گزارش مدیریتی زنجیرهٔ تأمین</h2><p>خلاصه‌ای برای مرور ریسک‌های مواد اولیه و اقدام‌های باز.</p></div><div class="button-row no-print"><button class="button button-secondary" id="printReport" type="button">چاپ / ذخیره PDF</button><button class="button button-primary" id="exportReport" type="button">خروجی JSON ↓</button></div></div>
+        <article class="panel report-panel" id="reportContent"></article>
+        <p class="report-disclaimer">این گزارش ابزار غربالگری اولیه است و جایگزین ارزیابی متخصص زنجیره تأمین، کنترل کیفیت یا ایمنی غذا نیست.</p>
+      </section>
+
+      <section id="page-settings" class="page-section hidden">
+        <div class="page-intro"><div><span class="eyebrow">کنترل داده‌ها</span><h2>تنظیمات و داده‌ها</h2><p>مدیریت نمونه، پشتیبان‌گیری و داده‌های ذخیره‌شده در همین مرورگر.</p></div></div>
+        <div class="settings-grid">
+          <article class="panel settings-card"><span class="settings-icon">⇩</span><h3>پشتیبان‌گیری و انتقال</h3><p>از کسب‌وکار، مواد، تأمین‌کننده‌ها، ارزیابی و اقدام‌ها یک فایل نسخه‌دار JSON بگیرید.</p><div class="button-row"><button class="button button-primary" id="exportSettings" type="button">دریافت فایل JSON</button><button class="button button-secondary" id="importSettings" type="button">بازیابی فایل</button><input id="importFile" class="hidden" type="file" accept="application/json,.json"></div></article>
+          <article class="panel settings-card"><span class="settings-icon">✳</span><h3>نمونهٔ نمایشی</h3><p>بارگذاری سناریوی شیرینی‌سازی با اقلام، تأمین‌کننده‌ها و ریسک‌های نمونه. دادهٔ فعلی جایگزین می‌شود.</p><button class="button button-secondary" id="loadSampleSettings" type="button">بارگذاری نمونهٔ آماده</button></article>
+          <article class="panel settings-card settings-danger"><span class="settings-icon">⌫</span><h3>پاک‌سازی داده‌ها</h3><p>همهٔ داده‌های این مرورگر پاک می‌شود. پیش از ادامه، فایل پشتیبان بگیرید.</p><button class="button button-danger" id="clearData" type="button">پاک‌کردن داده‌ها</button></article>
+        </div>
+        <div class="storage-note"><strong>محدودیت ذخیره‌سازی محلی</strong><p>اطلاعات به حساب ابری فرستاده نمی‌شود؛ اما با پاک‌شدن داده‌های مرورگر یا تغییر دستگاه ممکن است از دست برود. این محل ذخیره‌سازی رمزگذاری‌شده یا چندکاربره نیست.</p><span id="schemaInfo"></span></div>
+      </section>
+
+      <footer class="app-footer"><span>ریسک‌بان · MVP زنجیره تأمین شیرینی</span><span>نسخهٔ نمایشی برای ارزیابی اولیه</span></footer>
+    </main>
+  </div>
+
+  <dialog id="supplierDialog" class="app-dialog" aria-labelledby="supplierDialogTitle">
+    <form id="supplierForm" class="dialog-form">
+      <div class="dialog-heading"><div><span class="eyebrow">دفتر تأمین</span><h2 id="supplierDialogTitle">افزودن تأمین‌کننده</h2></div><button class="icon-button" type="button" data-close="supplierDialog" aria-label="بستن">×</button></div>
+      <input id="supplierId" type="hidden">
+      <div class="form-grid">
+        <div class="field field-full"><label for="supplierName">نام تأمین‌کننده <span class="required">*</span></label><input id="supplierName" required maxlength="100" placeholder="نام شرکت یا فروشنده"></div>
+        <div class="field"><label for="supplierCategory">گروه اصلی</label><select id="supplierCategory"><option>مواد اولیه خشک</option><option>لبنیات و مواد سرد</option><option>تخم‌مرغ و پروتئین</option><option>شکلات و مغزها</option><option>بسته‌بندی</option><option>حمل‌ونقل</option><option>سایر</option></select></div>
+        <div class="field"><label for="supplierCity">شهر / محل تأمین</label><input id="supplierCity" maxlength="80" placeholder="اختیاری"></div>
+        <div class="field field-full"><label for="supplierStatus">وضعیت فعلی</label><select id="supplierStatus"><option value="normal">عادی</option><option value="watch">نیازمند پایش</option><option value="risk">پرریسک</option></select><small>بر اساس تجربهٔ تحویل، کیفیت یا اختلال اخیر انتخاب کنید.</small></div>
+      </div>
+      <div class="dialog-actions"><button class="button button-secondary" type="button" data-close="supplierDialog">انصراف</button><button class="button button-primary" type="submit">ذخیرهٔ تأمین‌کننده</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="materialDialog" class="app-dialog" aria-labelledby="materialDialogTitle">
+    <form id="materialForm" class="dialog-form">
+      <div class="dialog-heading"><div><span class="eyebrow">اقلام حیاتی</span><h2 id="materialDialogTitle">افزودن مادهٔ اولیه</h2></div><button class="icon-button" type="button" data-close="materialDialog" aria-label="بستن">×</button></div>
+      <input id="materialId" type="hidden">
+      <div class="form-grid">
+        <div class="field"><label for="materialName">نام مادهٔ اولیه <span class="required">*</span></label><input id="materialName" required maxlength="100" placeholder="مثلاً کره"></div>
+        <div class="field"><label for="materialCategory">گروه</label><select id="materialCategory"><option>آرد و غلات</option><option>شکر و شیرین‌کننده</option><option>لبنیات و مواد سرد</option><option>تخم‌مرغ</option><option>شکلات و کاکائو</option><option>مغزها و آلرژن‌ها</option><option>بسته‌بندی</option><option>سایر</option></select></div>
+        <div class="field"><label for="materialCriticality">اهمیت برای تولید</label><select id="materialCriticality"><option value="high">حیاتی</option><option value="medium">مهم</option><option value="low">عادی</option></select></div>
+        <div class="field"><label for="materialStorage">شرایط نگهداری</label><select id="materialStorage"><option>خشک و محیطی</option><option>یخچالی</option><option>منجمد</option><option>کنترل‌شده / سایر</option></select></div>
+        <div class="field"><label for="materialPrimarySupplier">تأمین‌کنندهٔ اصلی</label><select id="materialPrimarySupplier"><option value="">انتخاب نشده</option></select></div>
+        <div class="field"><label for="materialAlternateSupplier">تأمین‌کنندهٔ جایگزین</label><select id="materialAlternateSupplier"><option value="">نداریم / ثبت نشده</option></select></div>
+        <div class="field"><label for="materialAlternateQualified">وضعیت جایگزین</label><select id="materialAlternateQualified"><option value="no">هنوز ارزیابی نشده</option><option value="yes">از نظر کیفیت/فرمول تأیید شده</option></select><small>ثبت نام جایگزین به‌تنهایی به معنی تأیید آن نیست.</small></div>
+        <div class="field"><label for="materialLeadTime">زمان تأمین (روز)</label><input id="materialLeadTime" type="number" min="0" max="365" inputmode="numeric" placeholder="مثلاً ۷"></div>
+        <div class="field"><label for="materialStockCover">پوشش موجودی (روز)</label><input id="materialStockCover" type="number" min="0" max="365" inputmode="numeric" placeholder="مثلاً ۵"></div>
+        <div class="field field-full"><label for="materialShelfLife">ماندگاری معمول (روز، اختیاری)</label><input id="materialShelfLife" type="number" min="0" max="3650" inputmode="numeric" placeholder="برای اقلام فسادپذیر"></div>
+      </div>
+      <div class="dialog-actions"><button class="button button-secondary" type="button" data-close="materialDialog">انصراف</button><button class="button button-primary" type="submit">ذخیرهٔ ماده</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="eventDialog" class="app-dialog" aria-labelledby="eventDialogTitle">
+    <form id="eventForm" class="dialog-form">
+      <div class="dialog-heading"><div><span class="eyebrow">ثبت نشانهٔ اختلال</span><h2 id="eventDialogTitle">ثبت رخداد تأمین</h2></div><button class="icon-button" type="button" data-close="eventDialog" aria-label="بستن">×</button></div>
+      <div class="form-grid">
+        <div class="field"><label for="eventDate">تاریخ رخداد <span class="required">*</span></label><input id="eventDate" type="date" required></div>
+        <div class="field"><label for="eventType">نوع رخداد</label><select id="eventType"><option value="delay">تأخیر در تحویل</option><option value="shortage">کسری یا کمبود</option><option value="quality">مشکل کیفیت</option><option value="temperature">انحراف دما</option><option value="packaging">آسیب بسته‌بندی</option><option value="other">سایر</option></select></div>
+        <div class="field"><label for="eventMaterial">مادهٔ مرتبط</label><select id="eventMaterial"><option value="">انتخاب نشده</option></select></div>
+        <div class="field"><label for="eventSupplier">تأمین‌کنندهٔ مرتبط</label><select id="eventSupplier"><option value="">انتخاب نشده</option></select></div>
+        <div class="field field-full"><label for="eventSeverity">شدت رخداد</label><select id="eventSeverity"><option value="low">کم</option><option value="medium" selected>متوسط</option><option value="high">زیاد / اثرگذار بر تولید یا ایمنی</option></select></div>
+        <div class="field field-full"><label for="eventDescription">شرح کوتاه و اقدام انجام‌شده <span class="required">*</span></label><textarea id="eventDescription" required maxlength="400" placeholder="مثلاً تحویل خامه با تأخیر رسید؛ بخشی از تولید به شیفت بعد منتقل شد."></textarea></div>
+      </div>
+      <div class="dialog-actions"><button class="button button-secondary" type="button" data-close="eventDialog">انصراف</button><button class="button button-primary" type="submit">ذخیرهٔ رخداد</button></div>
+    </form>
+  </dialog>
+
+  <div id="appToast" class="app-toast" role="status" aria-live="polite"></div>
+  <script src="app.js" defer></script>
+</body>
+
+</html>
