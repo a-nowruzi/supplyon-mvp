@@ -1,38 +1,1343 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="theme-color" content="#07111f"><title>O2Ban | شبکه هوشمند زنجیره تأمین</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
+<meta name="theme-color" content="#0f3d63">
+<title>اتوبان — نسخه تست</title>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700;800;900&display=swap');
-:root{--bg:#07111f;--panel:#0d1a2b;--panel2:#112238;--line:#233951;--text:#eef5fb;--muted:#91a6bd;--mint:#55d8c0;--cyan:#64b9ed;--gold:#efc46f;--red:#f18b91;--green:#80d9aa;--shadow:0 22px 70px #0005}*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;background:radial-gradient(ellipse at 80% -10%,#123a4c 0,transparent 36%),var(--bg);color:var(--text);font-family:'Vazirmatn',Tahoma,sans-serif;line-height:1.85}button,input,select,textarea{font:inherit}button{cursor:pointer}.wrap{width:min(1180px,calc(100% - 40px));margin:auto}.topbar{position:sticky;top:0;z-index:20;background:#07111fe9;backdrop-filter:blur(18px);border-bottom:1px solid #20354b}.nav{height:76px;display:flex;align-items:center;justify-content:space-between;gap:20px}.brand{display:flex;align-items:center;gap:12px;font-weight:900;font-size:21px;letter-spacing:.3px}.logo{width:42px;height:42px;border-radius:14px;background:linear-gradient(135deg,#7df0d8,#238f9d);color:#06242a;display:grid;place-items:center;font-weight:900;box-shadow:0 8px 30px #38c8b744}.brand small{display:block;font-size:10px;color:#8ca6bd;font-weight:400;letter-spacing:0}.links{display:flex;gap:25px;align-items:center}.links a{font-size:13px;color:#b4c5d6;text-decoration:none}.links a:hover{color:var(--mint)}.btn{border:1px solid #38536c;background:#152a40;color:#eaf5fc;border-radius:10px;padding:10px 17px;font-size:13px;font-weight:600;transition:.2s}.btn:hover{transform:translateY(-2px);border-color:var(--mint)}.btn.primary{background:linear-gradient(135deg,#6ce3ca,#38b7ae);border:0;color:#062a2b;box-shadow:0 9px 26px #36c8b42b}.btn.ghost{background:transparent}.hero{padding:86px 0 72px;position:relative;overflow:hidden}.hero:after{content:"";position:absolute;width:450px;height:450px;border:1px solid #4bd4c51c;border-radius:50%;left:-140px;top:10px;box-shadow:0 0 0 45px #4bd4c508,0 0 0 95px #4bd4c505;pointer-events:none}.hero-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:55px;align-items:center}.eyebrow{display:inline-flex;align-items:center;gap:9px;padding:6px 12px;border:1px solid #2e5b64;background:#102d37;color:#a2eee0;border-radius:40px;font-size:11px}.dot{width:7px;height:7px;border-radius:50%;background:var(--mint);box-shadow:0 0 12px var(--mint)}h1{font-size:clamp(34px,5vw,58px);line-height:1.35;margin:22px 0 15px;font-weight:900;letter-spacing:-1.5px}h1 em{font-style:normal;color:var(--mint)}.lead{font-size:16px;color:#aabed0;max-width:620px;line-height:2.1}.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin:27px 0}.micro{display:flex;gap:20px;flex-wrap:wrap;color:#8199b1;font-size:11px}.micro span:before{content:'✓';color:var(--mint);margin-left:7px}.hero-visual{position:relative;background:linear-gradient(145deg,#122a40,#0b1727);border:1px solid #29465d;border-radius:22px;padding:18px;box-shadow:var(--shadow);transform:perspective(1000px) rotateY(-4deg)}.visual-top{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid #294057;padding:4px 3px 13px;font-size:12px}.window-dots{display:flex;gap:5px}.window-dots i{width:7px;height:7px;border-radius:50%;background:#42617a}.visual-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin:15px 0}.vk{background:#152b40;border:1px solid #2b455c;border-radius:10px;padding:12px}.vk b{display:block;font-size:21px;color:#f1f7fb}.vk small{color:#8fa8be;font-size:9px}.flow-mini{background:#0a1726;border:1px solid #253b52;border-radius:12px;padding:15px}.flow-line{display:flex;align-items:center;justify-content:space-between;gap:6px;margin:14px 0}.flow-node{flex:1;text-align:center;border:1px solid #34566a;background:#122b3b;border-radius:8px;padding:9px 3px;font-size:10px;color:#c5d7e4}.flow-node.active{border-color:#4acbb7;color:#a4f2e2;background:#123b3b}.flow-arrow{color:#55d8c0}.mini-bars{display:grid;gap:10px;margin-top:15px}.mini-bar{display:grid;grid-template-columns:90px 1fr 30px;align-items:center;gap:8px;font-size:9px;color:#9cb1c4}.track{height:6px;border-radius:10px;background:#263d51;overflow:hidden}.track i{display:block;height:100%;background:linear-gradient(90deg,#4cb9d0,#55d8c0);border-radius:10px}.float-note{position:absolute;left:-23px;bottom:26px;background:#102b32;border:1px solid #327b70;border-radius:12px;padding:11px 14px;font-size:10px;color:#a9f0df;box-shadow:var(--shadow)}section{padding:74px 0}.section-head{max-width:720px;margin:0 auto 38px;text-align:center}.kicker{font-size:11px;color:var(--mint);letter-spacing:1px}.section-head h2{font-size:32px;line-height:1.5;margin:8px 0}.section-head p{color:var(--muted);font-size:14px}.problem-grid,.feature-grid,.principles,.roadmap{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}.tile,.feature,.principle,.phase{background:linear-gradient(145deg,#102035,#0b1828);border:1px solid #233b53;border-radius:15px;padding:22px}.tile .ico,.feature .ico{width:40px;height:40px;border-radius:12px;background:#173b45;color:var(--mint);display:grid;place-items:center;font-size:19px;margin-bottom:14px}.tile h3,.feature h3,.principle h3{font-size:15px;margin:0 0 8px}.tile p,.feature p,.principle p,.phase p{color:#91a7bc;font-size:12px;margin:0}.contrast{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:22px}.contrast>div{padding:22px;border-radius:15px;border:1px solid #263b51;background:#0d1b2b}.contrast .old{opacity:.8}.contrast .new{border-color:#2d726b;background:linear-gradient(140deg,#103036,#0c1c2c)}.contrast h3{margin:0 0 13px}.contrast ul{padding-right:18px;color:#a6b8c9;font-size:12px;margin:0}.contrast li{padding:4px 0}.contrast .new li::marker{color:var(--mint)}.workflow{display:grid;grid-template-columns:repeat(6,1fr);gap:10px}.wf{position:relative;text-align:center;padding:18px 8px;border:1px solid #29445b;border-radius:12px;background:#102035}.wf b{display:block;color:var(--mint);font-size:20px}.wf strong{display:block;font-size:11px;margin:6px 0}.wf small{display:block;color:#8fa5ba;font-size:9px}.wf:not(:last-child):after{content:'←';position:absolute;left:-11px;top:37%;color:#4bcab8;font-size:18px;z-index:2}.demo-section{background:linear-gradient(180deg,#0a1726,#0d1b2b 50%,#081321);border-top:1px solid #20384f;border-bottom:1px solid #20384f}.demo-shell{display:grid;grid-template-columns:225px 1fr;border:1px solid #2b425b;border-radius:18px;overflow:hidden;box-shadow:var(--shadow);background:#091523;min-height:650px}.demo-side{background:#0e1d2e;border-left:1px solid #273d54;padding:17px 12px}.demo-brand{padding:8px 10px 20px;font-weight:900;font-size:17px}.demo-brand small{display:block;color:#7e99b1;font-size:9px;font-weight:400}.demo-nav{width:100%;text-align:right;border:0;background:transparent;color:#9fb2c6;padding:10px;border-radius:8px;margin:2px 0;font-size:11px}.demo-nav.active,.demo-nav:hover{background:#1b354a;color:white;border-right:3px solid var(--mint)}.demo-main{min-width:0}.demo-top{height:54px;border-bottom:1px solid #243b52;display:flex;justify-content:space-between;align-items:center;padding:0 20px;color:#9db2c6;font-size:10px}.demo-content{padding:22px}.demo-title{display:flex;justify-content:space-between;gap:10px;align-items:center;margin-bottom:17px;flex-wrap:wrap}.demo-title h3{font-size:18px;margin:0}.muted{color:#8fa6bc;font-size:10px}.badge{display:inline-block;border-radius:30px;padding:3px 8px;background:#1b3851;color:#a9d6f4;font-size:9px;white-space:nowrap}.badge.ok{background:#143b36;color:#8de2c9}.badge.warn{background:#45371f;color:#f0d18b}.badge.bad{background:#472830;color:#ffb3b5}.demo-kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;margin-bottom:13px}.demo-card{background:#101f31;border:1px solid #293f56;border-radius:11px;padding:14px;min-width:0}.demo-card small{color:#8fa6bc;font-size:9px}.demo-card strong{display:block;font-size:22px;margin:4px 0;color:#f3f7fb}.demo-grid2{display:grid;grid-template-columns:1.2fr .8fr;gap:12px}.demo-card h4{margin:0 0 12px;font-size:12px}.demo-table{width:100%;border-collapse:collapse;font-size:10px}.demo-table th,.demo-table td{text-align:right;padding:9px 7px;border-bottom:1px solid #293d52;vertical-align:middle}.demo-table th{color:#8da5bc;font-weight:500;background:#17283b}.demo-table tr:last-child td{border-bottom:0}.table-scroll{overflow:auto;border:1px solid #293d52;border-radius:9px}.demo-btn{border:1px solid #39566f;background:#1b344b;color:#e8f2f8;padding:7px 11px;border-radius:7px;font-size:10px}.demo-btn.main{background:#45c9b3;border:0;color:#052a2a;font-weight:700}.demo-btn:disabled{opacity:.35;cursor:not-allowed}.demo-form{display:grid;grid-template-columns:1fr 1fr;gap:10px}.demo-form label{font-size:10px;color:#a4b7c9;display:block;margin-bottom:4px}.demo-form input,.demo-form select,.demo-form textarea{width:100%;border:1px solid #344c64;background:#0a1726;color:#eaf2f8;border-radius:7px;padding:8px;font-size:11px}.demo-form textarea{min-height:70px;grid-column:1/-1}.demo-alert{padding:10px 12px;border-radius:8px;border:1px solid #315966;background:#142f3b;color:#b9dce1;font-size:10px;margin:12px 0}.supplier-row{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:12px 0;border-bottom:1px solid #293d52}.supplier-row:last-child{border:0}.supplier-row p{margin:4px 0 0;color:#8ea5ba;font-size:9px}.score{font-size:20px;color:var(--mint);font-weight:800}.progress{height:5px;background:#273d52;border-radius:8px;overflow:hidden;margin-top:7px}.progress i{display:block;height:100%;background:var(--mint)}.demo-step{display:flex;gap:6px;flex-wrap:wrap;margin:13px 0}.demo-step span{border:1px solid #30465c;border-radius:20px;padding:4px 8px;font-size:9px;color:#91a7bd}.demo-step span.done{background:#153d39;border-color:#2b7469;color:#a5ebdc}.hidden{display:none!important}.toast{position:fixed;bottom:22px;left:22px;z-index:50;background:#123a35;border:1px solid #2e8a79;border-radius:10px;padding:12px 17px;color:#c5f4e9;font-size:12px;display:none;box-shadow:var(--shadow)}.architecture{display:grid;gap:9px;max-width:850px;margin:auto}.arch-layer{border:1px solid #2a455d;border-radius:12px;padding:15px 20px;text-align:center;background:#102137}.arch-layer b{display:block;font-size:13px}.arch-layer small{color:#8fa8bd;font-size:10px}.arch-arrow{text-align:center;color:var(--mint);font-size:18px;line-height:1}.arch-modules{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.arch-modules span{background:#162c42;border:1px solid #304a63;border-radius:8px;padding:10px;text-align:center;font-size:10px}.principle{padding:18px}.principle .num{color:var(--mint);font-size:22px;font-weight:800}.phase{position:relative;padding-top:28px}.phase .days{color:var(--mint);font-size:11px;font-weight:700}.phase h3{font-size:14px;margin:5px 0}.phase ul{padding-right:16px;color:#91a7bc;font-size:10px}.phase li{padding:2px 0}.metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}.metric{background:#102035;border:1px solid #2b4258;border-radius:12px;padding:16px;text-align:center}.metric b{display:block;font-size:23px;color:var(--mint)}.metric small{font-size:10px;color:#9aafc2}.cta{padding:65px 25px;text-align:center;background:radial-gradient(ellipse at center,#17404a,#0d1c2c 60%);border:1px solid #2a5d60;border-radius:20px}.cta h2{font-size:28px;margin:0 0 10px}.cta p{color:#a4bacb;font-size:13px;max-width:650px;margin:0 auto 22px}.footer{padding:28px 0;border-top:1px solid #20364c;color:#718aa2;font-size:10px}.footer .wrap{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}.note{font-size:10px;color:#7f96ac;margin-top:15px}
-@media(max-width:900px){.hero-grid{grid-template-columns:1fr;gap:35px}.hero-visual{max-width:650px;margin:auto;width:100%}.workflow{grid-template-columns:repeat(3,1fr)}.wf:nth-child(3):after{display:none}.demo-shell{grid-template-columns:1fr}.demo-side{border-left:0;border-bottom:1px solid #273d54;display:flex;gap:4px;overflow:auto;padding:8px}.demo-brand{display:none}.demo-nav{white-space:nowrap;width:auto}.links{gap:12px}.links a{font-size:11px}}
-@media(max-width:620px){.wrap{width:min(100% - 26px,1180px)}.nav{height:64px}.links a{display:none}.links a:last-child{display:block}.brand{font-size:17px}.logo{width:36px;height:36px}.hero{padding:55px 0 45px}h1{font-size:35px}.lead{font-size:13px}.section-head h2{font-size:25px}.problem-grid,.feature-grid,.principles,.roadmap{grid-template-columns:1fr}.contrast{grid-template-columns:1fr}.workflow{grid-template-columns:repeat(2,1fr)}.wf:nth-child(3):after{display:block}.wf:nth-child(even):after{display:none}.demo-content{padding:12px}.demo-kpis{grid-template-columns:repeat(2,1fr)}.demo-grid2{grid-template-columns:1fr}.demo-form{grid-template-columns:1fr}.demo-form textarea{grid-column:auto}.metrics{grid-template-columns:repeat(2,1fr)}.float-note{left:7px;bottom:10px}.hero-visual{transform:none}.visual-kpis{grid-template-columns:repeat(3,1fr)}section{padding:55px 0}}
+:root{
+  --p:#0f3d63; --pd:#0a2d49; --pl:#1a5a8a;
+  --a:#0d9488; --al:#14b8a6;
+  --ok:#16a34a; --w:#d97706; --r:#dc2626;
+  --bg:#f5f7fa; --c:#fff; --t:#1e293b; --m:#64748b;
+  --b:#e2e8f0; --s:#f1f5f9;
+  --sidebar-w:260px; --topbar-h:56px; --bnav-h:64px;
+  --shadow-sm:0 1px 3px rgba(15,61,99,.06);
+  --shadow-md:0 4px 16px rgba(15,61,99,.08);
+  --shadow-lg:0 12px 32px rgba(15,61,99,.15);
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{font-size:15px;-webkit-text-size-adjust:100%}
+body{font-family:'Vazirmatn',Tahoma,sans-serif;background:var(--bg);color:var(--t);line-height:1.75;min-height:100vh;overflow-x:hidden}
+button{font-family:inherit;cursor:pointer;border:none;outline:none}
+a{color:var(--pl);text-decoration:none}
+input,select,textarea{font-family:inherit;font-size:16px;width:100%;padding:12px 14px;border:1.5px solid var(--b);border-radius:10px;background:#fff;color:var(--t);transition:.15s}
+input:focus,select:focus,textarea:focus{border-color:var(--pl);box-shadow:0 0 0 3px rgba(26,90,138,.12);outline:none}
+textarea{resize:vertical;min-height:80px}
+label{display:block;font-size:.88rem;font-weight:600;color:var(--p);margin-bottom:6px}
+.required::after{content:" *";color:var(--r)}
+
+/* ═══ LOGIN ═══ */
+.login-screen{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:20px;background:linear-gradient(135deg,#0a2d49 0%,#0f3d63 50%,#0d9488 100%)}
+.login-card{background:#fff;border-radius:20px;padding:32px 26px;width:100%;max-width:460px;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.login-logo{text-align:center;font-size:2rem;font-weight:800;color:var(--p);margin-bottom:4px;letter-spacing:1px}
+.login-tagline{text-align:center;color:var(--m);font-size:.85rem;margin-bottom:24px}
+.login-sec{font-size:.88rem;font-weight:700;color:var(--pl);margin:18px 0 10px}
+.login-user{display:flex;align-items:center;gap:12px;padding:14px;border:1.5px solid var(--b);border-radius:12px;background:#fff;width:100%;text-align:right;margin-bottom:8px;min-height:64px;transition:.15s}
+.login-user:hover,.login-user:active{border-color:var(--a);background:#f0fdfa;transform:translateY(-1px)}
+.login-avatar{width:44px;height:44px;border-radius:50%;background:linear-gradient(135deg,var(--p),var(--a));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:1.1rem;flex-shrink:0}
+.login-info{flex:1;text-align:right}
+.login-name{font-weight:700;color:var(--p);font-size:.95rem}
+.login-role{font-size:.78rem;color:var(--m);margin-top:2px}
+.login-badge{font-size:.72rem;font-weight:700;padding:4px 10px;border-radius:999px;white-space:nowrap;flex-shrink:0}
+.login-badge.buyer{background:#dbeafe;color:#1e40af}
+.login-badge.supplier{background:#fef3c7;color:#92400e}
+
+/* ═══ APP SHELL ═══ */
+.app{display:flex;min-height:100vh}
+.sidebar{position:fixed;top:0;right:0;bottom:0;width:var(--sidebar-w);max-width:85vw;background:linear-gradient(180deg,var(--pd),var(--p));color:#fff;padding:18px 12px;display:flex;flex-direction:column;transform:translateX(100%);transition:transform .3s cubic-bezier(.4,0,.2,1);z-index:120;overflow-y:auto;box-shadow:-8px 0 32px rgba(0,0,0,.2)}
+body.sb-open .sidebar{transform:translateX(0)}
+.sb-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.15)}
+.sb-brand{font-size:1.3rem;font-weight:800;letter-spacing:1px}
+.sb-close{width:36px;height:36px;background:rgba(255,255,255,.15);border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.1rem;transition:.15s;flex-shrink:0}
+.sb-close:active{background:rgba(255,255,255,.3)}
+.sb-user{background:rgba(255,255,255,.1);border-radius:12px;padding:14px;margin-bottom:16px;text-align:center}
+.sb-avatar{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--al));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.2rem;margin:0 auto 8px}
+.sb-uname{font-weight:700;font-size:.92rem}
+.sb-uorg{font-size:.75rem;color:#c8ddf0;margin-top:2px}
+.sb-nav{display:flex;flex-direction:column;gap:3px;flex:1}
+.sb-nav a{color:#d1e5f5;padding:12px 14px;border-radius:10px;font-size:.9rem;font-weight:500;display:flex;align-items:center;gap:10px;text-decoration:none;transition:.15s;min-height:44px}
+.sb-nav a:hover,.sb-nav a:active{background:rgba(255,255,255,.1);color:#fff}
+.sb-nav a.active{background:var(--a);color:#fff;font-weight:700}
+.sb-nav a .ni{font-size:1.1rem;flex-shrink:0}
+.sb-nav a .nc{background:rgba(255,255,255,.25);font-size:.7rem;padding:2px 8px;border-radius:999px;margin-right:auto;font-weight:700;min-width:22px;text-align:center}
+.sb-foot{margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,.15)}
+.sb-logout{width:100%;padding:12px;background:rgba(220,38,38,.2);color:#fca5a5;border-radius:10px;font-size:.9rem;font-weight:600;transition:.15s;min-height:44px}
+.sb-logout:active{background:rgba(220,38,38,.4);color:#fff}
+.backdrop{position:fixed;inset:0;background:rgba(0,0,0,.5);opacity:0;pointer-events:none;transition:opacity .3s;z-index:110}
+body.sb-open .backdrop{opacity:1;pointer-events:auto}
+.topbar{position:fixed;top:0;right:0;left:0;height:var(--topbar-h);background:linear-gradient(135deg,var(--pd),var(--p));color:#fff;display:flex;align-items:center;padding:0 12px;gap:10px;z-index:50;box-shadow:0 2px 12px rgba(15,61,99,.2)}
+.tb-menu{width:40px;height:40px;background:rgba(255,255,255,.15);border-radius:10px;color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.2rem;transition:.15s;flex-shrink:0}
+.tb-menu:active{background:rgba(255,255,255,.3)}
+.tb-title{font-weight:700;font-size:1rem;flex:1}
+.tb-user{width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--a),var(--al));color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:.9rem;flex-shrink:0}
+.main{flex:1;padding:16px;padding-top:calc(var(--topbar-h) + 16px);padding-bottom:calc(var(--bnav-h) + 16px);min-width:0;width:100%}
+.bnav{position:fixed;bottom:0;right:0;left:0;height:var(--bnav-h);background:#fff;border-top:1px solid var(--b);display:flex;align-items:center;justify-content:space-around;z-index:50;box-shadow:0 -2px 12px rgba(15,61,99,.08);padding:0 4px;padding-bottom:env(safe-area-inset-bottom,0)}
+.bnav a{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;padding:8px 4px;color:var(--m);text-decoration:none;font-size:.68rem;font-weight:600;min-height:52px;border-radius:10px;transition:.15s;position:relative}
+.bnav a:active{background:var(--s)}
+.bnav a.active{color:var(--a)}
+.bnav a .bi{font-size:1.35rem;line-height:1}
+.bnav a .bb{position:absolute;top:4px;left:50%;transform:translateX(-50%);background:var(--r);color:#fff;font-size:.62rem;padding:1px 6px;border-radius:999px;font-weight:700;min-width:18px;text-align:center;margin-left:-16px}
+
+/* ═══ CARDS & COMMON ═══ */
+.card{background:var(--c);border-radius:12px;padding:16px;margin-bottom:12px;box-shadow:var(--shadow-sm);border:1px solid var(--b)}
+.card-h{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;padding-bottom:10px;border-bottom:1px solid var(--s);flex-wrap:wrap;gap:8px}
+.card-h h3{margin:0;color:var(--p);font-size:1rem;font-weight:700}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:14px;flex-wrap:wrap;gap:10px}
+.page-head h2{color:var(--p);font-size:1.25rem;font-weight:800}
+.page-sub{color:var(--m);font-size:.82rem;margin-top:2px}
+.breadcrumb{font-size:.78rem;color:var(--m);margin-bottom:6px}
+.breadcrumb a{color:var(--pl)}
+.stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:14px}
+.stat{background:#fff;border-radius:12px;padding:14px;border-right:4px solid var(--a);box-shadow:var(--shadow-sm)}
+.stat.info{border-right-color:var(--pl)}
+.stat.warn{border-right-color:var(--w)}
+.stat.ok{border-right-color:var(--ok)}
+.stat-l{font-size:.75rem;color:var(--m);margin-bottom:4px}
+.stat-v{font-size:1.5rem;font-weight:800;color:var(--p);line-height:1}
+
+/* ═══ BUTTONS ═══ */
+.btn{padding:12px 18px;border-radius:10px;font-size:.9rem;font-weight:700;display:inline-flex;align-items:center;justify-content:center;gap:6px;transition:.15s;white-space:nowrap;min-height:44px;text-decoration:none;border:none}
+.btn:active{transform:scale(.98)}
+.btn:disabled{opacity:.5;cursor:not-allowed}
+.btn-p{background:var(--p);color:#fff}
+.btn-p:active{background:var(--pd)}
+.btn-a{background:var(--a);color:#fff}
+.btn-a:active{background:#0b7d72}
+.btn-o{background:#fff;color:var(--p);border:1.5px solid var(--b)}
+.btn-o:active{background:var(--s)}
+.btn-r{background:var(--r);color:#fff}
+.btn-s{background:var(--ok);color:#fff}
+.btn-sm{padding:8px 14px;font-size:.82rem;min-height:36px}
+.btn-blk{width:100%}
+.btn-group{display:flex;gap:8px;flex-wrap:wrap}
+.btn-group .btn{flex:1;min-width:120px}
+
+/* ═══ BADGES ═══ */
+.badge{display:inline-block;padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.badge-ok{background:#dcfce7;color:#166534}
+.badge-warn{background:#fef3c7;color:#92400e}
+.badge-danger{background:#fee2e2;color:#991b1b}
+.badge-info{background:#dbeafe;color:#1e40af}
+.badge-gray{background:#e2e8f0;color:#475569}
+
+/* ═══ FORMS ═══ */
+.form-group{margin-bottom:14px}
+.form-row{display:grid;grid-template-columns:1fr;gap:14px}
+.form-actions{display:flex;gap:10px;margin-top:18px;flex-wrap:wrap}
+.form-actions .btn{flex:1;min-width:100px}
+.checkbox-row{display:flex;align-items:center;gap:10px;padding:12px;border-radius:8px;cursor:pointer;min-height:44px;font-weight:400;margin:0}
+.checkbox-row input{width:auto;margin:0;flex-shrink:0}
+
+/* ═══ LISTS ═══ */
+.list-item{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;box-shadow:var(--shadow-sm);border:1px solid var(--b);display:block;color:var(--t);transition:.15s;text-decoration:none}
+.list-item:active{transform:scale(.99);background:var(--s)}
+.li-head{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
+.li-title{font-weight:700;color:var(--p);font-size:.95rem;flex:1}
+.li-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:.78rem;color:var(--m);margin-top:6px}
+.li-meta strong{color:var(--t);font-weight:700}
+.match-card{background:#fff;border-radius:12px;padding:14px;margin-bottom:10px;border:1px solid var(--b);border-right:4px solid var(--ok)}
+.match-card.ineligible{border-right-color:var(--r);opacity:.85}
+.match-head{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}
+.match-name{font-weight:700;color:var(--p);flex:1}
+.match-score{font-size:1.3rem;font-weight:800;color:var(--a)}
+.match-score small{font-size:.7rem;color:var(--m);font-weight:500}
+.match-reasons{list-style:none;padding:0;font-size:.82rem}
+.match-reasons li{padding:4px 0;display:flex;gap:6px;align-items:flex-start}
+.match-reasons li::before{content:"✓";color:var(--ok);font-weight:700;flex-shrink:0}
+.match-reasons li.fail::before{content:"✗";color:var(--r)}
+.match-meta{display:flex;flex-wrap:wrap;gap:8px 16px;margin-top:10px;padding-top:10px;border-top:1px dashed var(--b);font-size:.78rem;color:var(--m)}
+.match-meta strong{color:var(--t)}
+
+/* ═══ ALERTS ═══ */
+.alert{padding:12px 14px;border-radius:10px;font-size:.85rem;margin-bottom:14px;border-right:4px solid;line-height:1.7}
+.alert-i{background:#eff6ff;border-color:#3b82f6;color:#1e40af}
+.alert-w{background:#fef3c7;border-color:var(--w);color:#92400e}
+.alert-ok{background:#ecfdf5;border-color:var(--ok);color:#166534}
+.alert-r{background:#fef2f2;border-color:var(--r);color:#991b1b}
+
+/* ═══ EMPTY ═══ */
+.empty{text-align:center;padding:36px 16px;color:var(--m)}
+.empty .em-i{font-size:2.8rem;margin-bottom:10px;opacity:.5}
+.empty h3{color:var(--p);margin-bottom:6px;font-size:1rem}
+.empty p{font-size:.85rem;margin-bottom:14px}
+
+/* ═══ KV ═══ */
+.kv{display:grid;gap:0}
+.kv-item{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--s);font-size:.88rem;gap:12px}
+.kv-item:last-child{border-bottom:none}
+.kv-item dt{color:var(--m);flex-shrink:0;font-weight:500}
+.kv-item dd{color:var(--t);font-weight:600;text-align:left;margin:0}
+
+/* ═══ VERSIONS ═══ */
+.versions{list-style:none;padding:0}
+.versions li{padding:12px;background:#fff;border:1px solid var(--b);border-radius:10px;margin-bottom:8px;font-size:.85rem}
+.versions li.current{border-color:var(--a);background:#f0fdfa}
+.v-head{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+.v-num{font-weight:700;color:var(--p)}
+.v-meta{font-size:.78rem;color:var(--m);line-height:1.7}
+
+/* ═══ COMPARE ═══ */
+.cmp-wrap{overflow-x:auto;border-radius:12px;border:1px solid var(--b);margin-bottom:14px;-webkit-overflow-scrolling:touch}
+.cmp{width:100%;border-collapse:collapse;background:#fff;font-size:.82rem;min-width:560px}
+.cmp th{background:var(--s);color:var(--p);padding:10px;text-align:right;font-weight:700;font-size:.78rem;border-bottom:2px solid var(--b);white-space:nowrap}
+.cmp td{padding:10px;border-bottom:1px solid var(--s);vertical-align:middle}
+.cmp td:first-child{font-weight:600;color:var(--p);background:#fafbfd;white-space:nowrap}
+.cmp tr:last-child td{border-bottom:none}
+.cmp .best{background:#dcfce7;font-weight:700;color:#166534}
+.cmp tr.total td{background:#fff7ed;font-weight:700}
+
+/* ═══ TOAST ═══ */
+#toast-container{position:fixed;top:calc(var(--topbar-h) + 12px);left:50%;transform:translateX(-50%);z-index:200;display:flex;flex-direction:column;gap:8px;pointer-events:none;width:calc(100% - 32px);max-width:400px}
+.toast{background:var(--p);color:#fff;padding:12px 18px;border-radius:10px;font-weight:600;font-size:.88rem;box-shadow:0 8px 24px rgba(0,0,0,.2);animation:sd .3s ease;text-align:center}
+.toast.ok{background:var(--ok)}
+.toast.err{background:var(--r)}
+@keyframes sd{from{opacity:0;transform:translateY(-20px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ DESKTOP ═══ */
+@media(min-width:1024px){
+  :root{--topbar-h:0px;--bnav-h:0px}
+  .topbar{display:none}
+  .bnav{display:none}
+  .app{flex-direction:row-reverse}
+  .sidebar{position:sticky;top:0;height:100vh;transform:translateX(0);width:var(--sidebar-w);max-width:none;box-shadow:none;z-index:10}
+  body.sb-collapsed .sidebar{display:none}
+  .sb-close{display:none}
+  .backdrop{display:none}
+  .main{padding:24px 28px;max-width:1100px;margin:0 auto;width:100%}
+  .form-row.two{grid-template-columns:1fr 1fr}
+  .form-row.three{grid-template-columns:1fr 1fr 1fr}
+  .stats{grid-template-columns:repeat(4,1fr)}
+  .form-actions .btn{flex:initial}
+  .desktop-toggle{display:flex!important}
+}
+.desktop-toggle{display:none;position:fixed;top:16px;right:16px;z-index:20;width:42px;height:42px;background:var(--p);color:#fff;border-radius:10px;align-items:center;justify-content:center;font-size:1.15rem;box-shadow:var(--shadow-md);transition:.15s}
+.desktop-toggle:active{background:var(--pd)}
+body.sb-collapsed .desktop-toggle{right:16px}
+
+/* ═══ PRINT ═══ */
+@media print{.sidebar,.topbar,.bnav,.backdrop,.desktop-toggle{display:none!important}.main{padding:0}.card{box-shadow:none;border:1px solid #ccc}}
 </style>
 </head>
 <body>
-<header class="topbar"><div class="wrap nav"><a class="brand" href="#home" style="text-decoration:none;color:inherit"><span class="logo">O₂</span><span>O2BAN<small>شبکه هوشمند زنجیره تأمین</small></span></a><nav class="links"><a href="#problem">مسئله</a><a href="#solution">راهکار</a><a href="#workflow">فرایند</a><a href="#architecture">معماری</a><a href="#roadmap">نقشه راه</a></nav><a class="btn primary" href="#demo">مشاهده دموی محصول</a></div></header>
-<main id="home">
-<section class="hero"><div class="wrap hero-grid"><div><span class="eyebrow"><i class="dot"></i> Enterprise Supply Chain Collaboration Network</span><h1>از یک نیاز خرید،<br><em>تا یک زنجیره تأمین قابل اعتماد</em></h1><p class="lead">اتوبان، شبکه‌ای خصوصی و هوشمند برای کشف تأمین‌کننده، اعتبارسنجی اطلاعات، مدیریت استعلام و پیشنهادها و تبدیل تصمیم خرید به همکاری قابل‌اندازه‌گیری است.</p><div class="hero-actions"><a class="btn primary" href="#demo">تجربه محیط محصول <span>←</span></a><a class="btn ghost" href="#architecture">مشاهده معماری فنی</a></div><div class="micro"><span>حریم خصوصی سازمانی</span><span>تطبیق توضیح‌پذیر</span><span>گردش خرید قابل ردیابی</span></div></div><div class="hero-visual"><div class="visual-top"><b>O2Ban · Procurement Workspace</b><span class="window-dots"><i></i><i></i><i></i></span></div><div class="visual-kpis"><div class="vk"><b>۱۲</b><small>تأمین‌کننده بررسی‌شده</small></div><div class="vk"><b>۰۸</b><small>پیشنهاد دریافتی</small></div><div class="vk"><b>۰۳</b><small>نیاز خرید فعال</small></div></div><div class="flow-mini"><div style="display:flex;justify-content:space-between;font-size:11px"><b>جریان نمونه خرید</b><span style="color:var(--mint)">در حال اجرا</span></div><div class="flow-line"><div class="flow-node active">نیاز خرید</div><span class="flow-arrow">←</span><div class="flow-node active">تطبیق</div><span class="flow-arrow">←</span><div class="flow-node active">RFQ</div></div><div class="flow-line"><div class="flow-node active">پیشنهاد</div><span class="flow-arrow">←</span><div class="flow-node">تصمیم</div><span class="flow-arrow">←</span><div class="flow-node">سفارش</div></div><div class="mini-bars"><div class="mini-bar"><span>انطباق فنی</span><div class="track"><i style="width:92%"></i></div><b>۹۲</b></div><div class="mini-bar"><span>سطح شواهد</span><div class="track"><i style="width:82%"></i></div><b>۸۲</b></div><div class="mini-bar"><span>تحویل</span><div class="track"><i style="width:88%"></i></div><b>۸۸</b></div></div></div><div class="float-note">◈ اطلاعات تجاری فقط برای افراد مجاز</div></div></div></section>
-<section id="problem"><div class="wrap"><div class="section-head"><span class="kicker">THE PROBLEM</span><h2>مسئله فقط پیدا کردن فروشنده نیست</h2><p>فرایند تأمین در بسیاری از کسب‌وکارها میان تماس، فایل اکسل، کاتالوگ، پیام‌رسان و روابط شخصی پراکنده است. نتیجه، تصمیم‌گیری پرهزینه و دشوار برای ردیابی است.</p></div><div class="problem-grid"><article class="tile"><div class="ico">⌕</div><h3>کشف پراکنده تأمین‌کننده</h3><p>اطلاعات عرضه‌کنندگان در منابع متعدد، قدیمی و غیرساختاریافته قرار دارد؛ پیدا کردن گزینه مناسب زمان‌بر است.</p></article><article class="tile"><div class="ico">◈</div><h3>ابهام در اعتبار اطلاعات</h3><p>ظرفیت، کیفیت، مدارک و موجودی ممکن است صرفاً ادعای شرکت باشند و شواهد کافی برای اعتماد وجود نداشته باشد.</p></article><article class="tile"><div class="ico">⇄</div><h3>مقایسه ناقص پیشنهادها</h3><p>قیمت به‌تنهایی معیار مناسبی نیست؛ حمل، شرایط پرداخت، زمان تحویل و ریسک باید کنار هم دیده شوند.</p></article></div><div class="contrast"><div class="old"><h3>رویکرد سنتی</h3><ul><li>اطلاعات پراکنده و تکراری</li><li>پیگیری دستی استعلام‌ها</li><li>مقایسه دشوار و غیرهم‌تراز</li><li>سابقه تصمیم و عملکرد ناقص</li><li>وابستگی زیاد به حافظه افراد</li></ul></div><div class="new"><h3 style="color:var(--mint)">رویکرد اتوبان</h3><ul><li>پرونده ساختاریافته و خصوصی</li><li>تطبیق بر اساس قیود واقعی خرید</li><li>مقایسه توضیح‌پذیر و چندمعیاره</li><li>نسخه‌بندی و تاریخچه قابل ردیابی</li><li>یادگیری از عملکرد واقعی معاملات</li></ul></div></div></div></section>
-<section id="solution"><div class="wrap"><div class="section-head"><span class="kicker">THE PRODUCT</span><h2>اتوبان چه چیزی می‌سازد؟</h2><p>یک محیط کاری مشترک اما کنترل‌شده؛ خریدار و تأمین‌کننده در فضای خصوصی خود کار می‌کنند و همکاری در چارچوب مجوزهای مشخص شکل می‌گیرد.</p></div><div class="feature-grid"><article class="feature"><div class="ico">▤</div><h3>پرونده هوشمند تأمین‌کننده</h3><p>هویت، محصولات، مشخصات، ظرفیت، مدارک، شرایط تجاری و سابقه عملکرد در یک ساختار داده‌ای قابل به‌روزرسانی.</p></article><article class="feature"><div class="ico">⌕</div><h3>موتور تطبیق توضیح‌پذیر</h3><p>حذف گزینه‌های ناسازگار با قیود سخت و رتبه‌بندی گزینه‌های مناسب با نمایش دلایل، ریسک‌ها و شکاف داده.</p></article><article class="feature"><div class="ico">⇄</div><h3>گردش کامل RFQ</h3><p>دعوت هدفمند، مهلت پاسخ، دریافت پیشنهاد، نسخه‌بندی قیمت و شرایط، مذاکره و مقایسه یکپارچه.</p></article><article class="feature"><div class="ico">◈</div><h3>اعتماد مبتنی بر شواهد</h3><p>تفکیک اطلاعات اظهارشده، استخراج‌شده از سند، مستقلاً تأییدشده و اثبات‌شده در معامله.</p></article><article class="feature"><div class="ico">▣</div><h3>مدیریت سفارش و تحویل</h3><p>تأیید خرید، تبدیل پیشنهاد به سفارش، تحویل جزئی، کنترل کیفیت، ثبت مغایرت و ارزیابی عملکرد.</p></article><article class="feature"><div class="ico">⌘</div><h3>نقشه زنجیره تأمین</h3><p>شناخت ارتباط مواد اولیه، محصولات و منابع تأمین؛ کشف جایگزین‌ها و ریسک تمرکز در مسیر توسعه محصول.</p></article></div></div></section>
-<section id="workflow"><div class="wrap"><div class="section-head"><span class="kicker">END-TO-END WORKFLOW</span><h2>یک جریان واقعی؛ از نیاز تا عملکرد</h2><p>در MVP باید بتوانیم حداقل یک خرید واقعی را در همین مسیر اجرا کنیم؛ نه اینکه فقط چند صفحه نمایشی بسازیم.</p></div><div class="workflow"><div class="wf"><b>۰۱</b><strong>ثبت نیاز</strong><small>کالا، مقدار، مشخصات، محل و زمان</small></div><div class="wf"><b>۰۲</b><strong>تطبیق</strong><small>قیود سخت، شواهد و امتیاز</small></div><div class="wf"><b>۰۳</b><strong>RFQ</strong><small>دعوت و مدیریت مهلت پاسخ</small></div><div class="wf"><b>۰۴</b><strong>پیشنهاد</strong><small>قیمت، نسخه و شرایط تجاری</small></div><div class="wf"><b>۰۵</b><strong>تصمیم و سفارش</strong><small>مقایسه، تأیید و تعهد خرید</small></div><div class="wf"><b>۰۶</b><strong>تحویل و ارزیابی</strong><small>کیفیت، زمان و عملکرد واقعی</small></div></div></div></section>
-<section id="demo" class="demo-section"><div class="wrap"><div class="section-head"><span class="kicker">INTERACTIVE PRODUCT DEMO</span><h2>محیط کاری اتوبان را تجربه کنید</h2><p>سناریوی آزمایشی: خرید ۵۰۰ کیلوگرم شیرین‌دانه برای تولید شکلات تلخ. بین ماژول‌ها حرکت کنید و فرایند را از نگاه خریدار ببینید.</p></div><div class="demo-shell"><aside class="demo-side"><div class="demo-brand">O2BAN<small>فضای کاری خریدار · شرکت نمونه</small></div><button class="demo-nav active" data-tab="overview">▦ &nbsp; نمای کلی</button><button class="demo-nav" data-tab="requirement">＋ &nbsp; ثبت نیاز خرید</button><button class="demo-nav" data-tab="matching">⌕ &nbsp; تطبیق تأمین‌کنندگان</button><button class="demo-nav" data-tab="rfq">⇄ &nbsp; درخواست‌های RFQ</button><button class="demo-nav" data-tab="offers">▤ &nbsp; مقایسه پیشنهادها</button><button class="demo-nav" data-tab="orders">▣ &nbsp; سفارش و تحویل</button><button class="demo-nav" data-tab="evidence">◈ &nbsp; اعتبار و شواهد</button><button class="demo-nav" data-tab="chain">⌘ &nbsp; نقشه زنجیره</button></aside><div class="demo-main"><div class="demo-top"><span>فضای سازمانی / <b id="demoCrumb">نمای کلی</b></span><span>● دموی تعاملی &nbsp; | &nbsp; کارشناس خرید</span></div><div class="demo-content">
-<div id="tab-overview"><div class="demo-title"><div><h3>نمای کلی زنجیره تأمین</h3><span class="muted">وضعیت جاری نیازها، پیشنهادها و سفارش‌ها</span></div><button class="demo-btn main" data-jump="requirement">＋ ثبت نیاز جدید</button></div><div class="demo-kpis"><div class="demo-card"><small>نیازهای فعال</small><strong>۰۳</strong><span class="badge">۲ در حال تطبیق</span></div><div class="demo-card"><small>پیشنهادهای دریافتی</small><strong>۰۸</strong><span class="badge ok">۵ قابل مقایسه</span></div><div class="demo-card"><small>تأمین‌کنندگان بررسی‌شده</small><strong>۱۲</strong><span class="badge warn">۳ نیازمند بررسی</span></div><div class="demo-card"><small>سفارش‌های در جریان</small><strong>۰۲</strong><span class="badge">۱ در انتظار تحویل</span></div></div><div class="demo-grid2"><div class="demo-card"><h4>جریان فعال خرید · شیرین‌دانه</h4><div class="demo-step"><span class="done">۱ ثبت نیاز</span><span class="done">۲ تطبیق</span><span class="done">۳ RFQ</span><span class="done">۴ پیشنهاد</span><span>۵ سفارش</span></div><b>۵۰۰ کیلوگرم · تحویل حداکثر ۱۴ روز · پرداخت ترجیحی ۳۰ روزه</b><div class="progress"><i style="width:78%"></i></div><p class="muted">پیشرفت فرایند: ۷۸٪</p><button class="demo-btn" data-jump="offers">مشاهده پیشنهادها ←</button></div><div class="demo-card"><h4>هشدارهای هوشمند</h4><p class="muted">● یک پیشنهاد نزدیک به انقضا · ۱۸ ساعت</p><p class="muted">● یک مدرک کیفیت نیازمند بازبینی</p><p class="muted">● یک تأمین‌کننده جایگزین شناسایی شد</p></div></div></div>
-<div id="tab-requirement" class="hidden"><div class="demo-title"><div><h3>ثبت نیاز خرید</h3><span class="muted">تعریف نیاز دقیق برای شروع تطبیق</span></div><span class="badge">فرم نیاز</span></div><div class="demo-card"><div class="demo-form"><div><label>نام کالا / ماده اولیه</label><input id="dName" value="شیرین‌دانه مناسب شکلات تلخ"></div><div><label>گروه کالایی</label><select><option>مواد اولیه شکلات و شیرینی</option><option>بسته‌بندی</option><option>افزودنی و طعم‌دهنده</option></select></div><div><label>مقدار (کیلوگرم)</label><input id="dQty" type="number" value="500"></div><div><label>حداکثر زمان تحویل (روز)</label><input id="dDays" type="number" value="14"></div><div><label>بودجه هر کیلو (تومان) · اختیاری</label><input placeholder="مثلاً ۲۵۰۰۰۰"></div><div><label>شرایط پرداخت ترجیحی</label><select id="dPay"><option>۳۰ روزه</option><option>نقدی</option><option>۵۰٪ پیش‌پرداخت</option><option>چک ۴۵ روزه</option><option>قابل مذاکره</option></select></div><textarea id="dSpec" placeholder="مشخصات فنی و معیارهای کیفیت">مناسب تولید شکلات تلخ روکش‌دار؛ کیفیت یکنواخت و گواهی آنالیز قابل ارائه باشد.</textarea></div><div class="demo-alert">اطلاعات نیاز فقط برای سازمان خریدار و تأمین‌کنندگان دعوت‌شده قابل مشاهده است.</div><button class="demo-btn main" id="submitNeed">ثبت نیاز و شروع تطبیق ←</button></div></div>
-<div id="tab-matching" class="hidden"><div class="demo-title"><div><h3>تطبیق هوشمند تأمین‌کنندگان</h3><span class="muted" id="matchNeedText">نیاز: شیرین‌دانه · ۵۰۰ کیلوگرم · تحویل ≤ ۱۴ روز</span></div><span class="badge ok">توضیح‌پذیر</span></div><div class="demo-alert">امتیازها در این نسخه نمایشی نمونه‌اند؛ در محصول واقعی از مشخصات و شواهد قابل ردیابی محاسبه می‌شوند.</div><div class="demo-card"><div class="supplier-row"><div><b>تأمین‌کننده آریا</b> <span class="badge ok">شواهد مستند</span><p>ظرفیت ۸۰۰ کیلو · تحویل ۱۰ روز · پرداخت ۳۰ روزه</p><p>انطباق فنی مستند و ظرفیت کافی؛ موجودی لحظه‌ای هنوز مستقلاً تأیید نشده.</p></div><div style="text-align:center"><div class="score">۹۲</div><button class="demo-btn main invite" data-name="آریا">دعوت به RFQ</button></div></div><div class="supplier-row"><div><b>صنایع غذایی بهار</b> <span class="badge warn">بخشی اظهارشده</span><p>ظرفیت ۱۲۰۰ کیلو · تحویل ۷ روز · پرداخت نقدی</p><p>زمان تحویل مناسب؛ شرایط پرداخت با ترجیح خریدار متفاوت است.</p></div><div style="text-align:center"><div class="score">۸۱</div><button class="demo-btn invite" data-name="بهار">دعوت به RFQ</button></div></div><div class="supplier-row"><div><b>پارس مواد غذایی</b> <span class="badge bad">اطلاعات ناقص</span><p>ظرفیت نامشخص · تحویل ۱۲ روز · پرداخت ۴۵ روزه</p><p>ظرفیت و مدرک کیفیت پیش از انتخاب باید بررسی شود.</p></div><div style="text-align:center"><div class="score">۶۸</div><button class="demo-btn invite" data-name="پارس">دعوت مشروط</button></div></div></div><div class="demo-card" style="margin-top:10px"><h4>وزن‌های نمونه موتور تطبیق</h4><p class="muted">مشخصات فنی ۳۰٪ · هزینه ۲۵٪ · تحویل ۱۵٪ · شواهد ۱۵٪ · پرداخت ۱۰٪ · تازگی داده ۵٪</p><p class="muted">قیود سخت پیش از امتیازدهی اعمال می‌شوند. پیشنهاد ارزان‌تر به‌تنهایی برنده نیست و تصمیم نهایی با خریدار است.</p></div></div>
-<div id="tab-rfq" class="hidden"><div class="demo-title"><div><h3>درخواست‌های استعلام قیمت</h3><span class="muted">دعوت هدفمند، مهلت پاسخ و پیگیری مستقل</span></div><button class="demo-btn main" id="createRfq">＋ ایجاد RFQ نمونه</button></div><div class="demo-card"><h4>RFQ-1405-0021 · شیرین‌دانه</h4><p class="muted">۵۰۰ کیلوگرم · تحویل حداکثر ۱۴ روز · دعوت از ۳ تأمین‌کننده</p><div class="table-scroll"><table class="demo-table"><thead><tr><th>تأمین‌کننده</th><th>وضعیت پاسخ</th><th>مهلت</th><th>پیشنهاد</th><th></th></tr></thead><tbody><tr><td>آریا</td><td><span class="badge ok">پاسخ دریافت شد</span></td><td>۲ روز باقی</td><td>نسخه ۲</td><td><button class="demo-btn" data-jump="offers">مشاهده</button></td></tr><tr><td>بهار</td><td><span class="badge warn">پاسخ ناقص</span></td><td>۲ روز باقی</td><td>نیازمند تکمیل</td><td><button class="demo-btn toastbtn" data-message="درخواست تکمیل اطلاعات ثبت شد">پیگیری</button></td></tr><tr><td>پارس</td><td><span class="badge">در انتظار پاسخ</span></td><td>۲ روز باقی</td><td>دریافت نشده</td><td><button class="demo-btn toastbtn" data-message="یادآوری برای تأمین‌کننده ثبت شد">یادآوری</button></td></tr></tbody></table></div><div class="demo-alert">مهلت پاسخ RFQ از اعتبار زمانی پیشنهاد مستقل است. پایان مهلت پاسخ، پیشنهاد قبلی را خودکار منقضی نمی‌کند.</div></div><div class="demo-card" style="margin-top:10px"><h4>کنترل نسخه</h4><p class="muted">تغییر مقدار، مشخصات یا شرایط خرید، نسخه جدید RFQ ایجاد می‌کند. نسخه قبلی و پیشنهادهای مرتبط حفظ می‌شوند.</p></div></div>
-<div id="tab-offers" class="hidden"><div class="demo-title"><div><h3>مقایسه پیشنهادها</h3><span class="muted">هزینه، حمل، کیفیت، تحویل، پرداخت و اعتبار</span></div><span class="badge">RFQ-1405-0021</span></div><div class="demo-alert" style="border-color:#715b2e;background:#332b1b;color:#f2d99d">پیشنهاد بهار ناقص است؛ صرفاً به دلیل قیمت کمتر انتخاب نمی‌شود.</div><div class="demo-card"><div class="table-scroll"><table class="demo-table"><thead><tr><th>معیار</th><th>آریا</th><th>بهار</th><th>پارس</th></tr></thead><tbody><tr><td>قیمت هر کیلو</td><td><b>۲۴۵,۰۰۰</b></td><td style="color:var(--green)"><b>۲۳۸,۰۰۰</b></td><td>۲۵۲,۰۰۰</td></tr><tr><td>حمل</td><td>با خریدار</td><td>نامشخص</td><td>با فروشنده</td></tr><tr><td>تحویل</td><td>۱۰ روز</td><td>۷ روز</td><td>۱۲ روز</td></tr><tr><td>پرداخت</td><td><span class="badge ok">۳۰ روزه</span></td><td><span class="badge warn">نقدی</span></td><td>۴۵ روزه</td></tr><tr><td>مدرک کیفیت</td><td><span class="badge ok">مستند</span></td><td><span class="badge warn">در انتظار</span></td><td><span class="badge bad">ارائه نشده</span></td></tr><tr><td>ظرفیت</td><td>مستند</td><td>اظهارشده</td><td>نامشخص</td></tr><tr><td>اعتبار پیشنهاد</td><td>۲۰ آبان</td><td>۱۸ آبان</td><td>۲۲ آبان</td></tr></tbody></table></div><div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:14px"><div><b>توصیه سیستم: آریا</b><p class="muted">متوازن‌ترین گزینه بر اساس اطلاعات فعلی؛ تصمیم نهایی با خریدار است.</p></div><button class="demo-btn main" id="chooseSupplier">انتخاب و ارسال برای تأیید مدیر</button></div></div><div class="demo-card" style="margin-top:10px"><h4>تاریخچه نسخه پیشنهاد آریا</h4><p class="muted">نسخه ۲: ۲۴۵,۰۰۰ تومان · امروز ۱۰:۴۲ · فعال</p><p class="muted">نسخه ۱: ۲۵۵,۰۰۰ تومان · دیروز ۱۶:۱۰ · بایگانی‌شده و غیرقابل حذف</p></div></div>
-<div id="tab-orders" class="hidden"><div class="demo-title"><div><h3>سفارش‌ها و تحویل</h3><span class="muted">تعهد خرید قابل ردیابی</span></div><span class="badge ok">در انتظار ارسال</span></div><div class="demo-card"><h4>PO-1405-0084 · تأمین‌کننده آریا</h4><p class="muted">۵۰۰ کیلوگرم شیرین‌دانه · مبلغ پایه ۱۲۲,۵۰۰,۰۰۰ تومان</p><div class="demo-step"><span class="done">تأیید خرید</span><span class="done">تبدیل به سفارش</span><span class="done">تأیید تأمین‌کننده</span><span>ارسال</span><span>تحویل</span><span>کنترل کیفیت</span><span>بسته‌شدن</span></div><div class="demo-alert">تحویل جزئی باید قابل ثبت باشد. مقدار تحویل‌شده، مقدار پذیرفته‌شده، مغایرت، مدارک حمل و نتیجه کنترل کیفیت جداگانه ثبت می‌شوند.</div><button class="demo-btn toastbtn" data-message="فرم ثبت رویداد تحویل در نسخه عملیاتی باز می‌شود">ثبت رویداد تحویل</button></div><div class="demo-grid2" style="margin-top:10px"><div class="demo-card"><h4>ردیابی تعهدات</h4><p class="muted">تاریخ وعده، تأخیر، تحویل جزئی، کسری مقدار و مسئول پیگیری.</p></div><div class="demo-card"><h4>ارزیابی پس از تحویل</h4><p class="muted">کیفیت واقعی، انطباق، زمان تحویل، پاسخ‌گویی و حل اختلاف.</p></div></div></div>
-<div id="tab-evidence" class="hidden"><div class="demo-title"><div><h3>مرکز اعتبار و شواهد</h3><span class="muted">هر ادعا باید منبع، تاریخ و سطح اعتماد داشته باشد.</span></div><span class="badge ok">Evidence-based trust</span></div><div class="demo-kpis"><div class="demo-card"><small>سطح ۱</small><strong>اظهارشده</strong><span class="muted">توسط شرکت</span></div><div class="demo-card"><small>سطح ۲</small><strong>استخراج‌شده</strong><span class="muted">از سند</span></div><div class="demo-card"><small>سطح ۳</small><strong>تأییدشده</strong><span class="muted">مستقل</span></div><div class="demo-card"><small>سطح ۴</small><strong>اثبات‌شده</strong><span class="muted">در معامله</span></div></div><div class="demo-card"><h4>پرونده شواهد تأمین‌کننده آریا</h4><div class="table-scroll"><table class="demo-table"><thead><tr><th>داده</th><th>منبع</th><th>سطح</th><th>آخرین بررسی</th><th>وضعیت</th></tr></thead><tbody><tr><td>هویت حقوقی</td><td>مدرک ثبتی</td><td>مستقل</td><td>۱۴۰۵/۰۷/۲۸</td><td><span class="badge ok">معتبر</span></td></tr><tr><td>ظرفیت ماهانه</td><td>اظهار + سند</td><td>سندی</td><td>۱۴۰۵/۰۷/۲۵</td><td><span class="badge warn">بازبینی دوره‌ای</span></td></tr><tr><td>گواهی کیفیت</td><td>فایل گواهی</td><td>سندی</td><td>۱۴۰۵/۰۷/۲۰</td><td><span class="badge warn">نزدیک انقضا</span></td></tr><tr><td>تحویل به‌موقع</td><td>سابقه معامله</td><td>اثبات‌شده</td><td>۱۴۰۵/۰۶/۱۵</td><td>۲ معامله</td></tr></tbody></table></div><div class="demo-alert">داده قدیمی یا متناقض حذف و پنهان نمی‌شود؛ با منبع و تاریخ ثبت می‌شود و در صورت نیاز به بررسی انسانی ارجاع می‌شود.</div></div></div>
-<div id="tab-chain" class="hidden"><div class="demo-title"><div><h3>نقشه زنجیره تأمین</h3><span class="muted">پیوند مواد اولیه، محصول و منابع تأمین</span></div><span class="badge">نمای خصوصی سازمان</span></div><div class="demo-card"><div style="display:flex;justify-content:center;align-items:center;gap:8px;flex-wrap:wrap;padding:30px 0"><div class="demo-card" style="text-align:center"><b>محصول نهایی</b><p class="muted">شکلات تلخ روکش‌دار</p></div><b style="color:var(--mint)">←</b><div class="demo-card" style="text-align:center"><b>ماده اولیه</b><p class="muted">شیرین‌دانه</p></div><b style="color:var(--mint)">←</b><div class="demo-card" style="text-align:center"><b>تأمین‌کننده</b><p class="muted">آریا · نمونه</p></div></div><div class="demo-alert">روابط تجاری و اطلاعات مشتریان عمومی نیستند؛ نمایش و استفاده از داده تابع مجوز سازمانی است.</div></div><div class="demo-kpis" style="margin-top:10px"><div class="demo-card"><small>جایگزین تأمین</small><strong>۰۲</strong></div><div class="demo-card"><small>ریسک تمرکز</small><strong style="color:var(--gold)">متوسط</strong></div><div class="demo-card"><small>شکاف داده</small><strong>۰۳</strong></div><div class="demo-card"><small>گام بعد</small><strong>تکمیل</strong></div></div></div>
-</div></div></div><p class="note">این محیط یک پروتوتایپ تعاملی سمت مرورگر است. داده‌ها نمونه‌اند و عملیات در پایگاه داده یا سرویس واقعی ثبت نمی‌شوند.</p></div></section>
-<section id="architecture"><div class="wrap"><div class="section-head"><span class="kicker">TECHNICAL FOUNDATION</span><h2>معماری فنی؛ ساده برای شروع، آماده برای رشد</h2><p>پیشنهاد نسخه اول: Modular Monolith با ASP.NET Core و SQL Server. مرزبندی دامنه‌ها از ابتدا حفظ می‌شود، بدون تحمیل هزینه عملیاتی Microservices.</p></div><div class="architecture"><div class="arch-layer"><b>Presentation Layer</b><small>Buyer Portal · Supplier Portal · Admin Portal · Responsive Web</small></div><div class="arch-arrow">↓</div><div class="arch-layer"><b>ASP.NET Core · Application / API</b><small>Authentication · Authorization · Tenant Isolation · Validation · Application Services</small></div><div class="arch-arrow">↓</div><div class="arch-modules"><span>Organization & Identity</span><span>Supplier & Evidence</span><span>Product Catalog</span><span>Requirement & Matching</span><span>RFQ & Offer</span><span>Approval & Order</span><span>Delivery & Quality</span><span>Performance</span><span>Administration</span></div><div class="arch-arrow">↓</div><div class="arch-layer"><b>Infrastructure & Data</b><small>EF Core · SQL Server · File Storage · Background Jobs · Audit Log · Outbox · Notifications</small></div><div class="arch-arrow">↓</div><div class="arch-layer"><b>Intelligence Layer</b><small>Rule-based Matching · Evidence Scoring · Data Quality · Explainable Recommendations · AI-assisted extraction</small></div></div><div class="principles" style="margin-top:25px"><article class="principle"><div class="num">۰۱</div><h3>Tenant Isolation</h3><p>جداسازی اطلاعات سازمان‌ها در API و لایه داده؛ نه صرفاً مخفی‌کردن عناصر رابط کاربری.</p></article><article class="principle"><div class="num">۰۲</div><h3>Audit & Versioning</h3><p>تاریخچه تغییرات، نسخه‌های پیشنهاد و RFQ و امکان بازسازی تصمیم‌های گذشته.</p></article><article class="principle"><div class="num">۰۳</div><h3>Human in the Loop</h3><p>سیستم تحلیل و پیشنهاد می‌دهد؛ تصمیم تجاری و تأیید نهایی با نقش مجاز انسانی است.</p></article></div><div class="demo-alert" style="max-width:850px;margin:18px auto 0">الزامات تکمیلی: کنترل هم‌زمانی با RowVersion، ثبت رویدادهای قابل اتکا با Outbox، کنترل دسترسی مبتنی بر سازمان و نقش، و نگهداری منبع و تاریخ اعتبار داده‌ها.</div></div></section>
-<section id="roadmap"><div class="wrap"><div class="section-head"><span class="kicker">90-DAY EXECUTION PLAN</span><h2>۹۰ روز برای اثبات یک جریان واقعی</h2><p>هدف، تحویل محصول عظیم نیست؛ ساخت یک پایلوت محدود، قابل فروش و قابل سنجش است.</p></div><div class="roadmap"><article class="phase"><span class="days">روز ۰۱ تا ۱۵</span><h3>پایه محصول و داده</h3><ul><li>نهایی‌سازی نیاز و مدل داده</li><li>سازمان، نقش و دسترسی</li><li>پرونده تأمین‌کننده و شواهد</li><li>مصاحبه با بازار هدف</li></ul></article><article class="phase"><span class="days">روز ۱۶ تا ۳۰</span><h3>نیاز و تطبیق</h3><ul><li>فرم نیاز خرید</li><li>ساختار مشخصات کالا</li><li>قیود سخت و امتیازدهی</li><li>دلایل و ریسک تطبیق</li></ul></article><article class="phase"><span class="days">روز ۳۱ تا ۵۰</span><h3>RFQ و پیشنهاد</h3><ul><li>دعوت تأمین‌کننده</li><li>مدیریت مهلت پاسخ</li><li>ثبت و نسخه‌بندی پیشنهاد</li><li>مدیریت پیشنهاد ناقص</li></ul></article><article class="phase"><span class="days">روز ۵۱ تا ۷۰</span><h3>تصمیم و سفارش</h3><ul><li>مقایسه چندمعیاره</li><li>تأیید و سفارش</li><li>ثبت تحویل و مغایرت</li><li>اعلان و تاریخچه</li></ul></article><article class="phase"><span class="days">روز ۷۱ تا ۹۰</span><h3>پایلوت واقعی</h3><ul><li>تست امنیت و کیفیت</li><li>ورود داده واقعی</li><li>اجرای خریدهای آزمایشی</li><li>اندازه‌گیری و اصلاح</li></ul></article></div></div></section>
-<section><div class="wrap"><div class="section-head"><span class="kicker">VALIDATION, NOT VANITY METRICS</span><h2>موفقیت را با معامله واقعی می‌سنجیم</h2><p>اعداد زیر اهداف اولیه پیشنهادی برای پایلوت‌اند و پس از مصاحبه بازار و تعیین ظرفیت تیم باید نهایی شوند.</p></div><div class="metrics"><div class="metric"><b>۱۰۰+</b><small>پرونده تأمین‌کننده ساختاریافته</small></div><div class="metric"><b>۲۰</b><small>درخواست خرید واقعی</small></div><div class="metric"><b>۳</b><small>خرید منجر به سفارش</small></div><div class="metric"><b>۱۰۰٪</b><small>داده کلیدی با منبع و سطح اعتماد</small></div></div></div></section>
-<section><div class="wrap"><div class="cta"><span class="eyebrow">BUILD THE FIRST REAL SUPPLY CHAIN</span><h2>از یک پایلوت محدود، یک زیرساخت بزرگ بسازیم</h2><p>پیشنهاد همکاری: یک فاز ۱۵ روزه کشف و طراحی فنی، تعیین مالکیت ماژول‌ها و سنجش ظرفیت تیم؛ سپس تصمیم آگاهانه برای اجرای پایلوت ۷۵ روزه باقی‌مانده.</p><a class="btn primary" href="#demo">مشاهده دموی محصول و بررسی همکاری</a><p class="note">O2Ban · Private Intelligent Supply Chain Collaboration Network</p></div></div></section>
-</main><footer class="footer"><div class="wrap"><span>© O2Ban · نسخه نمایشی ارائه محصول · نوامبر ۲۰۲۶</span><span>پروتوتایپ مفهومی؛ داده‌ها و سناریوها نمونه هستند.</span></div></footer><div class="toast" id="toast"></div>
+<div id="app"></div>
+<div id="toast-container"></div>
 <script>
-(()=>{const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];const names={overview:'نمای کلی',requirement:'ثبت نیاز خرید',matching:'تطبیق تأمین‌کنندگان',rfq:'درخواست‌های RFQ',offers:'مقایسه پیشنهادها',orders:'سفارش و تحویل',evidence:'اعتبار و شواهد',chain:'نقشه زنجیره'};function toast(t){const x=$('#toast');x.textContent=t;x.style.display='block';clearTimeout(window.__o2t);window.__o2t=setTimeout(()=>x.style.display='none',2600)}function tab(id){Object.keys(names).forEach(k=>$('#tab-'+k).classList.toggle('hidden',k!==id));$$('.demo-nav').forEach(b=>b.classList.toggle('active',b.dataset.tab===id));$('#demoCrumb').textContent=names[id];}$$('.demo-nav').forEach(b=>b.addEventListener('click',()=>tab(b.dataset.tab)));$$('[data-jump]').forEach(b=>b.addEventListener('click',()=>tab(b.dataset.jump)));$('#submitNeed').addEventListener('click',()=>{const n=$('#dName').value||'نیاز جدید',q=$('#dQty').value||'—',d=$('#dDays').value||'—';$('#matchNeedText').textContent=`نیاز: ${n} · ${q} کیلوگرم · تحویل ≤ ${d} روز · پرداخت ${$('#dPay').value}`;toast('نیاز در سناریوی نمایشی ثبت شد؛ نتایج تطبیق آماده نمایش است.');tab('matching')});$$('.invite').forEach(b=>b.addEventListener('click',()=>{toast('دعوت RFQ برای تأمین‌کننده '+b.dataset.name+' در دمو ثبت شد.');tab('rfq')}));$('#createRfq').addEventListener('click',()=>toast('RFQ نمونه ساخته شد؛ ارسال واقعی در نسخه متصل به سرور انجام می‌شود.'));$$('.toastbtn').forEach(b=>b.addEventListener('click',()=>toast(b.dataset.message)));$('#chooseSupplier').addEventListener('click',()=>toast('تصمیم برای تأیید مدیر ارسال شد؛ هنوز سفارش ایجاد نشده است.'));})();
+'use strict';
+const SK='o2ban_mvp_v3';
+
+// ═══ STORAGE ═══
+function getState(){try{const r=localStorage.getItem(SK);if(r)return JSON.parse(r)}catch(e){}const s=seed();save(s);return s}
+function save(s){try{localStorage.setItem(SK,JSON.stringify(s))}catch(e){}}
+
+function seed(){
+  return {
+    currentUserId:null,
+    organizations:[
+      {id:'org-buyer',name:'بهمن‌خودرو — واحد تأمین',type:'buyer'},
+      {id:'org-s1',name:'تأمین‌قطعه الف',type:'supplier'},
+      {id:'org-s2',name:'فلزگستر ب',type:'supplier'},
+      {id:'org-s3',name:'پارس اتصال',type:'supplier'}
+    ],
+    users:[
+      {id:'u1',name:'آقای رضایی',orgId:'org-buyer',role:'buyer',title:'کارشناس ارشد تأمین'},
+      {id:'u2',name:'خانم کریمی',orgId:'org-buyer',role:'buyer',title:'مدیر خرید'},
+      {id:'u3',name:'آقای محمدی',orgId:'org-s1',role:'supplier',title:'مدیر فروش'},
+      {id:'u4',name:'خانم حسینی',orgId:'org-s2',role:'supplier',title:'کارشناس فروش'},
+      {id:'u5',name:'آقای تقوی',orgId:'org-s3',role:'supplier',title:'مدیر فروش'}
+    ],
+    products:[
+      {id:'p1',code:'BST-M8',name:'بست فلزی M8',unit:'عدد',spec:'فولاد ضدزنگ ۳۰۴، گالوانیزه'},
+      {id:'p2',code:'BST-M10',name:'بست فلزی M10',unit:'عدد',spec:'فولاد ضدزنگ ۳۰۴، گالوانیزه'},
+      {id:'p3',code:'PCH-6G',name:'پیچ خودکار ۶ گوش',unit:'عدد',spec:'فولاد کربنی، آبکاری'},
+      {id:'p4',code:'WSH-FR',name:'واشر فنری',unit:'عدد',spec:'فولاد فنری'},
+      {id:'p5',code:'BSH-BR',name:'بوش برنجی',unit:'عدد',spec:'برنج، قطر داخلی ۱۰mm'}
+    ],
+    supplierProducts:[
+      {id:'sp1',orgId:'org-s1',productId:'p1',capacity:50000,leadDays:20,unitPrice:11500,payment:'60 روزه',validDays:14},
+      {id:'sp2',orgId:'org-s1',productId:'p2',capacity:30000,leadDays:25,unitPrice:14500,payment:'60 روزه',validDays:14},
+      {id:'sp3',orgId:'org-s2',productId:'p1',capacity:20000,leadDays:15,unitPrice:11800,payment:'30 روزه',validDays:7},
+      {id:'sp4',orgId:'org-s2',productId:'p3',capacity:80000,leadDays:10,unitPrice:7800,payment:'نقدی',validDays:10},
+      {id:'sp5',orgId:'org-s3',productId:'p2',capacity:40000,leadDays:30,unitPrice:14000,payment:'45 روزه',validDays:21},
+      {id:'sp6',orgId:'org-s3',productId:'p5',capacity:10000,leadDays:18,unitPrice:24000,payment:'30 روزه',validDays:14}
+    ],
+    requirements:[],matches:[],rfqs:[],invitations:[],offers:[],offerVersions:[],decisions:[],orders:[],auditEvents:[]
+  };
+}
+
+// ═══ UTILS ═══
+const uid=p=>p+'-'+Date.now().toString(36)+'-'+Math.random().toString(36).slice(2,6);
+const esc=s=>s==null?'':String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtN=n=>n==null||isNaN(n)?'—':Number(n).toLocaleString('fa-IR');
+const fmtM=n=>n==null||isNaN(n)?'—':Number(n).toLocaleString('fa-IR')+' ریال';
+const fmtD=d=>{if(!d)return '—';try{return new Date(d).toLocaleDateString('fa-IR',{year:'numeric',month:'2-digit',day:'2-digit'})}catch(e){return '—'}};
+const fmtDT=d=>{if(!d)return '—';try{return new Date(d).toLocaleString('fa-IR',{year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'})}catch(e){return '—'}};
+const daysFromNow=d=>new Date(Date.now()+d*86400000).toISOString();
+
+function toast(msg,type=''){
+  const t=document.createElement('div');
+  t.className='toast '+type;
+  t.textContent=msg;
+  document.getElementById('toast-container').appendChild(t);
+  setTimeout(()=>t.remove(),2800);
+}
+
+function audit(s,userId,action,entityType,entityId,details){
+  s.auditEvents.push({id:uid('ae'),userId,action,entityType,entityId,details:details||'',at:new Date().toISOString()});
+}
+
+function reqStatusBadge(st){
+  const m={draft:['badge-gray','پیش‌نویس'],matched:['badge-info','تطبیق انجام شد'],rfq_created:['badge-warn','RFQ ارسال شد'],deciding:['badge-warn','در حال تصمیم'],ordered:['badge-ok','سفارش شد'],closed:['badge-gray','بسته']};
+  const [c,l]=m[st]||['badge-gray',st];
+  return `<span class="badge ${c}">${l}</span>`;
+}
+
+// ═══ ROUTER ═══
+window.addEventListener('hashchange',render);
+
+function render(){
+  const s=getState();
+  closeSidebar();
+  document.body.style.overflow='';
+  if(!s.currentUserId){renderLogin();return}
+  const user=s.users.find(u=>u.id===s.currentUserId);
+  if(!user){logout();return}
+  const org=s.organizations.find(o=>o.id===user.orgId);
+  if(!org){logout();return}
+  const hash=location.hash.slice(1)||'dashboard';
+  const parts=hash.split('/').filter(Boolean);
+  const screen=parts[0];
+
+  if(user.role==='buyer'){
+    if(screen==='dashboard')return renderBuyerDashboard(s,user,org);
+    if(screen==='requirements'&&parts[1])return renderRequirementDetail(s,user,org,parts[1],parts[2]);
+    if(screen==='requirements')return renderRequirementsList(s,user,org);
+    if(screen==='new-requirement')return renderNewRequirement(s,user,org);
+    if(screen==='rfqs'&&parts[1]&&parts[2]==='compare')return renderCompare(s,user,org,parts[1]);
+    if(screen==='rfqs'&&parts[1]&&parts[2]==='create-order')return renderCreateOrder(s,user,org,parts[1]);
+    if(screen==='rfqs'&&parts[1])return renderBuyerRFQDetail(s,user,org,parts[1]);
+    if(screen==='rfqs')return renderRFQsList(s,user,org);
+    if(screen==='orders')return renderOrders(s,user,org);
+    return renderBuyerDashboard(s,user,org);
+  } else {
+    if(screen==='dashboard')return renderSupplierDashboard(s,user,org);
+    if(screen==='inbox'&&parts[1])return renderSupplierRFQ(s,user,org,parts[1]);
+    if(screen==='inbox')return renderInbox(s,user,org);
+    if(screen==='my-offers')return renderMyOffers(s,user,org);
+    return renderSupplierDashboard(s,user,org);
+  }
+}
+
+// ═══ LOGIN ═══
+function renderLogin(){
+  const s=getState();
+  const buyers=s.users.filter(u=>u.role==='buyer');
+  const suppliers=s.users.filter(u=>u.role==='supplier');
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const uBtn=u=>{
+    const org=orgMap[u.orgId]||{};
+    const init=(u.name||'?').split(' ').pop().charAt(0);
+    return `<button class="login-user" data-login="${u.id}">
+      <div class="login-avatar">${esc(init)}</div>
+      <div class="login-info">
+        <div class="login-name">${esc(u.name)}</div>
+        <div class="login-role">${esc(u.title||'')} · ${esc(org.name||'')}</div>
+      </div>
+      <span class="login-badge ${u.role}">${u.role==='buyer'?'خریدار':'تأمین‌کننده'}</span>
+    </button>`;
+  };
+  document.getElementById('app').innerHTML=`
+    <div class="login-screen">
+      <div class="login-card">
+        <div class="login-logo">اتوبان</div>
+        <div class="login-tagline">شبکه خصوصی همکاری زنجیره تأمین — نسخه تست</div>
+        <div class="login-sec">خریدار (واحد تأمین)</div>
+        ${buyers.map(uBtn).join('')}
+        <div class="login-sec">تأمین‌کننده (واحد فروش)</div>
+        ${suppliers.map(uBtn).join('')}
+        <div class="alert alert-i" style="margin-top:20px;font-size:.78rem;line-height:1.7">
+          <strong>راهنمای تست:</strong> با یک خریدار وارد شوید، نیاز خرید ثبت کنید، RFQ بسازید. سپس خارج شوید و با یک تأمین‌کننده پیشنهاد ثبت کنید. سپس برگردید و تصمیم بگیرید.
+        </div>
+      </div>
+    </div>
+  `;
+  document.querySelectorAll('[data-login]').forEach(el=>{
+    el.addEventListener('click',()=>{
+      const s2=getState();
+      s2.currentUserId=el.dataset.login;
+      save(s2);
+      if(!location.hash)location.hash='#dashboard';
+      else render();
+      toast('خوش آمدید','ok');
+    });
+  });
+}
+
+function logout(){
+  const s=getState();
+  s.currentUserId=null;
+  save(s);
+  location.hash='';
+  renderLogin();
+}
+
+// ═══ SHELL ═══
+function shell(s,user,org,content,activeNav){
+  const init=(user.name||'?').split(' ').pop().charAt(0);
+  const nav=getNavItems(s,user,activeNav);
+  const bnav=getBottomNav(user,activeNav);
+  document.getElementById('app').innerHTML=`
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <div class="sb-header">
+          <div class="sb-brand">اتوبان</div>
+          <button class="sb-close" id="sb-close">✕</button>
+        </div>
+        <div class="sb-user">
+          <div class="sb-avatar">${esc(init)}</div>
+          <div class="sb-uname">${esc(user.name)}</div>
+          <div class="sb-uorg">${esc(org.name)}</div>
+        </div>
+        <nav class="sb-nav">${nav}</nav>
+        <div class="sb-foot">
+          <button class="sb-logout" id="logout-btn">خروج از حساب</button>
+        </div>
+      </aside>
+      <div class="backdrop" id="backdrop"></div>
+      <button class="desktop-toggle" id="dt-toggle" title="نمایش/مخفی کردن منو">☰</button>
+      <header class="topbar">
+        <button class="tb-menu" id="tb-menu">☰</button>
+        <div class="tb-title">اتوبان</div>
+        <div class="tb-user">${esc(init)}</div>
+      </header>
+      <main class="main">${content}</main>
+      <nav class="bnav">${bnav}</nav>
+    </div>
+  `;
+  // Wire events
+  document.getElementById('tb-menu')?.addEventListener('click',openSidebar);
+  document.getElementById('sb-close')?.addEventListener('click',closeSidebar);
+  document.getElementById('backdrop')?.addEventListener('click',closeSidebar);
+  document.getElementById('logout-btn')?.addEventListener('click',logout);
+  document.getElementById('dt-toggle')?.addEventListener('click',()=>{
+    document.body.classList.toggle('sb-collapsed');
+  });
+  // Close sidebar on nav click
+  document.querySelectorAll('.sb-nav a, .bnav a').forEach(a=>{
+    a.addEventListener('click',()=>{
+      closeSidebar();
+      // render will be triggered by hashchange
+    });
+  });
+}
+
+function openSidebar(){
+  document.body.classList.add('sb-open');
+  document.body.style.overflow='hidden';
+}
+function closeSidebar(){
+  document.body.classList.remove('sb-open');
+  document.body.style.overflow='';
+}
+
+function getNavItems(s,user,active){
+  if(user.role==='buyer'){
+    const openReq=s.requirements.filter(r=>r.buyerOrgId===user.orgId&&r.status!=='closed'&&r.status!=='ordered').length;
+    const activeRfq=s.rfqs.filter(r=>r.buyerOrgId===user.orgId&&r.status==='open').length;
+    const items=[
+      {href:'#dashboard',label:'داشبورد',icon:'📊',key:'dashboard'},
+      {href:'#requirements',label:'نیازهای خرید',icon:'📋',cnt:openReq,key:'requirements'},
+      {href:'#new-requirement',label:'ثبت نیاز جدید',icon:'➕',key:'new-requirement'},
+      {href:'#rfqs',label:'استعلام‌ها (RFQ)',icon:'📤',cnt:activeRfq,key:'rfqs'},
+      {href:'#orders',label:'سفارش‌ها',icon:'📦',key:'orders'}
+    ];
+    return items.map(i=>`<a href="${i.href}" class="${i.key===active?'active':''}"><span class="ni">${i.icon}</span><span>${i.label}</span>${i.cnt?`<span class="nc">${i.cnt}</span>`:''}</a>`).join('');
+  } else {
+    const pending=s.invitations.filter(i=>i.supplierOrgId===user.orgId&&i.status==='pending'&&s.rfqs.find(r=>r.id===i.rfqId&&r.status==='open')).length;
+    const items=[
+      {href:'#dashboard',label:'داشبورد',icon:'📊',key:'dashboard'},
+      {href:'#inbox',label:'صندوق استعلام‌ها',icon:'📥',cnt:pending,key:'inbox'},
+      {href:'#my-offers',label:'پیشنهادهای من',icon:'📤',key:'my-offers'}
+    ];
+    return items.map(i=>`<a href="${i.href}" class="${i.key===active?'active':''}"><span class="ni">${i.icon}</span><span>${i.label}</span>${i.cnt?`<span class="nc">${i.cnt}</span>`:''}</a>`).join('');
+  }
+}
+
+function getBottomNav(user,active){
+  if(user.role==='buyer'){
+    const items=[
+      {href:'#dashboard',label:'خانه',icon:'🏠',key:'dashboard'},
+      {href:'#requirements',label:'نیازها',icon:'📋',key:'requirements'},
+      {href:'#rfqs',label:'استعلام',icon:'📤',key:'rfqs'},
+      {href:'#orders',label:'سفارش',icon:'📦',key:'orders'}
+    ];
+    return items.map(i=>`<a href="${i.href}" class="${i.key===active?'active':''}"><span class="bi">${i.icon}</span><span>${i.label}</span></a>`).join('');
+  } else {
+    const items=[
+      {href:'#dashboard',label:'خانه',icon:'🏠',key:'dashboard'},
+      {href:'#inbox',label:'صندوق',icon:'📥',key:'inbox'},
+      {href:'#my-offers',label:'پیشنهادها',icon:'📤',key:'my-offers'}
+    ];
+    return items.map(i=>`<a href="${i.href}" class="${i.key===active?'active':''}"><span class="bi">${i.icon}</span><span>${i.label}</span></a>`).join('');
+  }
+}
+
+// ═══ BUYER — DASHBOARD ═══
+function renderBuyerDashboard(s,user,org){
+  const reqs=s.requirements.filter(r=>r.buyerOrgId===org.id);
+  const rfqs=s.rfqs.filter(r=>r.buyerOrgId===org.id);
+  const orders=s.orders.filter(o=>o.buyerOrgId===org.id);
+  const pending=s.rfqs.filter(r=>{
+    if(r.status!=='open')return false;
+    const offers=s.offers.filter(o=>o.rfqId===r.id);
+    const dec=s.decisions.find(d=>d.rfqId===r.id);
+    return offers.length>0&&!dec;
+  }).length;
+  const recent=reqs.slice().reverse().slice(0,5);
+  const content=`
+    <div class="page-head">
+      <div><h2>داشبورد خریدار</h2><div class="page-sub">${esc(org.name)}</div></div>
+    </div>
+    <div class="stats">
+      <div class="stat info"><div class="stat-l">نیازهای خرید</div><div class="stat-v">${fmtN(reqs.length)}</div></div>
+      <div class="stat"><div class="stat-l">استعلام‌های فعال</div><div class="stat-v">${fmtN(rfqs.filter(r=>r.status==='open').length)}</div></div>
+      <div class="stat warn"><div class="stat-l">در انتظار تصمیم</div><div class="stat-v">${fmtN(pending)}</div></div>
+      <div class="stat ok"><div class="stat-l">سفارش‌ها</div><div class="stat-v">${fmtN(orders.length)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>آخرین نیازها</h3><a href="#requirements" class="btn btn-o btn-sm">همه</a></div>
+      ${recent.length===0?`
+        <div class="empty">
+          <div class="em-i">📋</div>
+          <h3>هنوز نیازی ثبت نکرده‌اید</h3>
+          <p>با ثبت اولین نیاز شروع کنید.</p>
+          <a href="#new-requirement" class="btn btn-a">➕ ثبت نیاز جدید</a>
+        </div>
+      `:recent.map(r=>{
+        const p=s.products.find(x=>x.id===r.productId);
+        return `<a href="#requirements/${r.id}" class="list-item">
+          <div class="li-head"><div class="li-title">${esc(r.title)}</div>${reqStatusBadge(r.status)}</div>
+          <div class="li-meta">
+            <span>${esc(p?.name||'—')}</span>
+            <span>${fmtN(r.quantity)} ${esc(p?.unit||'')}</span>
+            <span>${fmtD(r.createdAt)}</span>
+          </div>
+        </a>`;
+      }).join('')}
+    </div>
+    <a href="#new-requirement" class="btn btn-a btn-blk" style="margin-top:8px">➕ ثبت نیاز جدید</a>
+  `;
+  shell(s,user,org,content,'dashboard');
+}
+
+// ═══ BUYER — REQUIREMENTS LIST ═══
+function renderRequirementsList(s,user,org){
+  const reqs=s.requirements.filter(r=>r.buyerOrgId===org.id).slice().reverse();
+  const content=`
+    <div class="page-head">
+      <div><h2>نیازهای خرید</h2><div class="page-sub">همه نیازهای ثبت‌شده</div></div>
+      <div><a href="#new-requirement" class="btn btn-a btn-sm">➕ نیاز جدید</a></div>
+    </div>
+    ${reqs.length===0?`
+      <div class="empty">
+        <div class="em-i">📋</div>
+        <h3>هنوز نیازی ثبت نشده</h3>
+        <p>شروع کنید به ثبت اولین نیاز خرید.</p>
+        <a href="#new-requirement" class="btn btn-a">➕ ثبت نیاز</a>
+      </div>
+    `:reqs.map(r=>{
+      const p=s.products.find(x=>x.id===r.productId);
+      return `<a href="#requirements/${r.id}" class="list-item">
+        <div class="li-head"><div class="li-title">${esc(r.title)}</div>${reqStatusBadge(r.status)}</div>
+        <div class="li-meta">
+          <span>محصول: <strong>${esc(p?.name||'—')}</strong></span>
+          <span>مقدار: <strong>${fmtN(r.quantity)} ${esc(p?.unit||'')}</strong></span>
+          <span>مهلت: <strong>${r.maxDeliveryDays} روز</strong></span>
+          <span>${fmtD(r.createdAt)}</span>
+        </div>
+      </a>`;
+    }).join('')}
+  `;
+  shell(s,user,org,content,'requirements');
+}
+
+// ═══ BUYER — NEW REQUIREMENT ═══
+function renderNewRequirement(s,user,org){
+  const content=`
+    <div class="breadcrumb"><a href="#dashboard">داشبورد</a> / ثبت نیاز</div>
+    <div class="page-head"><div><h2>ثبت نیاز خرید جدید</h2><div class="page-sub">مشخصات را کامل کنید</div></div></div>
+    <form class="card" id="req-form">
+      <div class="form-group">
+        <label class="required">عنوان نیاز</label>
+        <input name="title" required placeholder="مثال: تأمین بست فلزی M8 برای خط تولید"/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">محصول</label>
+          <select name="productId" required>
+            <option value="">— انتخاب —</option>
+            ${s.products.map(p=>`<option value="${p.id}">${esc(p.name)} (${esc(p.code)})</option>`).join('')}
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="required">مقدار موردنیاز</label>
+          <input name="quantity" type="number" min="1" required placeholder="5000"/>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">مهلت تحویل (روز)</label>
+          <input name="maxDeliveryDays" type="number" min="1" required placeholder="30"/>
+        </div>
+        <div class="form-group">
+          <label>محل تحویل</label>
+          <input name="deliveryLocation" placeholder="کارخانه — تهران"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>شرایط پرداخت ترجیحی</label>
+        <select name="preferredPayment">
+          <option value="">— هر شرایطی —</option>
+          <option value="نقدی">نقدی</option>
+          <option value="30 روزه">۳۰ روزه</option>
+          <option value="60 روزه">۶۰ روزه</option>
+          <option value="90 روزه">۹۰ روزه</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>مشخصات فنی</label>
+        <textarea name="spec" placeholder="فولاد ضدزنگ ۳۰۴، گالوانیزه، طبق استاندارد داخلی"></textarea>
+      </div>
+      <div class="alert alert-i">
+        پس از ثبت، سیستم به‌صورت خودکار تأمین‌کنندگان واجد شرایط را شناسایی می‌کند.
+      </div>
+      <div class="form-actions">
+        <a href="#dashboard" class="btn btn-o">انصراف</a>
+        <button type="submit" class="btn btn-p">ثبت و اجرای تطبیق</button>
+      </div>
+    </form>
+  `;
+  shell(s,user,org,content,'new-requirement');
+  document.getElementById('req-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const fd=new FormData(e.target);
+    const d=Object.fromEntries(fd);
+    const s2=getState();
+    const rid=uid('req');
+    s2.requirements.push({
+      id:rid,buyerOrgId:org.id,buyerUserId:user.id,title:d.title,
+      productId:d.productId,quantity:Number(d.quantity),
+      maxDeliveryDays:Number(d.maxDeliveryDays),
+      deliveryLocation:d.deliveryLocation||'—',
+      preferredPayment:d.preferredPayment||'',spec:d.spec||'',
+      status:'draft',createdAt:new Date().toISOString()
+    });
+    audit(s2,user.id,'ثبت نیاز خرید','requirement',rid,d.title);
+    runMatching(s2,rid,user.id);
+    save(s2);
+    toast('نیاز ثبت شد و تطبیق انجام شد','ok');
+    location.hash='#requirements/'+rid;
+  });
+}
+
+// ═══ MATCHING ═══
+function runMatching(s,reqId,userId){
+  const req=s.requirements.find(r=>r.id===reqId);
+  if(!req)return;
+  s.matches=s.matches.filter(m=>m.requirementId!==reqId);
+  const sps=s.supplierProducts.filter(sp=>sp.productId===req.productId);
+  const prices=sps.map(sp=>sp.unitPrice);
+  const minP=prices.length?Math.min(...prices):1;
+  sps.forEach(sp=>{
+    const reasons=[];let eligible=true;
+    if(sp.capacity<req.quantity){
+      eligible=false;
+      reasons.push({type:'fail',text:`ظرفیت (${fmtN(sp.capacity)}) کمتر از نیاز (${fmtN(req.quantity)})`});
+    } else {
+      reasons.push({type:'ok',text:`ظرفیت کافی: ${fmtN(sp.capacity)} عدد`});
+    }
+    if(sp.leadDays>req.maxDeliveryDays){
+      eligible=false;
+      reasons.push({type:'fail',text:`تحویل ${sp.leadDays} روز بیشتر از مهلت ${req.maxDeliveryDays} روز`});
+    } else {
+      reasons.push({type:'ok',text:`تحویل ${sp.leadDays} روز — مطابق مهلت`});
+    }
+    let score=0;
+    if(eligible){
+      const ps=100*(minP/sp.unitPrice);
+      const ls=100*(1-(sp.leadDays/req.maxDeliveryDays)*0.5);
+      const cs=100*Math.min(1,(sp.capacity-req.quantity)/req.quantity+0.5);
+      score=Math.round(ps*0.5+ls*0.3+cs*0.2);
+      reasons.push({type:'ok',text:`قیمت اعلامی: ${fmtM(sp.unitPrice)}`});
+      reasons.push({type:'ok',text:`پرداخت: ${esc(sp.payment)}`});
+      if(sp.validDays)reasons.push({type:'ok',text:`اعتبار پیشنهاد: ${sp.validDays} روز`});
+    }
+    s.matches.push({
+      id:uid('m'),requirementId:reqId,supplierOrgId:sp.orgId,
+      supplierProductId:sp.id,eligible,score,reasons,
+      capacity:sp.capacity,leadDays:sp.leadDays,unitPrice:sp.unitPrice,
+      payment:sp.payment,validDays:sp.validDays,
+      calculatedAt:new Date().toISOString()
+    });
+  });
+  req.status='matched';
+  audit(s,userId,'اجرای تطبیق','requirement',reqId,`${sps.length} تأمین‌کننده ارزیابی شد`);
+}
+
+// ═══ BUYER — REQUIREMENT DETAIL ═══
+function renderRequirementDetail(s,user,org,reqId,sub){
+  const req=s.requirements.find(r=>r.id===reqId);
+  if(!req||req.buyerOrgId!==org.id){location.hash='#requirements';return}
+  if(sub==='create-rfq'){
+    const eligible=s.matches.filter(m=>m.requirementId===reqId&&m.eligible);
+    return renderCreateRFQForm(s,user,org,req,eligible);
+  }
+  const p=s.products.find(x=>x.id===req.productId);
+  const matches=s.matches.filter(m=>m.requirementId===reqId);
+  const eligible=matches.filter(m=>m.eligible).sort((a,b)=>b.score-a.score);
+  const ineligible=matches.filter(m=>!m.eligible);
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const existingRfq=s.rfqs.find(r=>r.requirementId===reqId);
+  const matchCard=m=>{
+    const sup=orgMap[m.supplierOrgId];
+    return `<div class="match-card ${m.eligible?'':'ineligible'}">
+      <div class="match-head">
+        <div class="match-name">${esc(sup?.name||'—')}</div>
+        ${m.eligible?`<div class="match-score">${m.score}<small>/100</small></div>`:`<span class="badge badge-danger">واجد نیست</span>`}
+      </div>
+      <ul class="match-reasons">${m.reasons.map(r=>`<li class="${r.type==='fail'?'fail':''}">${esc(r.text)}</li>`).join('')}</ul>
+      <div class="match-meta">
+        <span>ظرفیت: <strong>${fmtN(m.capacity)}</strong></span>
+        <span>تحویل: <strong>${m.leadDays} روز</strong></span>
+        <span>قیمت: <strong>${fmtM(m.unitPrice)}</strong></span>
+      </div>
+    </div>`;
+  };
+  const content=`
+    <div class="breadcrumb"><a href="#requirements">نیازهای خرید</a> / جزئیات</div>
+    <div class="page-head">
+      <div><h2>${esc(req.title)}</h2><div class="page-sub">${esc(p?.name||'—')} · ${fmtD(req.createdAt)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>مشخصات نیاز</h3>${reqStatusBadge(req.status)}</div>
+      <dl class="kv">
+        <div class="kv-item"><dt>محصول</dt><dd>${esc(p?.name||'—')}</dd></div>
+        <div class="kv-item"><dt>مقدار</dt><dd>${fmtN(req.quantity)} ${esc(p?.unit||'')}</dd></div>
+        <div class="kv-item"><dt>مهلت تحویل</dt><dd>${req.maxDeliveryDays} روز</dd></div>
+        <div class="kv-item"><dt>محل تحویل</dt><dd>${esc(req.deliveryLocation||'—')}</dd></div>
+        <div class="kv-item"><dt>پرداخت ترجیحی</dt><dd>${esc(req.preferredPayment||'—')}</dd></div>
+        <div class="kv-item"><dt>مشخصات</dt><dd>${esc(req.spec||'—')}</dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="card-h">
+        <h3>تأمین‌کنندگان واجد شرایط (${eligible.length})</h3>
+      </div>
+      ${eligible.length===0?'<div class="alert alert-w">هیچ تأمین‌کننده واجد شرایطی یافت نشد.</div>':eligible.map(matchCard).join('')}
+      ${!existingRfq&&eligible.length>0?`<a href="#requirements/${reqId}/create-rfq" class="btn btn-a btn-blk" style="margin-top:8px">📤 ساخت استعلام (RFQ)</a>`:''}
+      ${existingRfq?`<a href="#rfqs/${existingRfq.id}" class="btn btn-p btn-blk" style="margin-top:8px">مشاهده RFQ</a>`:''}
+    </div>
+    ${ineligible.length>0?`
+      <div class="card">
+        <div class="card-h"><h3 style="color:var(--m)">سایر تأمین‌کنندگان (${ineligible.length})</h3></div>
+        <p style="font-size:.82rem;color:var(--m);margin-bottom:12px">به‌دلیل عدم انطباق با شرایط اجباری قابل انتخاب نیستند:</p>
+        ${ineligible.map(matchCard).join('')}
+      </div>
+    `:''}
+  `;
+  shell(s,user,org,content,'requirements');
+}
+
+// ═══ BUYER — CREATE RFQ FORM ═══
+function renderCreateRFQForm(s,user,org,req,eligible){
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const content=`
+    <div class="breadcrumb"><a href="#requirements/${req.id}">نیاز</a> / ساخت استعلام</div>
+    <div class="page-head"><div><h2>ساخت استعلام (RFQ)</h2><div class="page-sub">${esc(req.title)}</div></div></div>
+    <form class="card" id="rfq-form">
+      <div class="form-group">
+        <label class="required">عنوان استعلام</label>
+        <input name="title" value="${esc(req.title)}" required/>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label class="required">مهلت پاسخ (روز)</label>
+          <input name="deadlineDays" type="number" min="1" value="7" required/>
+        </div>
+        <div class="form-group">
+          <label>توضیحات</label>
+          <input name="notes" placeholder="مثال: لطفاً COA پیوست شود"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label class="required">تأمین‌کنندگان دعوت‌شده</label>
+        <div style="background:#fff;border:1px solid var(--b);border-radius:10px;padding:8px">
+          ${eligible.map(m=>{
+            const sup=orgMap[m.supplierOrgId];
+            return `<label class="checkbox-row">
+              <input type="checkbox" name="suppliers" value="${m.supplierOrgId}" checked/>
+              <span style="flex:1"><strong>${esc(sup.name)}</strong><br><span style="font-size:.8rem;color:var(--m)">${fmtM(m.unitPrice)} — ${m.leadDays} روز</span></span>
+            </label>`;
+          }).join('')}
+        </div>
+      </div>
+      <div class="form-actions">
+        <a href="#requirements/${req.id}" class="btn btn-o">انصراف</a>
+        <button type="submit" class="btn btn-p">ارسال استعلام</button>
+      </div>
+    </form>
+  `;
+  shell(s,user,org,content,'requirements');
+  document.getElementById('rfq-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const fd=new FormData(e.target);
+    const supplierIds=fd.getAll('suppliers');
+    if(!supplierIds.length){toast('حداقل یک تأمین‌کننده انتخاب کنید','err');return}
+    const s2=getState();
+    const rfqId=uid('rfq');
+    const deadline=daysFromNow(Number(fd.get('deadlineDays')));
+    s2.rfqs.push({
+      id:rfqId,buyerOrgId:org.id,buyerUserId:user.id,
+      requirementId:req.id,title:fd.get('title'),
+      notes:fd.get('notes')||'',deadline,status:'open',
+      createdAt:new Date().toISOString()
+    });
+    supplierIds.forEach(sid=>{
+      s2.invitations.push({
+        id:uid('inv'),rfqId,supplierOrgId:sid,status:'pending',
+        invitedAt:new Date().toISOString()
+      });
+    });
+    const rr=s2.requirements.find(r=>r.id===req.id);
+    if(rr)rr.status='rfq_created';
+    audit(s2,user.id,'ایجاد RFQ','rfq',rfqId,`${supplierIds.length} دعوت`);
+    save(s2);
+    toast('استعلام ارسال شد','ok');
+    location.hash='#rfqs/'+rfqId;
+  });
+}
+
+// ═══ BUYER — RFQ LIST ═══
+function renderRFQsList(s,user,org){
+  const rfqs=s.rfqs.filter(r=>r.buyerOrgId===org.id).slice().reverse();
+  const content=`
+    <div class="page-head"><div><h2>استعلام‌ها</h2><div class="page-sub">همه استعلام‌های ارسال‌شده</div></div></div>
+    ${rfqs.length===0?`
+      <div class="empty">
+        <div class="em-i">📤</div>
+        <h3>هنوز استعلامی ارسال نشده</h3>
+        <p>ابتدا نیاز خرید ثبت کنید.</p>
+        <a href="#requirements" class="btn btn-p">مشاهده نیازها</a>
+      </div>
+    `:rfqs.map(r=>{
+      const oc=s.offers.filter(o=>o.rfqId===r.id).length;
+      const ic=s.invitations.filter(i=>i.rfqId===r.id).length;
+      return `<a href="#rfqs/${r.id}" class="list-item">
+        <div class="li-head">
+          <div class="li-title">${esc(r.title)}</div>
+          ${r.status==='open'?'<span class="badge badge-ok">باز</span>':'<span class="badge badge-gray">بسته</span>'}
+        </div>
+        <div class="li-meta">
+          <span>مهلت: <strong>${fmtD(r.deadline)}</strong></span>
+          <span>پیشنهاد: <strong>${oc} از ${ic}</strong></span>
+        </div>
+      </a>`;
+    }).join('')}
+  `;
+  shell(s,user,org,content,'rfqs');
+}
+
+// ═══ BUYER — RFQ DETAIL ═══
+function renderBuyerRFQDetail(s,user,org,rfqId){
+  const rfq=s.rfqs.find(r=>r.id===rfqId);
+  if(!rfq||rfq.buyerOrgId!==org.id){location.hash='#rfqs';return}
+  const req=s.requirements.find(r=>r.id===rfq.requirementId);
+  const p=s.products.find(x=>x.id===req.productId);
+  const invs=s.invitations.filter(i=>i.rfqId===rfq.id);
+  const offers=s.offers.filter(o=>o.rfqId===rfq.id);
+  const decision=s.decisions.find(d=>d.rfqId===rfq.id);
+  const order=s.orders.find(o=>o.rfqId===rfq.id);
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const isExpired=new Date(rfq.deadline)<new Date();
+  const offerRows=offers.map(o=>{
+    const sup=orgMap[o.supplierOrgId];
+    const vers=s.offerVersions.filter(v=>v.offerId===o.id).sort((a,b)=>b.versionNumber-a.versionNumber);
+    const ver=vers[0];
+    if(!ver)return null;
+    return {offer:o,supplier:sup,version:ver,expired:new Date(ver.validUntil)<new Date()};
+  }).filter(Boolean);
+  const content=`
+    <div class="breadcrumb"><a href="#rfqs">استعلام‌ها</a> / جزئیات</div>
+    <div class="page-head">
+      <div><h2>${esc(rfq.title)}</h2><div class="page-sub">مهلت: ${fmtD(rfq.deadline)} ${isExpired?'· پایان یافته':''}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>مشخصات</h3></div>
+      <dl class="kv">
+        <div class="kv-item"><dt>محصول</dt><dd>${esc(p?.name||'—')}</dd></div>
+        <div class="kv-item"><dt>مقدار</dt><dd>${fmtN(req.quantity)} ${esc(p?.unit||'')}</dd></div>
+        <div class="kv-item"><dt>مهلت تحویل</dt><dd>${req.maxDeliveryDays} روز</dd></div>
+        <div class="kv-item"><dt>دعوت‌شده</dt><dd>${fmtN(invs.length)}</dd></div>
+      </dl>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>وضعیت دعوت‌ها</h3></div>
+      ${invs.map(i=>{
+        const sup=orgMap[i.supplierOrgId];
+        const hasOffer=offers.find(o=>o.supplierOrgId===i.supplierOrgId);
+        return `<div class="kv-item"><dt>${esc(sup?.name||'—')}</dt><dd>${hasOffer?'<span class="badge badge-ok">پیشنهاد ارسال شد</span>':'<span class="badge badge-warn">در انتظار</span>'}</dd></div>`;
+      }).join('')}
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>پیشنهادهای دریافتی (${offerRows.length})</h3></div>
+      ${offerRows.length===0?'<div class="alert alert-i">هنوز پیشنهادی دریافت نشده.</div>':offerRows.map(r=>`
+        <div class="list-item">
+          <div class="li-head">
+            <div class="li-title">${esc(r.supplier.name)}</div>
+            <span class="badge badge-info">v${r.version.versionNumber}</span>
+          </div>
+          <div class="li-meta">
+            <span>قیمت: <strong>${fmtM(r.version.unitPrice)}</strong></span>
+            <span>مقدار: <strong>${fmtN(r.version.quantity)}</strong></span>
+            <span>تحویل: <strong>${r.version.deliveryDays} روز</strong></span>
+            <span>پرداخت: <strong>${esc(r.version.payment)}</strong></span>
+            <span>اعتبار: <strong>${fmtD(r.version.validUntil)}</strong></span>
+            ${r.expired?'<span class="badge badge-danger">منقضی</span>':''}
+          </div>
+        </div>
+      `).join('')}
+      ${offerRows.length>=1&&!decision?`<a href="#rfqs/${rfq.id}/compare" class="btn btn-a btn-blk" style="margin-top:8px">📊 مقایسه و تصمیم</a>`:''}
+      ${decision&&!order?`<a href="#rfqs/${rfq.id}/create-order" class="btn btn-p btn-blk" style="margin-top:8px">ایجاد سفارش</a>`:''}
+      ${order?`<a href="#orders" class="btn btn-p btn-blk" style="margin-top:8px">مشاهده سفارش</a>`:''}
+    </div>
+    ${decision?`
+      <div class="card" style="border-right:4px solid var(--ok)">
+        <div class="card-h"><h3>تصمیم ثبت‌شده</h3></div>
+        <dl class="kv">
+          <div class="kv-item"><dt>تأمین‌کننده منتخب</dt><dd>${esc(orgMap[decision.selectedSupplierOrgId]?.name||'—')}</dd></div>
+          <div class="kv-item"><dt>دلیل</dt><dd>${esc(decision.reason)}</dd></div>
+          <div class="kv-item"><dt>تصمیم‌گیرنده</dt><dd>${esc(s.users.find(u=>u.id===decision.userId)?.name||'—')}</dd></div>
+          <div class="kv-item"><dt>تاریخ</dt><dd>${fmtDT(decision.at)}</dd></div>
+        </dl>
+      </div>
+    `:''}
+  `;
+  shell(s,user,org,content,'rfqs');
+}
+
+// ═══ BUYER — COMPARE ═══
+function renderCompare(s,user,org,rfqId){
+  const rfq=s.rfqs.find(r=>r.id===rfqId);
+  if(!rfq||rfq.buyerOrgId!==org.id){location.hash='#rfqs';return}
+  const req=s.requirements.find(r=>r.id===rfq.requirementId);
+  const p=s.products.find(x=>x.id===req.productId);
+  const offers=s.offers.filter(o=>o.rfqId===rfq.id);
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const rows=offers.map(o=>{
+    const ver=s.offerVersions.filter(v=>v.offerId===o.id).sort((a,b)=>b.versionNumber-a.versionNumber)[0];
+    if(!ver)return null;
+    const total=ver.unitPrice*ver.quantity;
+    const payDays=ver.payment==='نقدی'?0:ver.payment==='30 روزه'?30:ver.payment==='60 روزه'?60:ver.payment==='90 روزه'?90:30;
+    const financing=Math.round(total*0.03*(payDays/30));
+    return {o,ver,total,financing,totalCost:total+financing,supplier:orgMap[o.supplierOrgId]};
+  }).filter(Boolean);
+  const minTotal=Math.min(...rows.map(r=>r.totalCost));
+  const minPrice=Math.min(...rows.map(r=>r.ver.unitPrice));
+  const content=`
+    <div class="breadcrumb"><a href="#rfqs/${rfq.id}">RFQ</a> / مقایسه</div>
+    <div class="page-head"><div><h2>مقایسه پیشنهادها</h2><div class="page-sub">${esc(rfq.title)}</div></div></div>
+    <div class="alert alert-w">
+      <strong>توجه:</strong> مقایسه بر اساس «هزینه کل قابل مقایسه» است؛ کمترین قیمت واحد معیار انتخاب نیست.
+    </div>
+    <div class="cmp-wrap">
+      <table class="cmp">
+        <thead><tr><th>معیار</th>${rows.map(r=>`<th>${esc(r.supplier.name)}</th>`).join('')}</tr></thead>
+        <tbody>
+          <tr><td>قیمت واحد</td>${rows.map(r=>`<td class="${r.ver.unitPrice===minPrice?'best':''}">${fmtM(r.ver.unitPrice)}</td>`).join('')}</tr>
+          <tr><td>مقدار</td>${rows.map(r=>`<td>${fmtN(r.ver.quantity)}</td>`).join('')}</tr>
+          <tr><td>تحویل</td>${rows.map(r=>`<td>${r.ver.deliveryDays} روز</td>`).join('')}</tr>
+          <tr><td>پرداخت</td>${rows.map(r=>`<td>${esc(r.ver.payment)}</td>`).join('')}</tr>
+          <tr><td>اعتبار</td>${rows.map(r=>`<td>${fmtD(r.ver.validUntil)}</td>`).join('')}</tr>
+          <tr><td>هزینه مالی</td>${rows.map(r=>`<td>${fmtM(r.financing)}</td>`).join('')}</tr>
+          <tr class="total"><td>هزینه کل</td>${rows.map(r=>`<td class="${r.totalCost===minTotal?'best':''}">${fmtM(r.totalCost)}</td>`).join('')}</tr>
+        </tbody>
+      </table>
+    </div>
+    <form class="card" id="dec-form">
+      <div class="card-h"><h3>ثبت تصمیم</h3></div>
+      <div class="form-group">
+        <label class="required">تأمین‌کننده منتخب</label>
+        <select name="supplierId" required>
+          <option value="">— انتخاب —</option>
+          ${rows.map(r=>`<option value="${r.o.supplierOrgId}">${esc(r.supplier.name)} — ${fmtM(r.totalCost)}</option>`).join('')}
+        </select>
+      </div>
+      <div class="form-group">
+        <label class="required">دلیل انتخاب</label>
+        <textarea name="reason" required placeholder="مثال: بالاترین امتیاز تطبیق، هزینه کل مناسب، ظرفیت کافی"></textarea>
+      </div>
+      <div class="form-actions">
+        <a href="#rfqs/${rfq.id}" class="btn btn-o">انصراف</a>
+        <button type="submit" class="btn btn-s">ثبت تصمیم</button>
+      </div>
+    </form>
+  `;
+  shell(s,user,org,content,'rfqs');
+  document.getElementById('dec-form').addEventListener('submit',e=>{
+    e.preventDefault();
+    const fd=new FormData(e.target);
+    const s2=getState();
+    const supplierId=fd.get('supplierId');
+    const reason=fd.get('reason').trim();
+    if(!supplierId||!reason){toast('همه فیلدها را تکمیل کنید','err');return}
+    const r=rows.find(x=>x.o.supplierOrgId===supplierId);
+    s2.decisions.push({
+      id:uid('dec'),rfqId:rfq.id,selectedSupplierOrgId:supplierId,
+      selectedOfferId:r.o.id,selectedVersionId:r.ver.id,
+      reason,userId:user.id,at:new Date().toISOString()
+    });
+    const req2=s2.requirements.find(x=>x.id===rfq.requirementId);
+    if(req2)req2.status='deciding';
+    audit(s2,user.id,'ثبت تصمیم خرید','rfq',rfq.id,`تأمین‌کننده: ${r.supplier.name}`);
+    save(s2);
+    toast('تصمیم ثبت شد','ok');
+    location.hash='#rfqs/'+rfq.id;
+  });
+}
+
+// ═══ BUYER — CREATE ORDER ═══
+function renderCreateOrder(s,user,org,rfqId){
+  const rfq=s.rfqs.find(r=>r.id===rfqId);
+  if(!rfq||rfq.buyerOrgId!==org.id){location.hash='#rfqs';return}
+  const decision=s.decisions.find(d=>d.rfqId===rfq.id);
+  if(!decision){location.hash='#rfqs/'+rfq.id;return}
+  const ver=s.offerVersions.find(v=>v.id===decision.selectedVersionId);
+  const sup=s.organizations.find(o=>o.id===decision.selectedSupplierOrgId);
+  const req=s.requirements.find(r=>r.id===rfq.requirementId);
+  const p=s.products.find(x=>x.id===req.productId);
+  const orderNum='PO-'+Date.now().toString().slice(-8);
+  const content=`
+    <div class="breadcrumb"><a href="#rfqs/${rfq.id}">RFQ</a> / ایجاد سفارش</div>
+    <div class="page-head"><div><h2>ایجاد سفارش</h2><div class="page-sub">${esc(rfq.title)}</div></div></div>
+    <div class="card">
+      <div class="card-h"><h3>خلاصه سفارش</h3></div>
+      <dl class="kv">
+        <div class="kv-item"><dt>شماره</dt><dd><strong>${orderNum}</strong></dd></div>
+        <div class="kv-item"><dt>تأمین‌کننده</dt><dd>${esc(sup.name)}</dd></div>
+        <div class="kv-item"><dt>محصول</dt><dd>${esc(p.name)}</dd></div>
+        <div class="kv-item"><dt>مقدار</dt><dd>${fmtN(ver.quantity)} ${esc(p.unit)}</dd></div>
+        <div class="kv-item"><dt>قیمت واحد</dt><dd>${fmtM(ver.unitPrice)}</dd></div>
+        <div class="kv-item"><dt>مبلغ کل</dt><dd><strong>${fmtM(ver.unitPrice*ver.quantity)}</strong></dd></div>
+        <div class="kv-item"><dt>تحویل</dt><dd>${ver.deliveryDays} روز</dd></div>
+        <div class="kv-item"><dt>پرداخت</dt><dd>${esc(ver.payment)}</dd></div>
+      </dl>
+      <div class="alert alert-ok" style="margin-top:12px">
+        سفارش بر اساس نسخه v${ver.versionNumber} پیشنهاد ایجاد می‌شود.
+      </div>
+      <div class="form-actions">
+        <a href="#rfqs/${rfq.id}" class="btn btn-o">انصراف</a>
+        <button class="btn btn-s" id="confirm-order">تأیید و ایجاد سفارش</button>
+      </div>
+    </div>
+  `;
+  shell(s,user,org,content,'rfqs');
+  document.getElementById('confirm-order').addEventListener('click',()=>{
+    const s2=getState();
+    s2.orders.push({
+      id:uid('ord'),orderNumber:orderNum,rfqId:rfq.id,
+      requirementId:rfq.requirementId,buyerOrgId:org.id,
+      supplierOrgId:decision.selectedSupplierOrgId,offerVersionId:ver.id,
+      quantity:ver.quantity,unitPrice:ver.unitPrice,
+      totalAmount:ver.unitPrice*ver.quantity,
+      deliveryDays:ver.deliveryDays,payment:ver.payment,
+      status:'created',createdAt:new Date().toISOString(),
+      createdByUserId:user.id,
+      snapshot:{productName:p.name,productSpec:p.spec,versionNumber:ver.versionNumber}
+    });
+    const req2=s2.requirements.find(x=>x.id===rfq.requirementId);
+    if(req2)req2.status='ordered';
+    const r2=s2.rfqs.find(x=>x.id===rfq.id);
+    if(r2)r2.status='closed';
+    audit(s2,user.id,'ایجاد سفارش','order',orderNum,`${sup.name} — ${fmtM(ver.unitPrice*ver.quantity)}`);
+    save(s2);
+    toast('سفارش با موفقیت ایجاد شد','ok');
+    location.hash='#orders';
+  });
+}
+
+// ═══ BUYER — ORDERS ═══
+function renderOrders(s,user,org){
+  const orders=s.orders.filter(o=>o.buyerOrgId===org.id).slice().reverse();
+  const orgMap={};s.organizations.forEach(o=>orgMap[o.id]=o);
+  const content=`
+    <div class="page-head"><div><h2>سفارش‌ها</h2><div class="page-sub">سفارش‌های ایجادشده</div></div></div>
+    ${orders.length===0?`
+      <div class="empty">
+        <div class="em-i">📦</div>
+        <h3>هنوز سفارشی ایجاد نشده</h3>
+        <p>پس از مقایسه و تصمیم، سفارش ایجاد کنید.</p>
+        <a href="#rfqs" class="btn btn-p">مشاهده استعلام‌ها</a>
+      </div>
+    `:orders.map(o=>`
+      <div class="list-item">
+        <div class="li-head">
+          <div class="li-title">${esc(o.orderNumber)}</div>
+          <span class="badge badge-ok">ایجادشده</span>
+        </div>
+        <div class="li-meta">
+          <span>تأمین‌کننده: <strong>${esc(orgMap[o.supplierOrgId]?.name||'—')}</strong></span>
+          <span>مبلغ: <strong>${fmtM(o.totalAmount)}</strong></span>
+          <span>${fmtD(o.createdAt)}</span>
+        </div>
+      </div>
+    `).join('')}
+  `;
+  shell(s,user,org,content,'orders');
+}
+
+// ═══ SUPPLIER — DASHBOARD ═══
+function renderSupplierDashboard(s,user,org){
+  const invs=s.invitations.filter(i=>i.supplierOrgId===org.id);
+  const pending=invs.filter(i=>i.status==='pending'&&s.rfqs.find(r=>r.id===i.rfqId&&r.status==='open'));
+  const myOffers=s.offers.filter(o=>o.supplierOrgId===org.id);
+  const won=s.decisions.filter(d=>d.selectedSupplierOrgId===org.id).length;
+  const content=`
+    <div class="page-head"><div><h2>داشبورد تأمین‌کننده</h2><div class="page-sub">${esc(org.name)}</div></div></div>
+    <div class="stats">
+      <div class="stat info"><div class="stat-l">استعلام‌های در انتظار</div><div class="stat-v">${fmtN(pending.length)}</div></div>
+      <div class="stat"><div class="stat-l">پیشنهادهای من</div><div class="stat-v">${fmtN(myOffers.length)}</div></div>
+      <div class="stat ok"><div class="stat-l">برنده‌شده</div><div class="stat-v">${fmtN(won)}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>استعلام‌های در انتظار</h3><a href="#inbox" class="btn btn-o btn-sm">همه</a></div>
+      ${pending.length===0?`
+        <div class="empty">
+          <div class="em-i">📥</div>
+          <h3>استعلام جدیدی در انتظار نیست</h3>
+          <p>وقتی خریداری شما را دعوت کند، اینجا نمایش داده می‌شود.</p>
+        </div>
+      `:pending.slice(0,5).map(i=>{
+        const rfq=s.rfqs.find(r=>r.id===i.rfqId);
+        const req=s.requirements.find(r=>r.id===rfq.requirementId);
+        const p=s.products.find(x=>x.id===req.productId);
+        return `<a href="#inbox/${rfq.id}" class="list-item">
+          <div class="li-head"><div class="li-title">${esc(rfq.title)}</div><span class="badge badge-warn">در انتظار</span></div>
+          <div class="li-meta">
+            <span>${esc(p?.name||'—')}</span>
+            <span>${fmtN(req.quantity)}</span>
+            <span>مهلت: <strong>${fmtD(rfq.deadline)}</strong></span>
+          </div>
+        </a>`;
+      }).join('')}
+    </div>
+  `;
+  shell(s,user,org,content,'dashboard');
+}
+
+// ═══ SUPPLIER — INBOX ═══
+function renderInbox(s,user,org){
+  const invs=s.invitations.filter(i=>i.supplierOrgId===org.id).slice().reverse();
+  const content=`
+    <div class="page-head"><div><h2>صندوق استعلام‌ها</h2><div class="page-sub">RFQهای ارسال‌شده به شما</div></div></div>
+    ${invs.length===0?`
+      <div class="empty">
+        <div class="em-i">📥</div>
+        <h3>استعلامی دریافت نشده</h3>
+        <p>خریداران هنوز شما را دعوت نکرده‌اند.</p>
+      </div>
+    `:invs.map(i=>{
+      const rfq=s.rfqs.find(r=>r.id===i.rfqId);
+      if(!rfq)return '';
+      const myOffer=s.offers.find(o=>o.rfqId===rfq.id&&o.supplierOrgId===org.id);
+      return `<a href="#inbox/${rfq.id}" class="list-item">
+        <div class="li-head">
+          <div class="li-title">${esc(rfq.title)}</div>
+          ${myOffer?'<span class="badge badge-ok">ارسال شد</span>':'<span class="badge badge-warn">در انتظار</span>'}
+        </div>
+        <div class="li-meta">
+          <span>مهلت: <strong>${fmtD(rfq.deadline)}</strong></span>
+          <span>${rfq.status==='open'?'باز':'بسته'}</span>
+        </div>
+      </a>`;
+    }).join('')}
+  `;
+  shell(s,user,org,content,'inbox');
+}
+
+// ═══ SUPPLIER — RFQ DETAIL ═══
+function renderSupplierRFQ(s,user,org,rfqId){
+  const rfq=s.rfqs.find(r=>r.id===rfqId);
+  if(!rfq){location.hash='#inbox';return}
+  const inv=s.invitations.find(i=>i.rfqId===rfq.id&&i.supplierOrgId===org.id);
+  if(!inv){location.hash='#inbox';return}
+  const req=s.requirements.find(r=>r.id===rfq.requirementId);
+  const p=s.products.find(x=>x.id===req.productId);
+  const existingOffer=s.offers.find(o=>o.rfqId===rfq.id&&o.supplierOrgId===org.id);
+  const versions=existingOffer?s.offerVersions.filter(v=>v.offerId===existingOffer.id).sort((a,b)=>a.versionNumber-b.versionNumber):[];
+  const latest=versions[versions.length-1];
+  const isExpired=new Date(rfq.deadline)<new Date();
+  const content=`
+    <div class="breadcrumb"><a href="#inbox">صندوق</a> / جزئیات</div>
+    <div class="page-head">
+      <div><h2>${esc(rfq.title)}</h2><div class="page-sub">مهلت: ${fmtD(rfq.deadline)} ${isExpired?'· پایان یافته':''}</div></div>
+    </div>
+    <div class="card">
+      <div class="card-h"><h3>مشخصات درخواست</h3></div>
+      <dl class="kv">
+        <div class="kv-item"><dt>محصول</dt><dd>${esc(p?.name||'—')}</dd></div>
+        <div class="kv-item"><dt>مقدار</dt><dd>${fmtN(req.quantity)} ${esc(p?.unit||'')}</dd></div>
+        <div class="kv-item"><dt>مهلت تحویل</dt><dd>${req.maxDeliveryDays} روز</dd></div>
+        <div class="kv-item"><dt>محل تحویل</dt><dd>${esc(req.deliveryLocation||'—')}</dd></div>
+        <div class="kv-item"><dt>پرداخت ترجیحی</dt><dd>${esc(req.preferredPayment||'—')}</dd></div>
+        <div class="kv-item"><dt>توضیحات</dt><dd>${esc(rfq.notes||'—')}</dd></div>
+      </dl>
+    </div>
+    ${latest?`
+      <div class="card" style="border-right:4px solid var(--a)">
+        <div class="card-h"><h3>پیشنهاد فعلی شما</h3><span class="badge badge-info">v${latest.versionNumber}</span></div>
+        <dl class="kv">
+          <div class="kv-item"><dt>قیمت واحد</dt><dd><strong>${fmtM(latest.unitPrice)}</strong></dd></div>
+          <div class="kv-item"><dt>مقدار</dt><dd>${fmtN(latest.quantity)}</dd></div>
+          <div class="kv-item"><dt>تحویل</dt><dd>${latest.deliveryDays} روز</dd></div>
+          <div class="kv-item"><dt>پرداخت</dt><dd>${esc(latest.payment)}</dd></div>
+          <div class="kv-item"><dt>اعتبار تا</dt><dd>${fmtD(latest.validUntil)}</dd></div>
+        </dl>
+      </div>
+      <div class="card">
+        <div class="card-h"><h3>تاریخچه نسخه‌ها (${versions.length})</h3></div>
+        <ul class="versions">
+          ${versions.slice().reverse().map(v=>`
+            <li class="${v.id===latest.id?'current':''}">
+              <div class="v-head">
+                <span class="v-num">نسخه v${v.versionNumber}</span>
+                ${v.id===latest.id?'<span class="badge badge-ok">فعلی</span>':''}
+              </div>
+              <div class="v-meta">${fmtM(v.unitPrice)} · تحویل ${v.deliveryDays} روز · ${esc(v.payment)}<br>${fmtDT(v.createdAt)}</div>
+            </li>
+          `).join('')}
+        </ul>
+      </div>
+    `:''}
+    ${!isExpired?`
+      <form class="card" id="offer-form">
+        <div class="card-h"><h3>${existingOffer?'ثبت نسخه جدید':'ثبت پیشنهاد'}</h3></div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required">قیمت واحد (ریال)</label>
+            <input name="unitPrice" type="number" min="1" required value="${latest?.unitPrice||''}" placeholder="11500"/>
+          </div>
+          <div class="form-group">
+            <label class="required">مقدار قابل تأمین</label>
+            <input name="quantity" type="number" min="1" required value="${latest?.quantity||req.quantity}"/>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="required">زمان تحویل (روز)</label>
+            <input name="deliveryDays" type="number" min="1" required value="${latest?.deliveryDays||req.maxDeliveryDays}"/>
+          </div>
+          <div class="form-group">
+            <label class="required">شرایط پرداخت</label>
+            <select name="payment" required>
+              ${['نقدی','30 روزه','60 روزه','90 روزه'].map(o=>`<option value="${o}" ${latest?.payment===o?'selected':''}>${o}</option>`).join('')}
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="required">اعتبار پیشنهاد (روز)</label>
+          <input name="validDays" type="number" min="1" required value="7"/>
+        </div>
+        <div class="form-group">
+          <label>توضیحات</label>
+          <input name="notes" placeholder="اختیاری"/>
+        </div>
+        ${existingOffer?`<div class="alert alert-w">با ثبت، نسخه جدید ساخته می‌شود و نسخه فعلی (v${latest.versionNumber}) در تاریخچه حفظ می‌شود.</div>`:''}
+        <div class="form-actions">
+          <a href="#inbox" class="btn btn-o">انصراف</a>
+          <button type="submit" class="btn btn-p">${existingOffer?'ثبت نسخه جدید':'ارسال پیشنهاد'}</button>
+        </div>
+      </form>
+    `:`<div class="alert alert-r">مهلت پاسخ پایان یافته است.</div>`}
+  `;
+  shell(s,user,org,content,'inbox');
+  const form=document.getElementById('offer-form');
+  if(form)form.addEventListener('submit',e=>{
+    e.preventDefault();
+    const fd=new FormData(e.target);
+    const s2=getState();
+    const validUntil=daysFromNow(Number(fd.get('validDays')));
+    const now=new Date().toISOString();
+    const existing=s2.offers.find(o=>o.rfqId===rfq.id&&o.supplierOrgId===org.id);
+    if(existing){
+      const vers=s2.offerVersions.filter(v=>v.offerId===existing.id);
+      const next=vers.length+1;
+      s2.offerVersions.push({
+        id:uid('ov'),offerId:existing.id,versionNumber:next,
+        unitPrice:Number(fd.get('unitPrice')),quantity:Number(fd.get('quantity')),
+        deliveryDays:Number(fd.get('deliveryDays')),payment:fd.get('payment'),
+        validUntil,notes:fd.get('notes')||'',createdAt:now,
+        createdByUserId:user.id
+      });
+      existing.status='submitted';
+      audit(s2,user.id,'ثبت نسخه جدید پیشنهاد','offer',existing.id,'v'+next);
+      toast('نسخه جدید ثبت شد','ok');
+    } else {
+      const offerId=uid('off');
+      s2.offers.push({id:offerId,rfqId:rfq.id,supplierOrgId:org.id,status:'submitted',createdAt:now});
+      s2.offerVersions.push({
+        id:uid('ov'),offerId,versionNumber:1,
+        unitPrice:Number(fd.get('unitPrice')),quantity:Number(fd.get('quantity')),
+        deliveryDays:Number(fd.get('deliveryDays')),payment:fd.get('payment'),
+        validUntil,notes:fd.get('notes')||'',createdAt:now,
+        createdByUserId:user.id
+      });
+      const inv2=s2.invitations.find(i=>i.rfqId===rfq.id&&i.supplierOrgId===org.id);
+      if(inv2)inv2.status='responded';
+      audit(s2,user.id,'ثبت پیشنهاد','offer',offerId,`${fmtM(fd.get('unitPrice'))}`);
+      toast('پیشنهاد شما ثبت شد','ok');
+    }
+    save(s2);
+    location.hash='#inbox/'+rfq.id;
+  });
+}
+
+// ═══ SUPPLIER — MY OFFERS ═══
+function renderMyOffers(s,user,org){
+  const offers=s.offers.filter(o=>o.supplierOrgId===org.id).slice().reverse();
+  const content=`
+    <div class="page-head"><div><h2>پیشنهادهای من</h2><div class="page-sub">پیشنهادهای ارسال‌شده</div></div></div>
+    ${offers.length===0?`
+      <div class="empty">
+        <div class="em-i">📤</div>
+        <h3>هنوز پیشنهادی ثبت نکرده‌اید</h3>
+        <p>از صندوق استعلام‌ها یک RFQ انتخاب کنید.</p>
+        <a href="#inbox" class="btn btn-p">مشاهده صندوق</a>
+      </div>
+    `:offers.map(o=>{
+      const rfq=s.rfqs.find(r=>r.id===o.rfqId);
+      const vers=s.offerVersions.filter(v=>v.offerId===o.id);
+      const latest=vers.sort((a,b)=>b.versionNumber-a.versionNumber)[0];
+      const won=s.decisions.find(d=>d.rfqId===o.rfqId&&d.selectedSupplierOrgId===org.id);
+      return `<a href="#inbox/${rfq.id}" class="list-item">
+        <div class="li-head">
+          <div class="li-title">${esc(rfq?.title||'—')}</div>
+          ${won?'<span class="badge badge-ok">برنده</span>':rfq?.status==='closed'?'<span class="badge badge-gray">بسته</span>':'<span class="badge badge-warn">در انتظار</span>'}
+        </div>
+        <div class="li-meta">
+          <span>نسخه: <strong>v${latest?.versionNumber||'?'}</strong></span>
+          <span>قیمت: <strong>${fmtM(latest?.unitPrice)}</strong></span>
+        </div>
+      </a>`;
+    }).join('')}
+  `;
+  shell(s,user,org,content,'my-offers');
+}
+
+// ═══ INIT ═══
+if(!location.hash)location.hash='';
+render();
 </script>
-</body></html>
+</body>
+</html>
