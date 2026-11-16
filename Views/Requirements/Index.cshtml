@@ -1,0 +1,3 @@
+@model IEnumerable<PurchaseRequirement>
+<div class="pagehead"><div><p class="eyebrow">PROCUREMENT</p><h1>درخواست‌های خرید</h1><p>چرخه نیاز تا دریافت و مقایسه پیشنهاد</p></div><a class="btn" asp-action="Create">ثبت درخواست جدید</a></div>
+<div class="panel"><table><thead><tr><th>کد</th><th>کالا / قلم</th><th>مقدار</th><th>تاریخ نیاز</th><th>وضعیت</th><th></th></tr></thead><tbody>@foreach(var r in Model){<tr><td>@r.RequestCode</td><td>@r.Item?.Name</td><td>@r.Quantity</td><td>@r.NeededBy.ToString("yyyy/MM/dd")</td><td><span class="tag">@r.Status</span></td><td><a asp-controller="Suppliers" asp-action="Search" asp-route-requirementId="@r.Id">جست‌وجوی هوشمند تأمین‌کننده</a> · <a asp-action="Offers" asp-route-id="@r.Id">مدیریت پیشنهادها</a></td></tr>}</tbody></table></div>

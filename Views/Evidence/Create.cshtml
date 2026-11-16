@@ -1,0 +1,11 @@
+@model O2Ban.EnterprisePilot.Models.EvidenceRecord
+<div class="pagehead"><div><div class="eyebrow">NEW EVIDENCE</div><h1>ثبت مدرک یا ادعا</h1><p>فایل‌ها در پوشه خصوصی برنامه ذخیره می‌شوند و از مسیر عمومی وب قابل دسترسی نیستند.</p></div></div>
+<div class="panel"><form asp-action="Create" method="post" enctype="multipart/form-data"><div asp-validation-summary="All" class="validation"></div><div class="formgrid">
+<label>عنوان مدرک یا ادعا<input asp-for="Title" maxlength="180" required /></label><label>نوع مدرک<select asp-for="EvidenceType"><option>مدرک فنی</option><option>گواهی کیفیت</option><option>ظرفیت تولید</option><option>موجودی</option><option>مجوز یا ثبت رسمی</option><option>سابقه معامله</option><option>سایر</option></select></label>
+<label>منبع اطلاعات<select asp-for="SourceType"><option>اظهار تأمین‌کننده</option><option>سند بارگذاری‌شده</option><option>کاتالوگ</option><option>ثبت رسمی</option><option>بازرسی مستقل</option><option>شواهد معامله</option></select></label>
+<label>تأمین‌کننده مرتبط<select asp-for="SupplierId" asp-items="ViewBag.Suppliers"><option value="">انتخاب نشده</option></select></label>
+<label>درخواست خرید مرتبط<select asp-for="PurchaseRequirementId" asp-items="ViewBag.Requirements"><option value="">انتخاب نشده</option></select></label>
+<label>تاریخ انقضا (اختیاری)<input asp-for="ExpiresAt" type="date" /></label>
+<label class="wide">شرح و محدوده ادعا<textarea asp-for="Description" maxlength="1200" placeholder="مثلاً شرکت ظرفیت اعلامی ۵۰ هزار کالا / قلم در ماه را اظهار کرده است؛ هنوز مستقلاً راستی‌آزمایی نشده."></textarea></label>
+<label class="wide">فایل پیوست (اختیاری، حداکثر ۱۰ مگابایت)<input type="file" name="file" accept=".pdf,.png,.jpg,.jpeg,.docx,.xlsx" /></label>
+</div><p class="notice">وضعیت اولیه همه موارد «در انتظار بررسی» است. ثبت‌کننده نمی‌تواند مدرک را به‌عنوان تأیید مستقل علامت‌گذاری کند.</p><button class="btn" type="submit">ثبت و ارسال برای بررسی</button></form></div>

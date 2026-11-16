@@ -1,0 +1,5 @@
+@model IEnumerable<Supplier>
+<div class="pagehead"><div><p class="eyebrow">SUPPLIER INTELLIGENCE</p><h1>تأمین‌کنندگان</h1><p>وضعیت شواهد و توانمندی‌ها باید از اظهار تأمین‌کننده تفکیک شود.</p></div>@if (User.IsInRole("Admin")) { <a class="btn" asp-action="Search">جست‌وجوی هوشمند</a> <a class="btn" asp-action="Create">افزودن تأمین‌کننده</a> }</div>
+<div class="notice"><a asp-action="Search">ورود به جست‌وجوی هوشمند تأمین‌کننده</a> · جست‌وجو بر اساس نیاز خرید، شماره کالا / قلم، دسته‌بندی و حوزه کاربرد با نمایش دلایل تطبیق و داده‌های ناقص.</div>
+<form method="get" class="search"><input name="q" placeholder="جست‌وجوی نام یا توانمندی..." /><button class="btn">جست‌وجو</button></form>
+<div class="panel"><table><thead><tr><th>نام</th><th>شهر</th><th>توانمندی اعلام‌شده</th><th>وضعیت شواهد</th><th>عملکرد</th></tr></thead><tbody>@foreach(var s in Model){<tr><td>@s.Name</td><td>@s.City</td><td>@s.Capabilities</td><td><span class="tag">@s.EvidenceStatus</span></td><td><a asp-controller="SupplierPerformance" asp-action="SupplierProfile" asp-route-supplierId="@s.Id">پروفایل عملکرد</a></td></tr>}</tbody></table></div>

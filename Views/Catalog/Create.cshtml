@@ -1,0 +1,2 @@
+@model CatalogItem
+<h1>افزودن کالا / قلم</h1><form method="post" class="panel formgrid"><label>کد کالا<input asp-for="ItemCode" /></label><label>نام کالا / قلم<input asp-for="Name" /></label><label>گروه<input asp-for="Category" /></label><label>حوزه کاربرد<input asp-for="IndustrySegment" /></label><label>واحد<input asp-for="Unit" /></label><label class="wide">شرح فنی<textarea asp-for="TechnicalDescription"></textarea></label><span asp-validation-summary="All"></span><button class="btn">ذخیره</button></form>

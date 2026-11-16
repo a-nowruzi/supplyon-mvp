@@ -1,0 +1,4 @@
+@model IEnumerable<CatalogItem>
+<div class="pagehead"><div><p class="eyebrow">CATALOG</p><h1>کاتالوگ کالاها و اقلام</h1><p>فهرست کالاها و اقلام آزمایشی و مشخصات پایه</p></div>@if (User.IsInRole("Admin")) { <a class="btn" asp-action="Create">افزودن کالا / قلم</a> }</div>
+<form method="get" class="search"><input name="q" placeholder="جست‌وجوی نام یا کد کالا..." /><button class="btn">جست‌وجو</button></form>
+<div class="panel"><table><thead><tr><th>کد کالا</th><th>نام کالا / قلم</th><th>گروه</th><th>حوزه کاربرد</th><th>واحد</th></tr></thead><tbody>@foreach(var p in Model){<tr><td>@p.ItemCode</td><td>@p.Name</td><td>@p.Category</td><td>@p.IndustrySegment</td><td>@p.Unit</td></tr>}</tbody></table></div>

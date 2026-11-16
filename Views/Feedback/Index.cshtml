@@ -1,0 +1,3 @@
+@model IEnumerable<UserFeedback>
+<div class="pagehead"><div><p class="eyebrow">PRODUCT VALIDATION</p><h1>بازخورد کاربران</h1><p>ثبت تجربه واقعی کارشناسان برای اصلاح محصول</p></div><a class="btn" asp-action="Create">ثبت بازخورد</a></div>
+<div class="panel"><table><thead><tr><th>حوزه</th><th>امتیاز</th><th>نظر</th><th>تاریخ</th></tr></thead><tbody>@foreach(var f in Model){<tr><td>@f.Area</td><td>@f.Rating از ۵</td><td>@f.Comment</td><td>@f.CreatedAt.ToLocalTime().ToString("yyyy/MM/dd HH:mm")</td></tr>}</tbody></table></div>

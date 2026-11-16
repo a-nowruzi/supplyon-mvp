@@ -1,0 +1,21 @@
+@model IEnumerable<SupplierOffer>
+@{ var req = (PurchaseRequirement)ViewBag.Requirement; }
+<div class="pagehead"><div><p class="eyebrow">RFQ / OFFERS</p><h1>پیشنهادهای تأمین</h1><p>@req.RequestCode · @req.Item?.Name · مقدار @req.Quantity</p></div></div>
+<form method="post" asp-action="AddOffer" class="panel formgrid">
+<input type="hidden" name="requirementId" value="@req.Id" />
+<label>تأمین‌کننده<select name="supplierId" asp-items="ViewBag.Suppliers"></select></label>
+<label>قیمت واحد<input name="unitPrice" type="number" min="0" step="0.01" required /></label>
+<label>زمان تحویل (روز)<input name="deliveryDays" type="number" min="1" required /></label>
+<label>اعتبار پیشنهاد تا<input name="validUntil" type="date" required /></label>
+<label>شرایط پرداخت<input name="paymentTerms" placeholder="مثلاً نقد / چک ۳۰ روزه" /></label>
+
+<label class="wide">یادداشت و توضیحات<textarea name="notes"></textarea></label>
+<button class="btn">ثبت نسخه جدید پیشنهاد</button>
+</form>
+<div class="pagehead"><div></div><a class="btn" asp-action="Compare" asp-route-id="@req.Id">مقایسه و تحلیل پیشنهادها</a></div>
+@if (TempData["PerformanceError"] is string error) { <div class="notice">@error</div> }
+<div class="notice">فقط پیشنهاد تأییدشده از نظر فنی و دارای اعتبار می‌تواند به سفارش تبدیل شود. پیشنهادهای جدید به‌صورت نسخه مستقل ثبت می‌شوند. پایین‌ترین قیمت به‌تنهایی مبنای انتخاب نیست و وضعیت فنی نیازمند بررسی انسانی است.</div>
+<div class="panel"><table><thead><tr><th>تأمین‌کننده</th><th>قیمت واحد</th><th>تحویل</th><th>پرداخت</th><th>اعتبار</th><th>وضعیت فنی</th><th>نسخه</th><th>اقدام</th></tr></thead><tbody>@foreach(var o in Model){<tr><td>@o.Supplier?.Name</td><td>@o.UnitPrice.ToString("N0")</td><td>@o.DeliveryDays روز</td><td>@o.PaymentTerms</td><td>@o.ValidUntil.ToString("yyyy/MM/dd")</td><td><span class="tag">@o.TechnicalStatus</span></td><td>v@o.Version</td><td>
+@if (User.IsInRole("Admin")) { <form method="post" asp-action="ReviewTechnical" style="display:flex;gap:6px;flex-wrap:wrap;margin:0"><input type="hidden" name="offerId" value="@o.Id"/><button class="btn" name="decision" value="تأیید فنی" type="submit" style="padding:6px 10px;font-size:12px">تأیید فنی</button><button class="btn secondary" name="decision" value="رد فنی" type="submit" style="padding:6px 10px;font-size:12px">رد فنی</button></form> }
+@if (o.TechnicalStatus == "تأیید فنی" && o.ValidUntil.Date >= DateTime.UtcNow.Date) { <form method="post" asp-controller="SupplierPerformance" asp-action="CreateOrder" style="margin:6px 0 0"><input type="hidden" name="offerId" value="@o.Id"/><button class="btn" type="submit" style="padding:6px 10px;font-size:12px">تبدیل به سفارش</button></form> } else { <span class="muted">نیازمند تأیید فنی / اعتبار</span> }
+</td></tr>}</tbody></table></div>
