@@ -51,5 +51,5 @@ app.MapGet("/health", async (ApplicationDbContext db) =>
         ? Results.Ok(new { status = "ok" })
         : Results.StatusCode(StatusCodes.Status503ServiceUnavailable)).AllowAnonymous();
 app.MapControllerRoute(name: "default", pattern: "{controller=Home}/{action=Index}/{id?}"); app.MapRazorPages();
-using (var scope = app.Services.CreateScope()) await DbInitializer.InitializeAsync(scope.ServiceProvider, app.Environment);
+using (var scope = app.Services.CreateScope()) await DbInitializer.InitializeAsync(scope.ServiceProvider, app.Configuration);
 app.Run();

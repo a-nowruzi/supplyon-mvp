@@ -10,12 +10,12 @@
 1. یک Application از مخزن ایجاد کنید و Build Pack را `Dockerfile` بگذارید.
 2. Base Directory را ریشه مخزن و Dockerfile Location را `./Dockerfile` تنظیم کنید.
 3. مقدار Ports Exposes را `8080` بگذارید و دامنه را با همین پورت داخلی به برنامه متصل کنید.
-4. متغیرهای `ASPNETCORE_ENVIRONMENT=Production`، `O2BAN_BOOTSTRAP_ADMIN_EMAIL`، `O2BAN_BOOTSTRAP_ADMIN_PASSWORD` و `O2BAN_SEED_DEMO_DATA=false` را در Coolify وارد کنید.
-5. Connection String را در Coolify Override نکنید تا برنامه از مقدار موجود در `appsettings.json` استفاده کند. پیش از Deploy، اتصال شبکه‌ای به همان میزبان و پورت دیتابیس را بررسی کنید.
+4. مقادیر `AllowedHosts`، `O2Ban:BootstrapAdmin:Email`، `O2Ban:BootstrapAdmin:Password` و `O2Ban:SeedDemoData` را در `appsettings.json` بازبینی کنید. ایمیل و گذرواژه مدیر اولیه در فایل فعلی تنظیم شده‌اند.
+5. `ASPNETCORE_ENVIRONMENT=Production` را در Coolify بگذارید. Connection String از `appsettings.json` خوانده می‌شود؛ دسترسی شبکه‌ای کانتینر به دیتابیس را بررسی کنید.
 6. در Persistent Storage مسیر `/app/App_Data/Evidence` را به Volume متصل کنید.
 7. Health Check را روی `/health` تنظیم کنید. پورت برنامه را به‌صورت host port منتشر نکنید؛ مسیر عمومی باید از Proxy خود Coolify عبور کند.
 8. Deploy را اجرا کنید و Build Log، Runtime Log، دامنه و گواهی HTTPS را بررسی کنید.
-9. پس از ورود اولیه، گذرواژه مدیر را عوض کنید و حساب‌های مجاز را بسازید. بعد از ایجاد مدیر، متغیرهای `O2BAN_BOOTSTRAP_ADMIN_*` را می‌توانید از Coolify حذف کنید؛ حساب مدیر در دیتابیس باقی می‌ماند.
+9. پس از ورود اولیه، گذرواژه مدیر را عوض کنید و حساب‌های مجاز را بسازید. تغییر مقدار bootstrap در فایل تنظیمات، گذرواژه حساب موجود را تغییر نمی‌دهد.
 
 ## آزمون پذیرش پیش از تحویل
 - [ ] صفحه ورود از دامنه با HTTPS باز می‌شود.

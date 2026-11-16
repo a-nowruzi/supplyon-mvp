@@ -30,40 +30,24 @@
 > نکته سازگاری: Provider رسمی Pomelo در شاخه 9.x به EF Core 9 وابسته است؛ برای حفظ .NET 10 و EF Core 10، این نسخه از شاخه Microting استفاده می‌کند که برای MariaDB 11.4 نیز در ماتریس آزمون خود پشتیبانی اعلام کرده است. این Provider فورک جامعه‌محور است، نه بسته رسمی Pomelo یا Microsoft. پیش از ارتقای بعدی نسخه Provider و EF Core باید با هم بررسی شوند.
 
 ## پیش‌نیازها و اجرا
-1. نصب .NET 10 SDK و Docker Desktop / Docker Engine.
-2. از پوشه پروژه، فایل تنظیمات محیطی را ایجاد کنید:
+1. نصب .NET 10 SDK. برای اجرای کانتینری، Docker Desktop / Docker Engine هم لازم است.
+2. تنظیمات مدیر اولیه و Connection String در `appsettings.json` قرار دارند. ایمیل پیش‌فرض مدیر `admin@localhost` است؛ در صورت نیاز می‌توانید مقادیر را در همان فایل تغییر دهید.
+3. برای اجرای مستقیم:
    ```bash
-   cp .env.example .env
+   dotnet restore
+   dotnet run
    ```
-   در ویندوز PowerShell:
-   ```powershell
-   Copy-Item .env.example .env
-   ```
-3. در فایل `.env`، مقادیر `MARIADB_ROOT_PASSWORD`، `MARIADB_PASSWORD` و `O2BAN_BOOTSTRAP_ADMIN_PASSWORD` را با گذرواژه‌های قوی و منحصربه‌فرد جایگزین کنید. از گذرواژه‌های نمونه استفاده نکنید.
-4. اجرای محلی با Docker Compose:
+   برنامه با تنظیمات `appsettings.json` بالا می‌آید و در اولین اجرا ساختار دیتابیس و مدیر اولیه را ایجاد می‌کند. داده‌های نمایشی با `O2Ban:SeedDemoData` کنترل می‌شوند.
+4. برای اجرای کانتینری:
    ```bash
-   docker compose up -d --wait
+   docker compose up -d --build
    ```
-   برنامه روی `http://localhost:8080` در دسترس است. برای اجرای برنامه خارج از Docker، MariaDB را با `docker compose up -d --wait mariadb` بالا بیاورید و Connection String را از طریق متغیر محیطی `ConnectionStrings__DefaultConnection` تنظیم کنید. فرمت آن:
-   ```text
-   Server=127.0.0.1;Port=3306;Database=o2ban_enterprise_validation;User=o2ban_app;Password=YOUR_PASSWORD;CharSet=utf8mb4;SslMode=Preferred
-   ```
-5. در اولین اجرا، برنامه با `EnsureCreated()` ساختار دیتابیس خالی را ایجاد می‌کند؛ داده‌های نمایشی فقط در Development یا با تنظیم صریح `O2BAN_SEED_DEMO_DATA=true` بارگذاری می‌شوند.
-
-### نکات مهم دیتابیس
-- نسخه Docker پیش‌فرض MariaDB برابر 11.4 LTS است.
-- پورت دیتابیس فقط روی `127.0.0.1:3306` منتشر می‌شود و به‌صورت پیش‌فرض از شبکه عمومی قابل دسترسی نیست.
-- داده‌های دیتابیس در Volume به نام `o2ban_mariadb_data` نگهداری می‌شوند؛ حذف کانتینر به‌تنهایی داده‌ها را حذف نمی‌کند.
-- برای توقف MariaDB بدون حذف داده‌ها: `docker compose down`.
-- برای حذف کامل داده‌های محلی، فقط در صورت اطمینان از داشتن نسخه پشتیبان: `docker compose down -v`.
-- فایل `.env` حاوی گذرواژه است و نباید در Git یا برای دیگران ارسال شود.
+   آدرس برنامه `http://localhost:8080` است. فایل‌های شواهد در Docker Volume نگهداری می‌شوند.
 
 ## حساب‌های کاربری و راه‌اندازی امن
-- هیچ حساب مدیر یا کاربر با گذرواژه ثابت داخل سورس ایجاد نمی‌شود.
-- در Production، حساب مدیر اولیه فقط از طریق متغیرهای محیطی `O2BAN_BOOTSTRAP_ADMIN_EMAIL` و `O2BAN_BOOTSTRAP_ADMIN_PASSWORD` ساخته می‌شود.
+- ایمیل و گذرواژه مدیر اولیه از `O2Ban:BootstrapAdmin:Email` و `O2Ban:BootstrapAdmin:Password` در `appsettings.json` خوانده می‌شوند. حساب مدیر فقط در اولین اجرا ساخته می‌شود؛ تغییر مقدار bootstrap پس از ساخت حساب، گذرواژه آن را عوض نمی‌کند.
 - ثبت‌نام عمومی غیرفعال است؛ مدیر از بخش «مدیریت کاربران» حساب‌های کارشناسان را ایجاد می‌کند.
-- گذرواژه مدیر اولیه را پس از اولین ورود از تنظیمات حساب تغییر دهید و دسترسی به متغیرهای محیطی سرور را محدود کنید.
-- داده‌های نمایشی فقط در Development یا در صورت تنظیم `O2BAN_SEED_DEMO_DATA=true` بارگذاری می‌شوند. در Production مقدار آن را `false` نگه دارید.
+- داده‌های نمایشی با `O2Ban:SeedDemoData` در همان فایل کنترل می‌شوند.
 
 ## استقرار روی سرور
 برای مراحل استقرار با Dockerfile، تنظیم دامنه و نگهداری فایل‌ها در Coolify، راهنمای [استقرار در Coolify](COOLIFY_DEPLOYMENT_FA.md) را ببینید. استقرار Coolify از `Dockerfile` ریشه استفاده می‌کند و مقدار Connection String را از `appsettings.json` همین مخزن می‌خواند؛ دسترسی شبکه‌ای سرور Coolify به دیتابیس پیکربندی‌شده باید برقرار باشد.

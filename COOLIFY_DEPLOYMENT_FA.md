@@ -12,19 +12,18 @@ Dockerfile برنامه را روی `0.0.0.0:8080` اجرا می‌کند. در 
 
 ## ۲. پیکربندی و دیتابیس
 
-این استقرار `appsettings.json` موجود در مخزن را بدون تغییر می‌خواند. متغیر محیطی `ConnectionStrings__DefaultConnection` تعریف نکنید تا مقدار فایل جایگزین نشود. اطمینان حاصل کنید که کانتینر Coolify می‌تواند به میزبان و پورت دیتابیس تنظیم‌شده در آن فایل وصل شود.
+برنامه تنظیمات را از `appsettings.json` می‌خواند. Connection String فعلی همان‌جا قرار دارد؛ دسترسی کانتینر Coolify به میزبان و پورت دیتابیس پیکربندی‌شده را فراهم کنید.
 
-در بخش Environment Variables این مقادیر را وارد کنید:
+پیش از Deploy، در `appsettings.json` این موارد را کامل کنید:
 
-| نام | مقدار |
-|---|---|
-| `ASPNETCORE_ENVIRONMENT` | `Production` |
-| `O2BAN_BOOTSTRAP_ADMIN_EMAIL` | ایمیل مدیر اولیه |
-| `O2BAN_BOOTSTRAP_ADMIN_PASSWORD` | گذرواژه قوی مدیر اولیه |
-| `O2BAN_SEED_DEMO_DATA` | `false` |
-| `AllowedHosts` | دامنه واقعی برنامه |
+- `AllowedHosts`: دامنه برنامه
+- `O2Ban:BootstrapAdmin:Email`: ایمیل مدیر اولیه
+- `O2Ban:BootstrapAdmin:Password`: گذرواژه مدیر اولیه مطابق سیاست گذرواژه برنامه
+- `O2Ban:SeedDemoData`: برای داده‌های ساختگی `true` و در غیر این صورت `false`
 
-`O2BAN_BOOTSTRAP_ADMIN_EMAIL` و `O2BAN_BOOTSTRAP_ADMIN_PASSWORD` فقط برای ساخت مدیر اولیه لازم‌اند. پس از نخستین ورود، گذرواژه را تغییر دهید؛ سپس این دو متغیر را می‌توان از تنظیمات Coolify حذف کرد.
+در فایل فعلی، ایمیل و گذرواژه مدیر اولیه از قبل تنظیم شده‌اند. برای تغییر آن‌ها، ویرایش `appsettings.json` را پیش از ساخت و انتشار تصویر انجام دهید؛ حساب مدیر فقط در اولین اجرا ساخته می‌شود و تغییر مقدار bootstrap بعداً گذرواژه حساب موجود را عوض نمی‌کند.
+
+`ASPNETCORE_ENVIRONMENT=Production` را در Environment Variables سرویس بگذارید. حساب مدیر فقط در اولین اجرا ساخته می‌شود؛ تنظیم مقدار Password بعداً گذرواژه حساب موجود را عوض نمی‌کند.
 
 ## ۳. ذخیره‌سازی شواهد و سلامت سرویس
 
