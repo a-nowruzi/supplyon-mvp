@@ -1,0 +1,49 @@
+services:
+  mariadb:
+    image: mariadb:11.4
+    restart: unless-stopped
+    environment:
+      MARIADB_ROOT_PASSWORD: ${MARIADB_ROOT_PASSWORD:?Set MARIADB_ROOT_PASSWORD}
+      MARIADB_DATABASE: ${MARIADB_DATABASE:-o2ban_pilot}
+      MARIADB_USER: ${MARIADB_USER:-o2ban_app}
+      MARIADB_PASSWORD: ${MARIADB_PASSWORD:?Set MARIADB_PASSWORD}
+      TZ: Asia/Tehran
+    volumes:
+      - o2ban_mariadb_data:/var/lib/mysql
+    ports:
+      - "127.0.0.1:3306:3306"
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+      start_period: 20s
+    networks: [o2ban_private]
+
+  app:
+    build: .
+    restart: unless-stopped
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      AllowedHosts: ${O2BAN_ALLOWED_HOSTS:-*}
+      ConnectionStrings__DefaultConnection: "Server=mariadb;Port=3306;Database=${MARIADB_DATABASE:-o2ban_pilot};User=${MARIADB_USER:-o2ban_app};Password=${MARIADB_PASSWORD};CharSet=utf8mb4;SslMode=Preferred"
+      O2BAN_BOOTSTRAP_ADMIN_EMAIL: ${O2BAN_BOOTSTRAP_ADMIN_EMAIL:-}
+      O2BAN_BOOTSTRAP_ADMIN_PASSWORD: ${O2BAN_BOOTSTRAP_ADMIN_PASSWORD:-}
+      O2BAN_SEED_DEMO_DATA: ${O2BAN_SEED_DEMO_DATA:-false}
+      TZ: Asia/Tehran
+    ports:
+      - "127.0.0.1:8080:8080"
+    volumes:
+      - o2ban_evidence_data:/app/App_Data/Evidence
+    networks: [o2ban_private]
+
+volumes:
+  o2ban_mariadb_data:
+  o2ban_evidence_data:
+
+networks:
+  o2ban_private:
+    driver: bridge

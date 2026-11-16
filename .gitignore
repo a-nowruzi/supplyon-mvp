@@ -1,0 +1,8 @@
+.env
+**/bin/
+**/obj/
+*.user
+*.suo
+App_Data/
+.env.production
+.vs/
