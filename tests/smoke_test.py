@@ -50,14 +50,30 @@ check("liveness", lambda: request("/health/live"))
 check("MariaDB readiness", lambda: request("/health/ready"))
 check("login with seeded expert", lambda: request("/api/auth/login", "POST", {"username":"expert1","password":"O2ban@2026"}))
 check("authenticated identity", lambda: request("/api/auth/me"))
+for username, role_part in (("expert1", "داخلی | قطعات تولیدی"), ("expert2", "داخلی | اقلام غیرتولیدی"), ("expert3", "خارجی | قطعات تولیدی"), ("expert4", "خارجی | اقلام غیرتولیدی")):
+    _, identity = request("/api/auth/login", "POST", {"username":username,"password":"O2ban@2026"})
+    assert role_part in identity["role"], (username, identity)
+check("all four procurement personas can authenticate", lambda: None)
+request("/api/auth/login", "POST", {"username":"expert1","password":"O2ban@2026"})
 
 for route in ("dashboard", "companies", "suppliers", "products", "requirements", "rfqs", "offers", "evidence", "feedback", "reports"):
     check(f"GET {route}", lambda route=route: request("/api/" + route))
 
 _, initial_suppliers = request("/api/suppliers")
 _, initial_products = request("/api/products")
-assert len(initial_suppliers) >= 6 and len(initial_products) >= 8
-check("demo seed contains supplier and product master data", lambda: None)
+_, initial_requirements = request("/api/requirements")
+_, initial_rfqs = request("/api/rfqs")
+_, initial_offers = request("/api/offers")
+_, initial_evidence = request("/api/evidence")
+assert len(initial_suppliers) >= 12 and len(initial_products) >= 15
+assert len(initial_requirements) >= 8 and len(initial_rfqs) >= 8
+assert len(initial_offers) >= 8 and len(initial_evidence) >= 15
+for persona in ("داخلی | تولیدی", "داخلی | غیرتولیدی", "خارجی | تولیدی", "خارجی | غیرتولیدی"):
+    assert sum(persona in x["title"] for x in initial_requirements) >= 2, persona
+check("automotive demo seed covers all four procurement personas", lambda: None)
+_, home = request("/")
+assert 'name="viewport"' in home and 'id="mobileMenu"' in home
+check("responsive mobile navigation shell", lambda: None)
 
 # Company insert and readback.
 company = {"name":"شرکت آزمون " + str(int(time.time())),"tier":"Tier 2","city":"تهران",
@@ -88,7 +104,9 @@ requirement = {"title":"درخواست آزمون " + suffix,"category":"آزم�
     "unit":"عدد","deliveryLocation":"تهران","requiredWithinDays":10,"paymentTerms":"نقدی","priority":"عادی"}
 _, created_req = request("/api/requirements", "POST", requirement, expected=(201,))
 check("purchase requirement insert", lambda: None)
-check("supplier matching endpoint", lambda: request(f"/api/matches/{created_req['id']}"))
+_, match_results = request(f"/api/matches/{created_req['id']}")
+assert all("eligible" in x and "breakdown" in x and "warnings" in x for x in match_results)
+check("explainable supplier matching response", lambda: None)
 check("missing requirement returns 404", lambda: request("/api/matches/2147483000", expected=(404,)))
 
 rfq = {"code":"RFQ-TEST-"+suffix,"title":"استعلام تست","requirementTitle":requirement["title"],

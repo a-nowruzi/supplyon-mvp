@@ -122,7 +122,7 @@ api.MapPost("/suppliers", async (Supplier x, AppDb db) =>
     if (x.NationalId is not null && (x.NationalId.Length != 11 || !x.NationalId.All(char.IsDigit)))
         return Results.BadRequest(new { message = "شناسه ملی باید دقیقاً ۱۱ رقم باشد یا خالی بماند." });
     if (x.LeadTimeDays < 0) return Results.BadRequest(new { message = "زمان تحویل نمی‌تواند منفی باشد." });
-    var allowedEvidence = new[] { "اعلام‌شده", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده" };
+    var allowedEvidence = new[] { "اعلام‌شده", "دارای مدرک", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده" };
     if (!allowedEvidence.Contains(x.EvidenceStatus)) return Results.BadRequest(new { message = "وضعیت شواهد انتخاب‌شده معتبر نیست." });
     if (x.NationalId is not null && await db.Suppliers.AnyAsync(s => s.NationalId == x.NationalId))
         return Results.Conflict(new { message = "تأمین‌کننده‌ای با این شناسه ملی قبلاً ثبت شده است." });
@@ -132,23 +132,78 @@ api.MapPost("/suppliers", async (Supplier x, AppDb db) =>
     return Results.Created($"/api/suppliers/{x.Id}", x);
 });
 api.MapGet("/products", async (AppDb db) => Results.Ok(await db.Products.OrderBy(x => x.Name).ToListAsync()));
-api.MapPost("/products", async (Product x, AppDb db) => { x.Id = 0; db.Products.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/products/{x.Id}", x); });
+api.MapPost("/products", async (Product x, AppDb db) => {
+    x.Id = 0; x.Code = x.Code?.Trim() ?? ""; x.Name = x.Name?.Trim() ?? "";
+    if (string.IsNullOrWhiteSpace(x.Code) || string.IsNullOrWhiteSpace(x.Name)) return (IResult)Results.BadRequest(new { message = "کد و نام کالا الزامی است." });
+    if (x.Code.Length > 60 || x.Name.Length > 180) return (IResult)Results.BadRequest(new { message = "طول کد یا نام کالا بیش از حد مجاز است." });
+    if (await db.Products.AnyAsync(p => p.Code == x.Code)) return (IResult)Results.Conflict(new { message = "کالایی با این کد قبلاً ثبت شده است." });
+    db.Products.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/products/{x.Id}", x);
+});
 api.MapGet("/requirements", async (AppDb db) => Results.Ok(await db.Requirements.OrderByDescending(x => x.CreatedAt).ToListAsync()));
-api.MapPost("/requirements", async (PurchaseRequirement x, ClaimsPrincipal p, AppDb db) => { x.Id = 0; x.CreatedAt = DateTime.UtcNow; x.CreatedBy = p.Identity?.Name ?? "کاربر"; x.Status = "جدید"; db.Requirements.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/requirements/{x.Id}", x); });
+api.MapPost("/requirements", async (PurchaseRequirement x, ClaimsPrincipal p, AppDb db) => {
+    x.Id = 0; x.Title = x.Title?.Trim() ?? ""; x.Category = x.Category?.Trim() ?? ""; x.Description = x.Description?.Trim() ?? "";
+    if (string.IsNullOrWhiteSpace(x.Title) || string.IsNullOrWhiteSpace(x.Category) || string.IsNullOrWhiteSpace(x.Description)) return (IResult)Results.BadRequest(new { message = "عنوان، گروه کالا و شرح فنی درخواست الزامی است." });
+    if (x.Quantity <= 0 || x.RequiredWithinDays <= 0) return (IResult)Results.BadRequest(new { message = "مقدار و مهلت تأمین باید بیشتر از صفر باشند." });
+    if (string.IsNullOrWhiteSpace(x.Unit) || string.IsNullOrWhiteSpace(x.DeliveryLocation)) return (IResult)Results.BadRequest(new { message = "واحد و محل تحویل الزامی است." });
+    if (x.Priority is not ("عادی" or "زیاد" or "فوری")) return (IResult)Results.BadRequest(new { message = "اولویت درخواست معتبر نیست." });
+    x.CreatedAt = DateTime.UtcNow; x.CreatedBy = p.Identity?.Name ?? "کاربر"; x.Status = "جدید"; db.Requirements.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/requirements/{x.Id}", x);
+});
 api.MapGet("/matches/{requirementId:int}", async (int requirementId, AppDb db) => {
-    var r = await db.Requirements.FindAsync(requirementId); if (r is null) return (IResult)Results.NotFound();
-    var suppliers = await db.Suppliers.ToListAsync();
-    var ranked = suppliers.Select(s => new { supplier = s, score = MatchScore(r, s) }).OrderByDescending(x => x.score).Take(10).Select(x => new { x.supplier.Id, x.supplier.Name, x.supplier.City, x.supplier.Capabilities, x.supplier.EvidenceStatus, x.supplier.PaymentTerms, x.supplier.LeadTimeDays, score = x.score, reasons = MatchReasons(r, x.supplier) });
+    var r = await db.Requirements.FindAsync(requirementId);
+    if (r is null) return (IResult)Results.NotFound();
+    var ranked = (await db.Suppliers.ToListAsync())
+        .Select(s => EvaluateMatch(r, s))
+        .OrderByDescending(x => x.Eligible)
+        .ThenByDescending(x => x.Score)
+        .Take(15)
+        .Select(x => new {
+            x.Supplier.Id, x.Supplier.Name, x.Supplier.City, x.Supplier.Capabilities,
+            x.Supplier.EvidenceStatus, x.Supplier.PaymentTerms, x.Supplier.LeadTimeDays,
+            score = x.Score, eligible = x.Eligible, reasons = x.Reasons,
+            warnings = x.Warnings, breakdown = x.Breakdown,
+            scoreDisclaimer = "امتیاز صرفاً غربالگری اولیه بر اساس داده‌های ثبت‌شده است؛ تأیید فنی، تجاری یا حقوقی محسوب نمی‌شود."
+        });
     return (IResult)Results.Ok(ranked);
 });
 api.MapGet("/rfqs", async (AppDb db) => Results.Ok(await db.Rfqs.OrderByDescending(x => x.CreatedAt).ToListAsync()));
-api.MapPost("/rfqs", async (Rfq x, ClaimsPrincipal p, AppDb db) => { x.Id = 0; x.CreatedAt = DateTime.UtcNow; x.CreatedBy = p.Identity?.Name ?? "کاربر"; x.Status = "در انتظار پیشنهاد"; if (string.IsNullOrWhiteSpace(x.Code)) x.Code = $"RFQ-{DateTime.UtcNow:yyMMddHHmmss}"; db.Rfqs.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/rfqs/{x.Id}", x); });
+api.MapPost("/rfqs", async (Rfq x, ClaimsPrincipal p, AppDb db) => {
+    x.Id = 0; x.Title = x.Title?.Trim() ?? ""; x.RequirementTitle = x.RequirementTitle?.Trim() ?? ""; x.InvitedSuppliers = x.InvitedSuppliers?.Trim() ?? "";
+    if (string.IsNullOrWhiteSpace(x.Title) || string.IsNullOrWhiteSpace(x.RequirementTitle) || string.IsNullOrWhiteSpace(x.InvitedSuppliers)) return (IResult)Results.BadRequest(new { message = "عنوان، درخواست مرتبط و حداقل یک تأمین‌کننده دعوت‌شده الزامی است." });
+    if (x.Deadline <= DateTime.UtcNow) return (IResult)Results.BadRequest(new { message = "مهلت پاسخ RFQ باید در آینده باشد." });
+    x.CreatedAt = DateTime.UtcNow; x.CreatedBy = p.Identity?.Name ?? "کاربر"; x.Status = "در انتظار پیشنهاد"; if (string.IsNullOrWhiteSpace(x.Code)) x.Code = $"RFQ-{DateTime.UtcNow:yyMMddHHmmss}";
+    if (await db.Rfqs.AnyAsync(r => r.Code == x.Code)) return (IResult)Results.Conflict(new { message = "کد RFQ تکراری است." });
+    db.Rfqs.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/rfqs/{x.Id}", x);
+});
 api.MapGet("/offers", async (AppDb db) => Results.Ok(await db.Offers.OrderByDescending(x => x.CreatedAt).ToListAsync()));
-api.MapPost("/offers", async (Offer x, AppDb db) => { x.Id = 0; x.CreatedAt = DateTime.UtcNow; db.Offers.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/offers/{x.Id}", x); });
+api.MapPost("/offers", async (Offer x, AppDb db) => {
+    x.Id = 0; x.RfqCode = x.RfqCode?.Trim() ?? ""; x.SupplierName = x.SupplierName?.Trim() ?? "";
+    if (string.IsNullOrWhiteSpace(x.RfqCode) || string.IsNullOrWhiteSpace(x.SupplierName)) return (IResult)Results.BadRequest(new { message = "کد RFQ و نام تأمین‌کننده الزامی است." });
+    if (!await db.Rfqs.AnyAsync(r => r.Code == x.RfqCode)) return (IResult)Results.BadRequest(new { message = "کد RFQ در سامانه پیدا نشد." });
+    if (!await db.Suppliers.AnyAsync(s => s.Name == x.SupplierName)) return (IResult)Results.BadRequest(new { message = "تأمین‌کننده در فهرست سامانه پیدا نشد؛ ابتدا رکورد آن را بررسی کنید." });
+    if (x.UnitPrice <= 0 || x.Quantity <= 0 || x.DeliveryDays <= 0) return (IResult)Results.BadRequest(new { message = "قیمت، مقدار و زمان تحویل باید بیشتر از صفر باشند." });
+    if (x.ValidUntil <= DateTime.UtcNow) return (IResult)Results.BadRequest(new { message = "تاریخ اعتبار پیشنهاد باید در آینده باشد." });
+    x.CreatedAt = DateTime.UtcNow; db.Offers.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/offers/{x.Id}", x);
+});
 api.MapGet("/evidence", async (AppDb db) => Results.Ok(await db.Evidence.OrderByDescending(x => x.CreatedAt).ToListAsync()));
-api.MapPost("/evidence", async (Evidence x, AppDb db) => { x.Id = 0; x.CreatedAt = DateTime.UtcNow; db.Evidence.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/evidence/{x.Id}", x); });
+api.MapPost("/evidence", async (Evidence x, AppDb db) => {
+    x.Id = 0; x.SupplierName = x.SupplierName?.Trim() ?? ""; x.Claim = x.Claim?.Trim() ?? ""; x.Notes = x.Notes?.Trim() ?? "";
+    if (string.IsNullOrWhiteSpace(x.SupplierName) || string.IsNullOrWhiteSpace(x.Claim)) return (IResult)Results.BadRequest(new { message = "نام تأمین‌کننده و شرح ادعا الزامی است." });
+    if (!await db.Suppliers.AnyAsync(s => s.Name == x.SupplierName)) return (IResult)Results.BadRequest(new { message = "تأمین‌کننده در سامانه پیدا نشد." });
+    var sources = new[] { "اظهار شرکت", "کاتالوگ", "سند بارگذاری‌شده", "منبع رسمی", "بازرسی مستقل", "شواهد معامله" };
+    var statuses = new[] { "اعلام‌شده", "دارای مدرک", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده" };
+    if (!sources.Contains(x.Source) || !statuses.Contains(x.Status)) return (IResult)Results.BadRequest(new { message = "منبع یا وضعیت شواهد معتبر نیست." });
+    x.CreatedAt = DateTime.UtcNow; db.Evidence.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/evidence/{x.Id}", x);
+});
 api.MapGet("/feedback", async (AppDb db) => Results.Ok(await db.Feedback.OrderByDescending(x => x.CreatedAt).ToListAsync()));
-api.MapPost("/feedback", async (Feedback x, ClaimsPrincipal p, AppDb db) => { x.Id = 0; x.CreatedAt = DateTime.UtcNow; x.UserName = p.Identity?.Name ?? "کاربر"; db.Feedback.Add(x); await db.SaveChangesAsync(); return Results.Created($"/api/feedback/{x.Id}", x); });
+api.MapPost("/feedback", async (Feedback x, ClaimsPrincipal p, AppDb db) => {
+    x.Id = 0; x.Description = x.Description?.Trim() ?? "";
+    var types = new[] { "مشکل", "پیشنهاد", "نقص اطلاعات", "خطا", "رضایت" };
+    var modules = new[] { "عمومی", "شرکت‌ها", "تأمین‌کنندگان", "کاتالوگ", "درخواست خرید", "کشف تأمین‌کننده", "RFQ", "پیشنهادها", "شواهد", "گزارش‌ها" };
+    if (!types.Contains(x.Type) || !modules.Contains(x.Module)) return (IResult)Results.BadRequest(new { message = "نوع بازخورد یا بخش نرم‌افزار معتبر نیست." });
+    if (x.Rating < 1 || x.Rating > 5) return (IResult)Results.BadRequest(new { message = "امتیاز باید بین ۱ تا ۵ باشد." });
+    if (string.IsNullOrWhiteSpace(x.Description) || x.Description.Length < 10) return (IResult)Results.BadRequest(new { message = "شرح بازخورد باید حداقل ۱۰ نویسه باشد." });
+    x.CreatedAt = DateTime.UtcNow; x.UserName = p.Identity?.Name ?? "کاربر"; db.Feedback.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/feedback/{x.Id}", x);
+});
 api.MapGet("/reports", async (AppDb db) => Results.Ok(new {
     users = await db.Users.CountAsync(), companies = await db.Companies.CountAsync(), suppliers = await db.Suppliers.CountAsync(), requirements = await db.Requirements.CountAsync(), rfqs = await db.Rfqs.CountAsync(), offers = await db.Offers.CountAsync(), feedback = await db.Feedback.CountAsync(),
     avgSupplierScore = await db.Suppliers.AverageAsync(x => (double?)x.InitialScore) ?? 0,
@@ -159,15 +214,73 @@ api.MapGet("/reports", async (AppDb db) => Results.Ok(new {
 app.MapFallbackToFile("index.html");
 app.Run();
 
-static int MatchScore(PurchaseRequirement r, Supplier s) {
-    var text = $"{s.Capabilities} {s.Products} {s.Name}".ToLowerInvariant(); var terms = ($"{r.Title} {r.Category} {r.Description}").ToLowerInvariant().Split(' ', StringSplitOptions.RemoveEmptyEntries).Distinct();
-    var hits = terms.Count(t => t.Length > 2 && text.Contains(t)); var score = Math.Min(60, hits * 15);
-    if (s.EvidenceStatus == "تأییدشده توسط شرکت") score += 15; else if (s.EvidenceStatus == "اعلام‌شده") score += 8;
-    if (s.LeadTimeDays > 0 && r.RequiredWithinDays > 0) score += s.LeadTimeDays <= r.RequiredWithinDays ? 15 : 4;
-    if (!string.IsNullOrWhiteSpace(s.PaymentTerms)) score += 10;
-    return Math.Min(100, score);
+static MatchEvaluation EvaluateMatch(PurchaseRequirement r, Supplier s)
+{
+    var reasons = new List<string>();
+    var warnings = new List<string>();
+    var breakdown = new Dictionary<string, int>();
+    var reqText = NormalizeText($"{r.Title} {r.Category} {r.Description}");
+    var supplierText = NormalizeText($"{s.Capabilities} {s.Products} {s.Name}");
+    var stop = new HashSet<string>(new[] { "برای", "باید", "است", "عدد", "مورد", "نیاز", "خرید", "تأمین", "تامین", "قطعات", "قطعه", "تولیدی", "غیرتولیدی", "داخلی", "خارجی", "خودرو", "خودروی", "با", "از", "در", "و", "یا", "به", "تا", "این", "آن", "یک", "های", "شود", "شده", "مربوط", "شرح", "مشخصات", "فنی" });
+    var terms = reqText.Split(' ', StringSplitOptions.RemoveEmptyEntries).Where(x => x.Length >= 3 && !stop.Contains(x)).Distinct().ToArray();
+    var hits = terms.Count(t => supplierText.Contains(t, StringComparison.Ordinal));
+    var capabilityScore = terms.Length == 0 ? 15 : (int)Math.Round(45d * hits / terms.Length);
+    capabilityScore = Math.Clamp(capabilityScore, 0, 45);
+    breakdown["ارتباط کالایی"] = capabilityScore;
+    if (hits > 0) reasons.Add($"هم‌پوشانی متنی در {hits} واژه از {terms.Length} واژه کلیدی");
+    else warnings.Add("هم‌پوشانی کالایی در متن ثبت‌شده پیدا نشد؛ طبقه‌بندی دستی لازم است.");
+
+    var leadScore = 0;
+    if (r.RequiredWithinDays > 0 && s.LeadTimeDays > 0)
+    {
+        if (s.LeadTimeDays <= r.RequiredWithinDays) { leadScore = 20; reasons.Add("زمان تحویل اعلامی در محدوده مهلت درخواست است."); }
+        else { leadScore = 3; warnings.Add("زمان تحویل اعلامی از مهلت موردنیاز بیشتر است."); }
+    }
+    else warnings.Add("زمان تحویل برای مقایسه کافی نیست.");
+    breakdown["زمان تحویل"] = leadScore;
+
+    var evidenceScore = s.EvidenceStatus switch
+    {
+        "تأییدشده توسط شرکت" => 20,
+        "دارای مدرک" => 15,
+        "اعلام‌شده" => 8,
+        "نیازمند به‌روزرسانی" => 4,
+        _ => 0
+    };
+    breakdown["وضعیت شواهد"] = evidenceScore;
+    if (s.EvidenceStatus is "مشکوک" or "ردشده") warnings.Add("وضعیت شواهد پرریسک است؛ این تأمین‌کننده نباید بدون بررسی مستقل انتخاب شود.");
+    else if (s.EvidenceStatus == "دارای تناقض") warnings.Add("بین شواهد یا اطلاعات ثبت‌شده تناقض وجود دارد.");
+    else if (s.EvidenceStatus == "تأییدشده توسط شرکت") warnings.Add("تأیید توسط خود شرکت به معنی اعتبارسنجی مستقل نیست.");
+    else if (s.EvidenceStatus == "دارای مدرک") warnings.Add("وجود مدرک به‌تنهایی اصالت، اعتبار یا انطباق آن را اثبات نمی‌کند.");
+
+    var paymentScore = string.IsNullOrWhiteSpace(s.PaymentTerms) ? 0 : 10;
+    breakdown["اطلاعات پرداخت"] = paymentScore;
+    if (paymentScore > 0) reasons.Add("شرایط پرداخت برای مذاکره اولیه ثبت شده است.");
+    else warnings.Add("شرایط پرداخت ثبت نشده است.");
+
+    var scopeScore = 0;
+    var reqScope = r.Title.Contains("داخلی") ? "داخلی" : r.Title.Contains("خارجی") ? "خارجی" : "";
+    var supplierScope = s.Notes.Contains("داخلی /", StringComparison.Ordinal) ? "داخلی" : s.Notes.Contains("خارجی /", StringComparison.Ordinal) ? "خارجی" : "";
+    var scopeMismatch = reqScope.Length > 0 && supplierScope.Length > 0 && reqScope != supplierScope;
+    if (reqScope.Length == 0 || supplierScope.Length == 0) scopeScore = 2;
+    else if (!scopeMismatch) { scopeScore = 5; reasons.Add("دامنه داخلی/خارجی با سناریوی درخواست هم‌راستاست."); }
+    else warnings.Add("دامنه داخلی/خارجی تأمین‌کننده با درخواست هم‌خوان نیست.");
+    breakdown["تناسب دامنه"] = scopeScore;
+
+    var total = breakdown.Values.Sum();
+    var blocked = s.EvidenceStatus is "مشکوک" or "ردشده";
+    var eligible = !blocked && !scopeMismatch;
+    if (blocked) warnings.Add("این رکورد از پیشنهادهای قابل‌اتکا کنار گذاشته شده است.");
+    if (warnings.Count == 0) warnings.Add("با وجود امتیاز اولیه، بررسی انسانی و استعلام مستقیم الزامی است.");
+    return new MatchEvaluation(s, total, eligible, reasons.ToArray(), warnings.Distinct().ToArray(), breakdown);
 }
-static string[] MatchReasons(PurchaseRequirement r, Supplier s) { var a = new List<string>(); if (s.Capabilities.Contains(r.Category, StringComparison.OrdinalIgnoreCase) || s.Products.Contains(r.Category, StringComparison.OrdinalIgnoreCase)) a.Add("ارتباط با گروه کالایی"); if (s.EvidenceStatus != "اعلام‌نشده") a.Add("دارای وضعیت شواهد ثبت‌شده"); if (s.LeadTimeDays > 0 && r.RequiredWithinDays > 0) a.Add(s.LeadTimeDays <= r.RequiredWithinDays ? "زمان تحویل در محدوده نیاز" : "زمان تحویل نیازمند بررسی"); if (a.Count == 0) a.Add("تطبیق اولیه متنی؛ نیازمند بررسی انسانی"); return a.ToArray(); }
+
+static string NormalizeText(string value) => value.ToLowerInvariant()
+    .Replace('ي', 'ی').Replace('ك', 'ک').Replace('ۀ', 'ه').Replace('ة', 'ه')
+    .Replace('‌', ' ').Replace('-', ' ').Replace('/', ' ').Replace('،', ' ').Replace(',', ' ')
+    .Replace('.', ' ').Replace('؛', ' ').Replace(':', ' ');
+
+record MatchEvaluation(Supplier Supplier, int Score, bool Eligible, string[] Reasons, string[] Warnings, Dictionary<string, int> Breakdown);
 
 record LoginRequest(string Username, string Password, bool RememberMe = false);
 record ChangePasswordRequest(string CurrentPassword, string NewPassword);
