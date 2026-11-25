@@ -47,8 +47,15 @@ else:
 
 check("Persian RTL web application loads", lambda: request("/"))
 check("liveness", lambda: request("/health/live"))
-check("MariaDB readiness", lambda: request("/health/ready"))
+check("MariaDB readiness and seeded lookup integrity", lambda: request("/health/ready"))
 check("login with seeded expert", lambda: request("/api/auth/login", "POST", {"username":"expert1","password":"O2ban@2026"}))
+_, lookups = request("/api/lookups")
+assert len(lookups.get("product-category", [])) >= 10
+assert len(lookups.get("unit", [])) >= 15
+assert set(("عادی", "زیاد", "فوری")).issubset(set(lookups.get("priority", [])))
+expected_evidence = {"اعلام‌شده", "دارای مدرک", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده"}
+assert expected_evidence.issubset(set(lookups.get("evidence-status", [])))
+check("product categories, units, priorities and seven evidence statuses exist in MariaDB", lambda: None)
 check("authenticated identity", lambda: request("/api/auth/me"))
 for username, role_part in (("expert1", "داخلی | قطعات تولیدی"), ("expert2", "داخلی | اقلام غیرتولیدی"), ("expert3", "خارجی | قطعات تولیدی"), ("expert4", "خارجی | اقلام غیرتولیدی")):
     _, identity = request("/api/auth/login", "POST", {"username":username,"password":"O2ban@2026"})
@@ -95,7 +102,7 @@ status, created_supplier = request("/api/suppliers", "POST", supplier, expected=
 assert created_supplier["id"] > 0 and created_supplier["name"] == supplier["name"]
 check("supplier insert and generated identity", lambda: None)
 
-product = {"code":"TEST-"+suffix,"name":"کالای آزمون","category":"آزمایشی","unit":"عدد","technicalDescription":"شرح تست"}
+product = {"code":"TEST-"+suffix,"name":"کالای آزمون","category":lookups["product-category"][0],"unit":lookups["unit"][0],"technicalDescription":"شرح تست"}
 _, created_product = request("/api/products", "POST", product, expected=(201,))
 check("product insert", lambda: None)
 check("duplicate product code is rejected", lambda: request("/api/products", "POST", product, expected=(409,)))

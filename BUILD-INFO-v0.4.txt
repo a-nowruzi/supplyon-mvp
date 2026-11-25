@@ -1,0 +1,21 @@
+O2Ban Validation Workspace v0.4.0
+Source: O2Ban v0.3 Automotive Pilot
+Database: MariaDB 11.4
+Backend: ASP.NET Core 10 / EF Core 9 / Pomelo 9
+UI: Persian RTL / Vazirmatn / Responsive
+
+Static checks performed:
+- node --check wwwroot/app.js: PASS
+- Python AST parse tests/smoke_test.py: PASS
+- appsettings.json parse: PASS
+- docker-compose.yml YAML parse: PASS
+- responsive CSS breakpoints: PRESENT
+- lookup API and additive LookupOptions table upgrade: PRESENT
+
+Not executed in build environment:
+- dotnet restore/build
+- Docker image build and Docker Compose runtime
+- live MariaDB upgrade/seed
+- HTTP end-to-end smoke test
+
+Do not mark deployment as runtime-verified until the required post-deployment tests pass.

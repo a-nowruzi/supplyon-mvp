@@ -13,11 +13,15 @@ public class AppDb(DbContextOptions<AppDb> options) : DbContext(options)
     public DbSet<Offer> Offers => Set<Offer>();
     public DbSet<Evidence> Evidence => Set<Evidence>();
     public DbSet<Feedback> Feedback => Set<Feedback>();
+    public DbSet<LookupOption> LookupOptions => Set<LookupOption>();
 
     protected override void OnModelCreating(ModelBuilder b)
     {
         b.HasCharSet("utf8mb4").UseCollation("utf8mb4_unicode_ci");
         b.Entity<AppUser>().HasIndex(x => x.Username).IsUnique();
+        b.Entity<LookupOption>().HasIndex(x => new { x.Group, x.Value }).IsUnique();
+        b.Entity<LookupOption>().Property(x => x.Group).HasMaxLength(60).IsRequired();
+        b.Entity<LookupOption>().Property(x => x.Value).HasMaxLength(120).IsRequired();
         b.Entity<Supplier>().Property(x => x.Name).HasMaxLength(180).IsRequired();
         b.Entity<Supplier>().Property(x => x.NationalId).HasMaxLength(11);
         b.Entity<Supplier>().HasIndex(x => x.NationalId).IsUnique();

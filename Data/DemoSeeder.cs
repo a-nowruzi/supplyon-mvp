@@ -40,15 +40,38 @@ public static class DemoSeeder
             ["درخواست‌های خرید"] = await db.Requirements.CountAsync(),
             ["استعلام‌ها"] = await db.Rfqs.CountAsync(),
             ["پیشنهادها"] = await db.Offers.CountAsync(),
-            ["شواهد"] = await db.Evidence.CountAsync()
+            ["شواهد"] = await db.Evidence.CountAsync(),
+            ["گزینه‌های اطلاعات پایه"] = await db.LookupOptions.CountAsync(x => x.IsActive)
         };
-        var missing = checks.Where(x => x.Value < (x.Key switch { "کاربران" => 4, "شرکت‌های هدف" => 10, "تأمین‌کنندگان" => 12, "کالاهای کاتالوگ" => 15, "درخواست‌های خرید" => 8, "استعلام‌ها" => 8, "پیشنهادها" => 8, "شواهد" => 15, _ => 1 })).ToList();
+        var missing = checks.Where(x => x.Value < (x.Key switch { "کاربران" => 4, "شرکت‌های هدف" => 10, "تأمین‌کنندگان" => 12, "کالاهای کاتالوگ" => 15, "درخواست‌های خرید" => 8, "استعلام‌ها" => 8, "پیشنهادها" => 8, "شواهد" => 15, "گزینه‌های اطلاعات پایه" => 30, _ => 1 })).ToList();
         var personas = new[] { "داخلی | تولیدی", "داخلی | غیرتولیدی", "خارجی | تولیدی", "خارجی | غیرتولیدی" };
         foreach (var persona in personas)
         {
             var count = await db.Requirements.CountAsync(x => x.Title.Contains(persona));
             if (count < 2) missing.Add(new KeyValuePair<string, int>($"سناریوی {persona}", count));
         }
+        var expectedLookups = new Dictionary<string, int>
+        {
+            ["product-category"] = 12, ["unit"] = 17, ["priority"] = 3,
+            ["evidence-status"] = 7, ["supplier-segment"] = 4, ["requirement-status"] = 6
+        };
+        foreach (var item in expectedLookups)
+        {
+            var actual = await db.LookupOptions.CountAsync(x => x.IsActive && x.Group == item.Key);
+            if (actual < item.Value) missing.Add(new KeyValuePair<string, int>($"اطلاعات پایه {item.Key}", actual));
+        }
+        var evidenceStatuses = await db.LookupOptions.Where(x => x.Group == "evidence-status" && x.IsActive).Select(x => x.Value).ToListAsync();
+        if (await db.Suppliers.AnyAsync(x => !evidenceStatuses.Contains(x.EvidenceStatus)))
+            missing.Add(new KeyValuePair<string, int>("وضعیت شواهد تأمین‌کنندگان ناسازگار", 0));
+        if (await db.Evidence.AnyAsync(x => !evidenceStatuses.Contains(x.Status)))
+            missing.Add(new KeyValuePair<string, int>("وضعیت شواهد ادعاها ناسازگار", 0));
+        var categories = await db.LookupOptions.Where(x => x.Group == "product-category" && x.IsActive).Select(x => x.Value).ToListAsync();
+        var units = await db.LookupOptions.Where(x => x.Group == "unit" && x.IsActive).Select(x => x.Value).ToListAsync();
+        var priorities = await db.LookupOptions.Where(x => x.Group == "priority" && x.IsActive).Select(x => x.Value).ToListAsync();
+        if (await db.Products.AnyAsync(x => !categories.Contains(x.Category) || !units.Contains(x.Unit)))
+            missing.Add(new KeyValuePair<string, int>("کالا با گروه یا واحد نامعتبر", 0));
+        if (await db.Requirements.AnyAsync(x => !categories.Contains(x.Category) || !units.Contains(x.Unit) || !priorities.Contains(x.Priority)))
+            missing.Add(new KeyValuePair<string, int>("درخواست خرید با گروه، واحد یا اولویت نامعتبر", 0));
         if (missing.Count > 0)
             throw new InvalidOperationException("داده‌های پایه پایلوت کامل نیستند: " + string.Join("، ", missing.Select(x => $"{x.Key}={x.Value}")));
     }

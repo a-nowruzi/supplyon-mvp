@@ -62,6 +62,17 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDb>();
     await db.Database.EnsureCreatedAsync();
+    // Additive, idempotent lookup-table upgrade for databases created by v0.2/v0.3.
+    await db.Database.ExecuteSqlRawAsync(@"CREATE TABLE IF NOT EXISTS `LookupOptions` (
+        `Id` int NOT NULL AUTO_INCREMENT,
+        `Group` varchar(60) NOT NULL,
+        `Value` varchar(120) NOT NULL,
+        `SortOrder` int NOT NULL DEFAULT 0,
+        `IsActive` tinyint(1) NOT NULL DEFAULT 1,
+        PRIMARY KEY (`Id`),
+        UNIQUE KEY `IX_LookupOptions_Group_Value` (`Group`, `Value`)
+    ) CHARACTER SET=utf8mb4 COLLATE=utf8mb4_unicode_ci;");
+    await LookupSeeder.SeedAsync(db);
     if (builder.Configuration.GetValue("DemoData:Enabled", true))
         await DemoSeeder.SeedAsync(db);
 }
@@ -73,7 +84,10 @@ app.MapGet("/health/live", () => Results.Ok(new { status = "live" }));
 app.MapGet("/health/ready", async (AppDb db) =>
 {
     var canConnect = await db.Database.CanConnectAsync();
-    return canConnect ? Results.Ok(new { status = "ready", database = "MariaDB" }) : Results.StatusCode(503);
+    if (!canConnect) return (IResult)Results.StatusCode(503);
+    var lookupCount = await db.LookupOptions.CountAsync(x => x.IsActive);
+    if (lookupCount < 49) return (IResult)Results.Problem("اطلاعات پایه کامل نیست.", statusCode: 503);
+    return (IResult)Results.Ok(new { status = "ready", database = "MariaDB", activeLookupOptions = lookupCount });
 });
 
 app.MapPost("/api/auth/login", async (LoginRequest req, HttpContext ctx, AppDb db) => {
@@ -95,6 +109,13 @@ app.MapPost("/api/auth/change-password", async (ChangePasswordRequest req, Claim
 app.MapGet("/api/auth/me", (ClaimsPrincipal p) => Results.Ok(new { name = p.Identity?.Name, role = p.FindFirst(ClaimTypes.Role)?.Value, organization = p.FindFirst("org")?.Value })).RequireAuthorization();
 
 var api = app.MapGroup("/api").RequireAuthorization();
+api.MapGet("/lookups", async (AppDb db) =>
+{
+    var rows = await db.LookupOptions.Where(x => x.IsActive)
+        .OrderBy(x => x.Group).ThenBy(x => x.SortOrder).ToListAsync();
+    return Results.Ok(rows.GroupBy(x => x.Group)
+        .ToDictionary(g => g.Key, g => g.Select(x => x.Value).ToArray()));
+});
 api.MapGet("/dashboard", async (AppDb db) => Results.Ok(new {
     companies = await db.Companies.CountAsync(), suppliers = await db.Suppliers.CountAsync(), products = await db.Products.CountAsync(), requirements = await db.Requirements.CountAsync(), openRfqs = await db.Rfqs.CountAsync(x => x.Status != "بسته"), offers = await db.Offers.CountAsync(), feedback = await db.Feedback.CountAsync(),
     recentRequirements = await db.Requirements.OrderByDescending(x => x.CreatedAt).Take(5).Select(x => new { x.Id, x.Title, x.Category, x.Status, x.CreatedAt }).ToListAsync(),
@@ -122,7 +143,7 @@ api.MapPost("/suppliers", async (Supplier x, AppDb db) =>
     if (x.NationalId is not null && (x.NationalId.Length != 11 || !x.NationalId.All(char.IsDigit)))
         return Results.BadRequest(new { message = "شناسه ملی باید دقیقاً ۱۱ رقم باشد یا خالی بماند." });
     if (x.LeadTimeDays < 0) return Results.BadRequest(new { message = "زمان تحویل نمی‌تواند منفی باشد." });
-    var allowedEvidence = new[] { "اعلام‌شده", "دارای مدرک", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده" };
+    var allowedEvidence = await db.LookupOptions.Where(o => o.Group == "evidence-status" && o.IsActive).Select(o => o.Value).ToListAsync();
     if (!allowedEvidence.Contains(x.EvidenceStatus)) return Results.BadRequest(new { message = "وضعیت شواهد انتخاب‌شده معتبر نیست." });
     if (x.NationalId is not null && await db.Suppliers.AnyAsync(s => s.NationalId == x.NationalId))
         return Results.Conflict(new { message = "تأمین‌کننده‌ای با این شناسه ملی قبلاً ثبت شده است." });
@@ -136,6 +157,10 @@ api.MapPost("/products", async (Product x, AppDb db) => {
     x.Id = 0; x.Code = x.Code?.Trim() ?? ""; x.Name = x.Name?.Trim() ?? "";
     if (string.IsNullOrWhiteSpace(x.Code) || string.IsNullOrWhiteSpace(x.Name)) return (IResult)Results.BadRequest(new { message = "کد و نام کالا الزامی است." });
     if (x.Code.Length > 60 || x.Name.Length > 180) return (IResult)Results.BadRequest(new { message = "طول کد یا نام کالا بیش از حد مجاز است." });
+    if (string.IsNullOrWhiteSpace(x.Category) || !await db.LookupOptions.AnyAsync(o => o.Group == "product-category" && o.Value == x.Category && o.IsActive))
+        return (IResult)Results.BadRequest(new { message = "گروه کالایی باید از فهرست اطلاعات پایه انتخاب شود." });
+    if (string.IsNullOrWhiteSpace(x.Unit) || !await db.LookupOptions.AnyAsync(o => o.Group == "unit" && o.Value == x.Unit && o.IsActive))
+        return (IResult)Results.BadRequest(new { message = "واحد اندازه‌گیری باید از فهرست اطلاعات پایه انتخاب شود." });
     if (await db.Products.AnyAsync(p => p.Code == x.Code)) return (IResult)Results.Conflict(new { message = "کالایی با این کد قبلاً ثبت شده است." });
     db.Products.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/products/{x.Id}", x);
 });
@@ -145,7 +170,12 @@ api.MapPost("/requirements", async (PurchaseRequirement x, ClaimsPrincipal p, Ap
     if (string.IsNullOrWhiteSpace(x.Title) || string.IsNullOrWhiteSpace(x.Category) || string.IsNullOrWhiteSpace(x.Description)) return (IResult)Results.BadRequest(new { message = "عنوان، گروه کالا و شرح فنی درخواست الزامی است." });
     if (x.Quantity <= 0 || x.RequiredWithinDays <= 0) return (IResult)Results.BadRequest(new { message = "مقدار و مهلت تأمین باید بیشتر از صفر باشند." });
     if (string.IsNullOrWhiteSpace(x.Unit) || string.IsNullOrWhiteSpace(x.DeliveryLocation)) return (IResult)Results.BadRequest(new { message = "واحد و محل تحویل الزامی است." });
-    if (x.Priority is not ("عادی" or "زیاد" or "فوری")) return (IResult)Results.BadRequest(new { message = "اولویت درخواست معتبر نیست." });
+    if (!await db.LookupOptions.AnyAsync(o => o.Group == "product-category" && o.Value == x.Category && o.IsActive))
+        return (IResult)Results.BadRequest(new { message = "گروه کالایی انتخاب‌شده معتبر نیست." });
+    if (!await db.LookupOptions.AnyAsync(o => o.Group == "unit" && o.Value == x.Unit && o.IsActive))
+        return (IResult)Results.BadRequest(new { message = "واحد انتخاب‌شده معتبر نیست." });
+    if (!await db.LookupOptions.AnyAsync(o => o.Group == "priority" && o.Value == x.Priority && o.IsActive))
+        return (IResult)Results.BadRequest(new { message = "اولویت درخواست معتبر نیست." });
     x.CreatedAt = DateTime.UtcNow; x.CreatedBy = p.Identity?.Name ?? "کاربر"; x.Status = "جدید"; db.Requirements.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/requirements/{x.Id}", x);
 });
 api.MapGet("/matches/{requirementId:int}", async (int requirementId, AppDb db) => {
@@ -190,7 +220,7 @@ api.MapPost("/evidence", async (Evidence x, AppDb db) => {
     if (string.IsNullOrWhiteSpace(x.SupplierName) || string.IsNullOrWhiteSpace(x.Claim)) return (IResult)Results.BadRequest(new { message = "نام تأمین‌کننده و شرح ادعا الزامی است." });
     if (!await db.Suppliers.AnyAsync(s => s.Name == x.SupplierName)) return (IResult)Results.BadRequest(new { message = "تأمین‌کننده در سامانه پیدا نشد." });
     var sources = new[] { "اظهار شرکت", "کاتالوگ", "سند بارگذاری‌شده", "منبع رسمی", "بازرسی مستقل", "شواهد معامله" };
-    var statuses = new[] { "اعلام‌شده", "دارای مدرک", "تأییدشده توسط شرکت", "نیازمند به‌روزرسانی", "دارای تناقض", "مشکوک", "ردشده" };
+    var statuses = await db.LookupOptions.Where(o => o.Group == "evidence-status" && o.IsActive).Select(o => o.Value).ToListAsync();
     if (!sources.Contains(x.Source) || !statuses.Contains(x.Status)) return (IResult)Results.BadRequest(new { message = "منبع یا وضعیت شواهد معتبر نیست." });
     x.CreatedAt = DateTime.UtcNow; db.Evidence.Add(x); await db.SaveChangesAsync(); return (IResult)Results.Created($"/api/evidence/{x.Id}", x);
 });
